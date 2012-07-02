@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(:version => 20120702223236) do
   create_table "cards", :force => true do |t|
     t.string   "suit"
     t.string   "value"
+    t.integer  "deck_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
@@ -31,25 +32,25 @@ ActiveRecord::Schema.define(:version => 20120702223236) do
   end
 
   create_table "teams", :force => true do |t|
-    t.integer  "bid"
-    t.integer  "bags"
-    t.integer  "tricks_won"
-    t.integer  "round_score"
-    t.integer  "total_score"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.integer  "bid",         :default => 0
+    t.integer  "bags",        :default => 0
+    t.integer  "tricks_won",  :default => 0
+    t.integer  "round_score", :default => 0
+    t.integer  "total_score", :default => 0
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
   end
 
   create_table "users", :force => true do |t|
     t.string   "username"
-    t.integer  "total_score"
-    t.integer  "round_score"
-    t.integer  "bid"
-    t.boolean  "going_nil"
-    t.boolean  "going_blind"
+    t.integer  "total_score", :default => 0
+    t.integer  "round_score", :default => 0
+    t.integer  "bid",         :default => 0
+    t.boolean  "going_nil",   :default => false
+    t.boolean  "going_blind", :default => false
     t.integer  "team_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
   end
 
 end

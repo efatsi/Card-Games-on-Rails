@@ -3,13 +3,6 @@
 <table>
   <tr>
     <th>Username</th>
-    <th>Total score</th>
-    <th>Round score</th>
-    <th>Bid</th>
-    <th>Going nil</th>
-    <th>Going blind</th>
-    <th>Team</th>
-    <th></th>
     <th></th>
     <th></th>
   </tr>
@@ -17,14 +10,7 @@
 <% @users.each do |user| %>
   <tr>
     <td><%= user.username %></td>
-    <td><%= user.total_score %></td>
-    <td><%= user.round_score %></td>
-    <td><%= user.bid %></td>
-    <td><%= user.going_nil %></td>
-    <td><%= user.going_blind %></td>
-    <td><%= user.team_id %></td>
     <td><%= link_to 'Show', user %></td>
-    <td><%= link_to 'Edit', edit_user_path(user) %></td>
     <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
   </tr>
 <% end %>

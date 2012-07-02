@@ -9,6 +9,6 @@ CardGames::Application.routes.draw do
 
   resources :users
 
-  root :to => rooms_url
+  root :to => 'rooms#index'
 
 end
