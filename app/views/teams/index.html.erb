@@ -1,0 +1,31 @@
+<h1>Listing teams</h1>
+
+<table>
+  <tr>
+    <th>Bid</th>
+    <th>Bags</th>
+    <th>Tricks won</th>
+    <th>Round score</th>
+    <th>Total score</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @teams.each do |team| %>
+  <tr>
+    <td><%= team.bid %></td>
+    <td><%= team.bags %></td>
+    <td><%= team.tricks_won %></td>
+    <td><%= team.round_score %></td>
+    <td><%= team.total_score %></td>
+    <td><%= link_to 'Show', team %></td>
+    <td><%= link_to 'Edit', edit_team_path(team) %></td>
+    <td><%= link_to 'Destroy', team, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Team', new_team_path %>

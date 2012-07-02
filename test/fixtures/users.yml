@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  username: MyString
+  total_score: 1
+  round_score: 1
+  bid: 1
+  going_nil: false
+  going_blind: false
+  team_id: 1
+
+two:
+  username: MyString
+  total_score: 1
+  round_score: 1
+  bid: 1
+  going_nil: false
+  going_blind: false
+  team_id: 1
