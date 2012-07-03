@@ -30,6 +30,7 @@ GEM
       multi_json (~> 1.0)
     addressable (2.2.8)
     arel (3.0.2)
+    bcrypt-ruby (3.0.1)
     builder (3.0.0)
     capybara (1.1.2)
       mime-types (>= 1.16)
@@ -133,6 +134,8 @@ GEM
     simple_form (2.0.2)
       actionpack (~> 3.0)
       activemodel (~> 3.0)
+    simplest_auth (0.3.1)
+      bcrypt-ruby (>= 2.1.1)
     sprockets (2.1.3)
       hike (~> 1.2)
       rack (~> 1.0)
@@ -157,6 +160,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bcrypt-ruby
   capybara
   coffee-rails (~> 3.2.1)
   factory_girl_rails
@@ -168,5 +172,6 @@ DEPENDENCIES
   shoulda
   shoulda-matchers
   simple_form
+  simplest_auth
   thin
   uglifier (>= 1.0.3)

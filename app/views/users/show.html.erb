@@ -3,36 +3,5 @@
   <%= @user.username %>
 </p>
 
-<p>
-  <b>Total score:</b>
-  <%= @user.total_score %>
-</p>
-
-<p>
-  <b>Round score:</b>
-  <%= @user.round_score %>
-</p>
-
-<p>
-  <b>Bid:</b>
-  <%= @user.bid %>
-</p>
-
-<p>
-  <b>Going nil:</b>
-  <%= @user.going_nil %>
-</p>
-
-<p>
-  <b>Going blind:</b>
-  <%= @user.going_blind %>
-</p>
-
-<p>
-  <b>Team:</b>
-  <%= @user.team_id %>
-</p>
-
-
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>

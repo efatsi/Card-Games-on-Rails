@@ -11,4 +11,10 @@ CardGames::Application.routes.draw do
 
   root :to => 'rooms#index'
 
+  
+	resources :sessions
+	match 'signup' => 'users#new'
+	match 'logout' => 'sessions#destroy'
+	match 'login' => 'sessions#new'
+	
 end
