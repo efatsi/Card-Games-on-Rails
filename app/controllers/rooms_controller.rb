@@ -1,11 +1,12 @@
 class RoomsController < ApplicationController
 
+  before_filter :assign_room, :only => [:show, :destroy]
+
   def index
     @rooms = Room.all
   end
 
   def show
-    @room = Room.find(params[:id])
   end
 
   def new
@@ -22,8 +23,14 @@ class RoomsController < ApplicationController
   end
 
   def destroy
-    @room = Room.find(params[:id])
     @room.destroy
     redirect_to rooms_url
   end
+  
+  private
+  
+  def assign_room    
+    @room = Room.find(params[:id])
+  end
+  
 end

@@ -1,3 +1,17 @@
+<h3>Decks Present</h3>
+
+<table>
+  <tr>
+    <th></th>
+  </tr>
+
+<% @room.decks.each do |deck| %>
+  <tr>
+    <td><%= link_to "Deck #{deck.id}", deck %></td>
+  </tr>
+<% end %>
+</table>
 
 <%= link_to 'Edit', edit_room_path(@room) %> |
-<%= link_to 'Back', rooms_path %>
+<%= link_to 'Back', rooms_path %> | 
+<%= link_to 'Delete', @room, method: :delete, data: { confirm: 'Are you sure?' } %>

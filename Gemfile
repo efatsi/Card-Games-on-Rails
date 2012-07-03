@@ -13,6 +13,10 @@ group :test, :development do
   gem "rspec-rails", "~> 2.4"
 end
 
+group :test do
+  gem 'capybara'
+end
+
 group :production do
   gem 'thin'
 end

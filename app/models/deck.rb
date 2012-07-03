@@ -1,7 +1,7 @@
 class Deck < ActiveRecord::Base
   
   belongs_to :room
-  has_many :cards
+  has_many :cards, :dependent => :destroy
   
   after_create :fill_deck
   

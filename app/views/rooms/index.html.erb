@@ -3,13 +3,11 @@
 <table>
   <tr>
     <th></th>
-    <th></th>
   </tr>
 
 <% @rooms.each do |room| %>
   <tr>
-    <td><%= link_to 'Show', room %></td>
-    <td><%= link_to 'Destroy', room, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <td><%= link_to "Room #{room.id}", room %></td>
   </tr>
 <% end %>
 </table>
