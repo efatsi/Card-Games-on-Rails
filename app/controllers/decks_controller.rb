@@ -13,6 +13,5 @@ class DecksController < ApplicationController
     @deck = Deck.find(params[:id])
     @deck.destroy
     redirect_to rooms_url
-    end
   end
 end
