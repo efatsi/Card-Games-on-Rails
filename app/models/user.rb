@@ -4,5 +4,7 @@ class User < ActiveRecord::Base
   
   belongs_to :team #sometimes
   belongs_to :room #sometimes as well
+  
+  validates_presence_of :username
     
 end
