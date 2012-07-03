@@ -1,9 +1,7 @@
 <h1>Listing rooms</h1>
 
-<table>
-  <tr>
-    <th></th>
-  </tr>
+<div class="mytable">
+<table class="table table-striped">
 
 <% @rooms.each do |room| %>
   <tr>
@@ -11,7 +9,6 @@
   </tr>
 <% end %>
 </table>
-
-<br />
+</div>
 
 <%= link_to 'New Room', new_room_path %>

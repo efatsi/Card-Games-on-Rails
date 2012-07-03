@@ -11,7 +11,3 @@
  *= require_self
  *= require_tree .
  */
-
-table {
-    padding-bottom: 20px;
-}
