@@ -19,6 +19,6 @@ CardGames::Application.configure do
 
   config.assets.compress = false
 
-  config.assets.debug = true
+  config.assets.debug = false
   
 end
