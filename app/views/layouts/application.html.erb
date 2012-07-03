@@ -12,11 +12,15 @@
 		<div class="navbar-inner">
 			<div class="container">
 			  </a>
-			  <home><%= link_to "HOME", root_url %></home>
+			  <% if logged_in? %>
+			    <%= "Welcome, #{current_user.username} | "%>
+			    <%= link_to "logout", logout_path %>
+			  <% else %>
+			    <%= link_to "login", login_path %>
+			  <% end %>
 			</div>
 		</div>
 	</div>
-  
   
   <% flash.each do |key, msg| %>
     <%= content_tag :div, msg, :id => key %>

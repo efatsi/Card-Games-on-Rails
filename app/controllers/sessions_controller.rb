@@ -5,13 +5,18 @@ class SessionsController < ApplicationController
 
   def create
     if user = User.authenticate(params[:username], params[:password])
-      self.current_user = user
+      session[:user_id] = user.id
       flash[:notice] = 'Welcome!'
       redirect_to root_path
     else
       flash.now[:error] =  "Couldn't locate a user with those credentials"
       render :action => :new
     end
+  end
+  
+  def destroy
+  	session[:user_id] = nil
+  	redirect_to root_url, notice: "Logged out!"
   end
   
 end

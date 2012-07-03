@@ -16,15 +16,20 @@ pre {
   font-size: 11px; }
 
 body {
-  padding: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 h1 {
   padding-bottom: 20px;
 }
 
-.navbar{*position:relative;*z-index:2;overflow:visible;margin-bottom:18px;}
-.navbar-inner{min-height:40px;padding-top:15px;padding-left:20px;padding-right:20px;background-image:-webkit-linear-gradient(top, #777, #777);}
+floatright {
+  float: right;
+}
+
+.navbar{*position:relative;}
+.navbar-inner{min-height:30px;padding-top:10px;background-image:-webkit-linear-gradient(top, #777, #777);}
 
 
 a {
