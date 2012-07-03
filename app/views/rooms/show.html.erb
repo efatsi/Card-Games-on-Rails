@@ -1,9 +1,7 @@
-<h3>Decks Present</h3>
+<h1>Decks Present</h1>
 
-<table>
-  <tr>
-    <th></th>
-  </tr>
+<div class="mytable">
+<table class="table table-striped">
 
 <% @room.decks.each do |deck| %>
   <tr>
@@ -11,7 +9,7 @@
   </tr>
 <% end %>
 </table>
+</div>
 
-<%= link_to 'Edit', edit_room_path(@room) %> |
 <%= link_to 'Back', rooms_path %> | 
 <%= link_to 'Delete', @room, method: :delete, data: { confirm: 'Are you sure?' } %>

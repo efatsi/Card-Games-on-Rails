@@ -24,9 +24,6 @@ h1 {
   padding-bottom: 20px;
 }
 
-floatright {
-  float: right;
-}
 
 .navbar{*position:relative;}
 .navbar-inner{min-height:30px;padding-top:10px;background-image:-webkit-linear-gradient(top, #777, #777);}
@@ -37,14 +34,21 @@ a {
   &:visited {
     color: #333; }
   &:hover {
-    color: #fff;
-    background-color: #111; } }
+    color: #FFF; } }
 
-home {
-  color: #111;
-  padding-top: 50px;
-  font-size: 18px;
+navbartext{
+  font-size: 16px;
+  vertical-align: top;
+  color: #000;
 }
+
+navbartext > a {
+  vertical-align: top;
+  color: #000;
+  &:visited {
+    color: #000; }
+  &:hover {
+    color: #DDD; } }
 
 
 .mytable {
@@ -55,7 +59,7 @@ home {
 
 .table-striped tbody tr:nth-child(odd) td,.table-striped tbody tr:nth-child(odd) th{background-color:#999;}
 .table-striped tbody tr:nth-child(even) td,.table-striped tbody tr:nth-child(even) th{background-color:#BBB;}
-.table tbody tr:hover td,.table tbody tr:hover th{background-color:#DDD;}
+.table tbody tr:hover td,.table tbody tr:hover th{background-color:#AAA;}
 
 div {
   &.field, &.actions {

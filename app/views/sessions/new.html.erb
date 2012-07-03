@@ -2,6 +2,10 @@
 
 <%= form_tag sessions_path do %>
 
+  <% flash.each do |key, msg| %>
+    <%= content_tag :div, msg, :id => key %>
+  <% end %><br />
+  
 	<div class="control-group">
     <%= label_tag :username %>
     <div class="controls">
@@ -16,8 +20,7 @@
     </div>
   </div>
 
-  <div class="actions"><%= submit_tag "Log In" %></div>
+  <div class="actions"><%= submit_tag "Log In", :class => "btn"  %></div>
   
-  <%= link_to "Sign Up", new_user_path %>
   
 <% end %>

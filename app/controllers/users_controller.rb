@@ -18,7 +18,8 @@ class UsersController < ApplicationController
   def create
     @user = User.new(params[:user])
     if @user.save
-      redirect_to @user, notice: 'User was successfully created.'
+      session[:user_id] = @user.id
+      redirect_to root_url      
     else
       render action: "new"
     end
@@ -28,7 +29,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     
     if @user.update_attributes(params[:user])
-      redirect_to @user, notice: 'User was successfully updated.'
+      redirect_to @user
     else
       render action: "edit"
     end
@@ -36,7 +37,8 @@ class UsersController < ApplicationController
   
   def destroy
     @user = User.find(params[:id])
+    yourself = true if current_user == @user
     @user.destroy
-    redirect_to users_url
+    redirect_to (yourself ? logout_url : root_url)
   end
 end

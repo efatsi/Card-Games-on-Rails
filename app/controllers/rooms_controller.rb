@@ -16,7 +16,7 @@ class RoomsController < ApplicationController
   def create
     @room = Room.new(params[:room])
     if @room.save
-      redirect_to @room, notice: 'Room was successfully created.'
+      redirect_to @room
     else
       render action: "new"
     end

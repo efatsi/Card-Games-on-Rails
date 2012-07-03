@@ -1,14 +1,14 @@
 <h1>Listing rooms</h1>
 
 <div class="mytable">
-<table class="table table-striped">
+  <table class="table table-striped">
 
-<% @rooms.each do |room| %>
-  <tr>
-    <td><%= link_to "Room #{room.id}", room %></td>
-  </tr>
-<% end %>
-</table>
+  <% @rooms.each do |room| %>
+    <tr>
+      <td><%= link_to "Room #{room.id} - #{room.game.capitalize}", room %></td>
+    </tr>
+  <% end %>
+  </table>
 </div>
 
-<%= link_to 'New Room', new_room_path %>
+<%= link_to 'New Room', new_room_path, :class => "btn" %>

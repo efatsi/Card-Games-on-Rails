@@ -1,16 +1,19 @@
-<h3>The Deck</h3>
-<table>
-  <tr>
-    <th>Value</th>
-    <th>Suit</th>
-  </tr>
+<h1>The Deck</h1>
 
-<% @deck.cards.each do |card| %>
-  <tr>
-    <td><%= card.value %></td>
-    <td><%= card.suit %></td>
-  </tr>
-<% end %>
-</table>
+<div class="mytable">
+  <table class="table table-striped">
+    <tr>
+      <th>Value</th>
+      <th>Suit</th>
+    </tr>
+
+  <% @deck.cards.each do |card| %>
+    <tr>
+      <td><%= card.value %></td>
+      <td><%= card.suit %></td>
+    </tr>
+  <% end %>
+  </table>
+</div>
 
 <%= link_to 'Back', room_path(@deck.room) %>

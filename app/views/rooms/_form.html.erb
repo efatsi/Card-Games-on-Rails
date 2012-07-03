@@ -1,17 +1,10 @@
-<%= form_for(@room) do |f| %>
-  <% if @room.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@room.errors.count, "error") %> prohibited this room from being saved:</h2>
+<%= simple_form_for(@room) do |f| %>
 
-      <ul>
-      <% @room.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <div class="field">
+    <%= f.input :game, :collection => Room::GAMES, :prompt => "Select a Game" %>
+  </div>
 
   <div class="actions">
-    <%= f.submit %>
+    <%= submit_tag "Create Room", :class => "btn"  %>
   </div>
 <% end %>
