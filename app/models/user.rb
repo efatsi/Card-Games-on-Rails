@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   
   belongs_to :team #sometimes
   belongs_to :room #sometimes as well
-  has_many :played_tricks, :as => :trick_owner, :dependent => :destroy
+  has_many :played_tricks, :as => :trick_owner
   
   validates_presence_of :username
   validates_uniqueness_of :username

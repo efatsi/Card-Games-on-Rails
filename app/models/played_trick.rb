@@ -14,4 +14,5 @@ class PlayedTrick < ActiveRecord::Base
       self.errors[:size] << 'Size does not match'
     end
   end
+  
 end
