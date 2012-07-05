@@ -1,4 +1,10 @@
 CardGames::Application.routes.draw do
+  resources :played_tricks
+
+  resources :tricks
+
+  resources :rounds
+
   resources :rooms
 
   resources :teams

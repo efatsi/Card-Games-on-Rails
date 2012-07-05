@@ -1,5 +1,5 @@
 body {
-  background-color: #CCC;
+  background-color: #fff;
   color: #333;
   font-family: verdana, arial, helvetica, sans-serif;
   font-size: 13px;
@@ -15,53 +15,13 @@ pre {
   padding: 10px;
   font-size: 11px; }
 
-body {
-  padding-left: 20px;
-  padding-right: 20px;
-}
-
-h1 {
-  padding-bottom: 20px;
-}
-
-
-.navbar{*position:relative;}
-.navbar-inner{min-height:30px;padding-top:10px;background-image:-webkit-linear-gradient(top, #777, #777);}
-
-
 a {
   color: #000;
   &:visited {
-    color: #333; }
+    color: #666; }
   &:hover {
-    color: #FFF; } }
-
-
-navbartext{
-  font-size: 16px;
-  padding-left: 10px;
-  vertical-align: top;
-  color: #000;
-}
-
-navbartext > a {
-  vertical-align: top;
-  color: #000;
-  &:visited {
-    color: #000; }
-  &:hover {
-    color: #DDD; } }
-
-
-.mytable {
-  width:300px;
-  padding-bottom: 20px;
-}
-
-
-.table-striped tbody tr:nth-child(odd) td,.table-striped tbody tr:nth-child(odd) th{background-color:#999;}
-.table-striped tbody tr:nth-child(even) td,.table-striped tbody tr:nth-child(even) th{background-color:#BBB;}
-.table tbody tr:hover td,.table tbody tr:hover th{background-color:#AAA;}
+    color: #fff;
+    background-color: #000; } }
 
 div {
   &.field, &.actions {

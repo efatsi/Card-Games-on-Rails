@@ -1,0 +1,2 @@
+module PlayedTricksHelper
+end
