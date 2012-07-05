@@ -4,5 +4,6 @@ class Round < ActiveRecord::Base
   
   belongs_to :room
   has_many :tricks, :dependent => :destroy
+  has_many :played_tricks, :as => :trick_owner, :dependent => :destroy
   
 end
