@@ -38,8 +38,8 @@ ActiveRecord::Schema.define(:version => 20120705190113) do
 
   create_table "played_tricks", :force => true do |t|
     t.integer  "size"
-    t.string   "player_id"
-    t.integer  "round_id"
+    t.integer  "player_id"
+    t.integer  "trick_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end

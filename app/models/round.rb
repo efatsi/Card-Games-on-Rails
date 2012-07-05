@@ -4,7 +4,6 @@ class Round < ActiveRecord::Base
   
   belongs_to :game
   has_many :tricks, :dependent => :destroy
-  has_many :played_tricks
 
   
   def shuffle_cards
@@ -52,7 +51,6 @@ class Round < ActiveRecord::Base
     (dealer_id + 1) % game.size
   end
   
-  private
   def deck
     game.decks.first
   end
@@ -63,5 +61,18 @@ class Round < ActiveRecord::Base
   
   def dealer
     User.find(dealer_id)
+  end
+  
+  def get_leader_id
+    tricks_played == 0 ? two_of_clubs_owner.id : last_trick.trick_winner_id
+  end
+
+  def tricks_played
+    tricks.length
+  end
+  
+  def last_trick
+    tricks.last
+  end
   
 end

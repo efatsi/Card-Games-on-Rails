@@ -14,12 +14,10 @@ class SpadesRound < Round
     end
   end
 
-
-  # 13.times do
-  #   GET_OR_CHANGE_DEALER
-  #   PLAY A TRICK SOMEHOW
-  # end
-  
+  13.times do
+    new_leader_id = get_leader_id
+    new_trick = SpadesTrick.create(:round_id => self.id, :leader_id => new_leader_id)
+  end
 
   def update_total_scores
     update_round_scores

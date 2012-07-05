@@ -1,6 +1,6 @@
 class PlayedTrick < ActiveRecord::Base
   
-  attr_accessible :size, :player_id, :round_id
+  attr_accessible :size, :player_id, :trick_id
   
   belongs_to :player
   belongs_to :round
