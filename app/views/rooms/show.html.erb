@@ -1,14 +1,7 @@
-<h1>Decks Present</h1>
+<h1><%= "Room #{@room.id} - #{@room.game.capitalize}" %></h1>
 
 <div class="mytable">
-<table class="table table-striped">
-
-<% @room.decks.each do |deck| %>
-  <tr>
-    <td><%= link_to "Deck #{deck.id}", deck %></td>
-  </tr>
-<% end %>
-</table>
+  <%= link_to "Deck", @room.decks.first %>
 </div>
 
 <%= link_to 'Back', rooms_path %> | 
