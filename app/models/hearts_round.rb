@@ -6,26 +6,31 @@ class HeartsRound < Round
   def pass_cards(direction)
     return if direction == "none"
     cards_to_pass = [ [] , [] , [] , [] ]
-    4.times do |i|
+    game.size.times do |i|
       3.times do
         cards_to_pass[i] << @players[i].hand[rand(@players[i].hand.length)]
       end
     end
-    take_from_shift = case direction
+    giving_shift = case direction
     when "left"
-      3
+      1
     when "across"
       2
     when "right"
-      1
+      3
     end
-    4.times do |i|
-      @players[i].hand += cards_to_pass[(i + take_from_shift) % 4]
+    cards_to_pass.each do |set|
+      set.each do |card|
+        current_player_index = owner_index(card)
+        new_player_index = current_player_index + giving_shift
+        receiver = players[new_player_index]
+        card.card_owner_id = receiver.id
+      end
     end
   end
   
   
-  # 13.times od
+  # 13.times do
   #   GET_OR_CHANGE_LEADER
   #   PLAY A TRICK SOMEHOW
   # end
@@ -66,6 +71,10 @@ class HeartsRound < Round
         end
       end  
     end
+  end
+  
+  def owner_index(card)
+    players.index(User.find(self.card_owner_id))
   end
   
 end

@@ -9,41 +9,59 @@ class Round < ActiveRecord::Base
   
   def shuffle_cards
     2.times do
-      new_deck = []
-      @deck.each do |card|
+      shuffled_deck = []
+      deck.each do |card|
         new_location = rand(new_deck.size+1)
-        new_deck.insert(new_location, card)
+        shuffled_deck.insert(new_location, card)
       end
-      @deck = new_deck
+      game.decks.first = shuffled_deck
     end
   end
   
+  
   def deal_cards
-    if @deck.length == 52
-      dealer_index = @players.index(@dealer)
+    if deck.length == 52
+      dealer_index = players.index(dealer)
       13.times do
         4.times do |i|
-          player = @players[(dealer_index+i+1)%4]
-          top = @deck.last
+          player = players[(dealer_index+i+1)%4]
+          top = deck.last
           player.hand << top
-          @deck.delete(top)
+          deck.delete(top)
         end
       end
     end
   end
 
   def return_cards
-    @players.each do |player|
+    played_tricks.each do |trick|
+      trick.cards.each do |card|
+        deck << card
+        trick.delete(card)
+      end
+    end
+    players.each do |player|
       player.hand.each do |card|
-        @deck << card
+        deck << card
+        player.hand.delete(card)
       end
-      player.round_collection.each do |card|
-        @deck << card
-      end
-      player.hand = []
-      player.round_collection = []
     end
   end
   
+  def new_dealer_id
+    (dealer_id + 1) % game.size
+  end
+  
+  private
+  def deck
+    game.decks.first
+  end
+  
+  def players
+    game.players
+  end
+  
+  def dealer
+    User.find(dealer_id)
   
 end
