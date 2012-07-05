@@ -1,0 +1,4 @@
+class SpadesGame < Game
+    
+  
+end

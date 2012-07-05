@@ -1,0 +1,4 @@
+class HeartsGame < Game
+
+  
+end

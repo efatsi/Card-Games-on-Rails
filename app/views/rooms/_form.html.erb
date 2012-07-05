@@ -1,7 +1,8 @@
 <%= simple_form_for(@room) do |f| %>
 
   <div class="field">
-    <%= f.input :game, :collection => Room::GAMES, :prompt => "Select a Game" %>
+    <%= f.input :name %>
+    <%= f.input :game_type, :collection => Room::GAMES, :prompt => "Select a Game" %>
   </div>
 
   <div class="actions">

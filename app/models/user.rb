@@ -6,8 +6,9 @@ class User < ActiveRecord::Base
   attr_accessible :bid, :going_blind, :going_nil, :round_score, :team_id, :total_score, :username, :room_id, :password, :password_confirmation
   
   belongs_to :team #sometimes
-  belongs_to :room #sometimes as well
+  belongs_to :game #when playing a game
   has_many :played_tricks, :as => :trick_owner
+  has_many :cards, :as => :card_owner
   
   validates_presence_of :username
   validates_uniqueness_of :username

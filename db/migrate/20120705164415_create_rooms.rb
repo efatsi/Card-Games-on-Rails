@@ -1,9 +1,9 @@
 class CreateRooms < ActiveRecord::Migration
   def change
     create_table :rooms do |t|
+      t.string :name
       t.integer :size
-      t.string :game
-      t.integer :winner_id
+      t.string :game_type
 
       t.timestamps
     end
