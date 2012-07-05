@@ -16,7 +16,6 @@ ActiveRecord::Schema.define(:version => 20120705190113) do
   create_table "cards", :force => true do |t|
     t.string   "suit"
     t.string   "value"
-    t.integer  "deck_id"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
     t.string   "card_owner_type"
@@ -26,7 +25,7 @@ ActiveRecord::Schema.define(:version => 20120705190113) do
   create_table "decks", :force => true do |t|
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
-    t.integer  "room_id"
+    t.integer  "game_id"
   end
 
   create_table "games", :force => true do |t|
@@ -39,10 +38,10 @@ ActiveRecord::Schema.define(:version => 20120705190113) do
 
   create_table "played_tricks", :force => true do |t|
     t.integer  "size"
-    t.string   "trick_owner_type"
-    t.integer  "trick_owner_id"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.string   "player_id"
+    t.integer  "round_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "rooms", :force => true do |t|
@@ -55,7 +54,7 @@ ActiveRecord::Schema.define(:version => 20120705190113) do
 
   create_table "rounds", :force => true do |t|
     t.integer  "dealer_id"
-    t.integer  "room_id"
+    t.integer  "game_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
@@ -68,7 +67,7 @@ ActiveRecord::Schema.define(:version => 20120705190113) do
     t.integer  "total_score", :default => 0
     t.datetime "created_at",                 :null => false
     t.datetime "updated_at",                 :null => false
-    t.integer  "room_id"
+    t.integer  "game_id"
   end
 
   create_table "tricks", :force => true do |t|
@@ -89,7 +88,7 @@ ActiveRecord::Schema.define(:version => 20120705190113) do
     t.integer  "team_id"
     t.datetime "created_at",                          :null => false
     t.datetime "updated_at",                          :null => false
-    t.integer  "room_id"
+    t.integer  "game_id"
     t.string   "crypted_password"
   end
 

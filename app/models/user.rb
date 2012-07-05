@@ -3,11 +3,11 @@ class User < ActiveRecord::Base
   include SimplestAuth::Model
   authenticate_by :username
   
-  attr_accessible :bid, :going_blind, :going_nil, :round_score, :team_id, :total_score, :username, :room_id, :password, :password_confirmation
+  attr_accessible :username, :round_score, :total_score, :bid, :going_blind, :going_nil, :team_id, :game_id, :password, :password_confirmation
   
   belongs_to :team #sometimes
   belongs_to :game #when playing a game
-  has_many :played_tricks, :as => :trick_owner
+  has_many :played_tricks
   has_many :cards, :as => :card_owner
   
   validates_presence_of :username

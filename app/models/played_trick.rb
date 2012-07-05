@@ -1,11 +1,12 @@
 class PlayedTrick < ActiveRecord::Base
   
-  attr_accessible :size, :trick_owner_id, :trick_owner_type
+  attr_accessible :size, :player_id, :round_id
   
-  belongs_to :trick_owner, :polymorphic => true
+  belongs_to :player
+  belongs_to :round
   has_many :cards, :as => :card_owner
   
-  validate :size_of_trick_is_valid
+  validate :size_of_trick_is_valid, :before => :save
   
   
   private
