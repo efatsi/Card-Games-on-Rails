@@ -11,11 +11,12 @@ class SpadesGame < Game
   end
 
   def check_for_winner      
-    winning_value = 0
-    teams.each do |team|
-      if team.total_score >= 500 && team.total_score > winning_value
-        winner_id = team.players.first.id
+    winning_value = 500
+    self.teams.each do |team|
+      if team.total_score >= winning_value
         winning_value = team.total_score
+        self.winner_id = team.id
+        self.save
       end
     end
   end

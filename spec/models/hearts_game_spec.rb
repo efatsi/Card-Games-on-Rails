@@ -13,7 +13,7 @@ describe HeartsGame do
   after :all do
     User.delete_all
     Game.delete_all
-    Deck.deelte_all
+    Deck.delete_all
   end
 
   describe "#setup" do
@@ -99,7 +99,7 @@ describe HeartsGame do
     context "#play_game" do
 
       it "should not crash" do
-
+        @hearts.play_game
       end
     end
   end
