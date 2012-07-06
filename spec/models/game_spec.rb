@@ -4,15 +4,10 @@ describe Game do
 
   before :all do
     @game = Game.create(:size => 4)
-    @user1 = FactoryGirl.create(:user)
-    @user2 = FactoryGirl.create(:user)
-    @user3 = FactoryGirl.create(:user)
-    @user4 = FactoryGirl.create(:user)
-    @user1.update_attributes(:game_id => @game.id)
-    @user2.update_attributes(:game_id => @game.id)
-    @user3.update_attributes(:game_id => @game.id)
-    @user4.update_attributes(:game_id => @game.id)
-    @deck = FactoryGirl.create(:deck)
+    @user1 = FactoryGirl.create(:user, :game_id => @game.id)
+    @user2 = FactoryGirl.create(:user, :game_id => @game.id)
+    @user3 = FactoryGirl.create(:user, :game_id => @game.id)
+    @user4 = FactoryGirl.create(:user, :game_id => @game.id)
   end
   
   after :all do
@@ -39,12 +34,12 @@ describe Game do
       
     end
     
-    pending "#deck" do
+    context "#deck" do
       
       before :all do
-        @deck.game_id = @game.id
-        @deck.save
+        @game.decks(true)
       end
+      
       it "should know about it's deck" do
         @game.deck.should be_an_instance_of Deck
       end
@@ -82,6 +77,14 @@ describe Game do
         end
       end
     end
+    
+    context "destroy_and_load_new_deck" do
+      
+      it "should work" do
+        
+      end
+    end
+    
     
   end
 end

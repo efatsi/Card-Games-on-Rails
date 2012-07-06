@@ -7,12 +7,11 @@ class SpadesRound < Round
   end
   
   def play_round
-    shuffle_cards
     deal_cards
     pass_cards
     13.times do
-      new_leader_id = get_leader_id
-      new_trick = SpadesTrick.create(:round_id => self.id, :leader_id => new_leader_id)
+      new_leader_index = get_leader_index
+      new_trick = SpadesTrick.create(:round_id => self.id, :leader_index => new_leader_index)
     end
     update_total_scores
     return_cards

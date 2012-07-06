@@ -19,4 +19,9 @@ class User < ActiveRecord::Base
   def reset_for_new_game
     
   end
+  
+  def hand
+    self.cards(true)
+  end
+  
 end

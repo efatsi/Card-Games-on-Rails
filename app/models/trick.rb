@@ -1,6 +1,6 @@
 class Trick < ActiveRecord::Base
   
-  attr_accessible :lead_suit, :leader_id, :round_id
+  attr_accessible :lead_suit, :leader_index, :round_id
   
   belongs_to :round
   has_many :played_tricks
@@ -16,13 +16,9 @@ class Trick < ActiveRecord::Base
     players[winner_index]
   end
 
-  private
+  # private
   def leader
-    User.find(leader_id)
-  end
-  
-  def leader_index
-    players.index(leader)
+    players[leader_index]
   end
   
   def players
@@ -31,10 +27,6 @@ class Trick < ActiveRecord::Base
   
   def size
     round.game.size
-  end
-  
-  def trick_winner_id
-    trick_winner.id
   end
   
   def trick
@@ -53,6 +45,10 @@ class Trick < ActiveRecord::Base
       card.card_owner_id = new_played_trick.id
       card.save
     end
+  end
+  
+  def trick_winner_index
+    players.index(trick_winner)
   end
   
 end

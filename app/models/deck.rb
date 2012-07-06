@@ -1,11 +1,12 @@
 class Deck < ActiveRecord::Base
+  
+  attr_accessible :game_id
 
   after_create :fill_deck
   
   belongs_to :game
   has_many :cards, :as => :card_owner, :dependent => :destroy
   
-  attr_accessible :game_id
   
   def fill_deck
     %w(club heart spade diamond).each do |suit|

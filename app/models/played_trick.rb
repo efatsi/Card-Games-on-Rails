@@ -1,8 +1,8 @@
 class PlayedTrick < ActiveRecord::Base
   
-  attr_accessible :size, :player_id, :trick_id
+  attr_accessible :size, :user_id, :trick_id
   
-  belongs_to :player
+  belongs_to :player, :class_name => "user"
   belongs_to :trick
   has_many :cards, :as => :card_owner
   

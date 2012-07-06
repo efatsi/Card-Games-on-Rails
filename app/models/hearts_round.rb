@@ -7,12 +7,11 @@ class HeartsRound < Round
   end
   
   def play_round
-    shuffle_cards
     deal_cards
     pass_cards
     13.times do
-      new_leader_id = get_leader_id
-      new_trick = HeartsTrick.create(:round_id => self.id, :leader_id => new_leader_id)
+      new_leader_index = get_leader_index
+      new_trick = HeartsTrick.create(:round_id => self.id, :leader_index => new_leader_index)
     end
     update_total_scores
     return_cards
@@ -45,16 +44,6 @@ class HeartsRound < Round
     end
   end
 
-  def two_of_clubs_owner
-    players.each do |player|
-      player.hand.each do |card|
-        if card.suit == :club && card.value = "2"
-          return player
-        end
-      end
-    end
-  end
-
   def update_total_scores
     update_round_scores
     players.each do |player|
@@ -80,7 +69,7 @@ class HeartsRound < Round
   end
 
   def owner_index(card)
-    players.index(User.find(self.card_owner_id))
+    players.index(card.card_owner)
   end
 
 end

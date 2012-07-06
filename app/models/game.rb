@@ -6,7 +6,7 @@ class Game < ActiveRecord::Base
   before_destroy :clear_players_game_ids
 
   belongs_to :room
-  has_many :decks, :class_name => "Deck", :dependent => :destroy
+  has_many :decks, :dependent => :destroy
   has_many :players, :class_name => "User"
   has_many :teams, :dependent => :destroy
   has_many :rounds, :dependent => :destroy
@@ -37,15 +37,15 @@ class Game < ActiveRecord::Base
   end
   
   def deck
-    self.decks.first.cards
+    self.decks.first
   end
   
   def winner
     User.find(winner_id) if winner_id.present?
   end
 
-  def get_dealer_id
-    rounds_played == 0 ? players.first : last_round.new_dealer_id
+  def get_dealer_index
+    rounds_played == 0 ? 0 : last_round.new_dealer_index
   end
   
   def rounds_played
@@ -55,7 +55,7 @@ class Game < ActiveRecord::Base
   def last_round
     rounds.last
   end
-    
+  
   def presence_of_deck
     unless self.deck.present
       self.errors[:deck] << 'Deck is not present'

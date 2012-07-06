@@ -2,8 +2,8 @@ class SpadesGame < Game
   
   def play_game
     until(game_over?)
-      new_dealer_id = get_dealer_id
-      new_round = SpadesRound.create(:game_id => self.id, :dealer_id => new_dealer_id)
+      new_dealer_index = get_dealer_index
+      new_round = SpadesRound.create(:game_id => self.id, :dealer_index => new_dealer_index)
       new_round.play_round
       check_for_winner
       winner_id = players.first.id if rounds_played == 100

@@ -4,18 +4,12 @@ describe SpadesGame do
 
   before :all do
     @spades = SpadesGame.create(:size => 4)
-    @user1 = FactoryGirl.create(:user)
-    @user2 = FactoryGirl.create(:user)
-    @user3 = FactoryGirl.create(:user)
-    @user4 = FactoryGirl.create(:user)
-    @user1.update_attributes(:game_id => @spades.id)
-    @user2.update_attributes(:game_id => @spades.id)
-    @user3.update_attributes(:game_id => @spades.id)
-    @user4.update_attributes(:game_id => @spades.id)
-    @team1 = FactoryGirl.create(:team)
-    @team2 = FactoryGirl.create(:team)
-    @team1.update_attributes(:game_id => @spades.id)
-    @team2.update_attributes(:game_id => @spades.id)
+    @user1 = FactoryGirl.create(:user, :game_id => @spades.id)
+    @user2 = FactoryGirl.create(:user, :game_id => @spades.id)
+    @user3 = FactoryGirl.create(:user, :game_id => @spades.id)
+    @user4 = FactoryGirl.create(:user, :game_id => @spades.id)
+    @team1 = FactoryGirl.create(:team, :game_id => @spades.id)
+    @team2 = FactoryGirl.create(:team, :game_id => @spades.id)
   end
 
   after :all do

@@ -38,7 +38,7 @@ ActiveRecord::Schema.define(:version => 20120705190113) do
 
   create_table "played_tricks", :force => true do |t|
     t.integer  "size"
-    t.integer  "player_id"
+    t.integer  "user_id"
     t.integer  "trick_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
@@ -53,10 +53,10 @@ ActiveRecord::Schema.define(:version => 20120705190113) do
   end
 
   create_table "rounds", :force => true do |t|
-    t.integer  "dealer_id"
+    t.integer  "dealer_index"
     t.integer  "game_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   create_table "teams", :force => true do |t|
@@ -71,11 +71,11 @@ ActiveRecord::Schema.define(:version => 20120705190113) do
   end
 
   create_table "tricks", :force => true do |t|
-    t.integer  "leader_id"
+    t.integer  "leader_index"
     t.string   "lead_suit"
     t.integer  "round_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   create_table "users", :force => true do |t|
