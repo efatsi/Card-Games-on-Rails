@@ -6,6 +6,11 @@ class Round < ActiveRecord::Base
   has_many :tricks, :dependent => :destroy
 
   
+  def new_dealer_id
+    (dealer_id + 1) % game.size
+  end
+  
+  private
   def shuffle_cards
     2.times do
       shuffled_deck = []
@@ -16,7 +21,6 @@ class Round < ActiveRecord::Base
       game.decks.first = shuffled_deck
     end
   end
-  
   
   def deal_cards
     if deck.length == 52
@@ -45,10 +49,6 @@ class Round < ActiveRecord::Base
         player.hand.delete(card)
       end
     end
-  end
-  
-  def new_dealer_id
-    (dealer_id + 1) % game.size
   end
   
   def deck
