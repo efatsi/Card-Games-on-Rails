@@ -8,6 +8,10 @@ describe Game do
     @user2 = FactoryGirl.create(:user)
     @user3 = FactoryGirl.create(:user)
     @user4 = FactoryGirl.create(:user)
+    @user1.update_attributes(:game_id => @game.id)
+    @user2.update_attributes(:game_id => @game.id)
+    @user3.update_attributes(:game_id => @game.id)
+    @user4.update_attributes(:game_id => @game.id)
     @deck = FactoryGirl.create(:deck)
   end
   
@@ -48,13 +52,6 @@ describe Game do
     end
     
     context "#players" do
-
-      before :all do
-        @user1.game_id = @game.id; @user1.save
-        @user2.game_id = @game.id; @user2.save
-        @user3.game_id = @game.id; @user3.save
-        @user4.game_id = @game.id; @user4.save
-      end
       
       it "should know about it's players" do
         @game.players.length.should == 4
@@ -62,5 +59,29 @@ describe Game do
 
     end
 
+  end
+
+  describe "#methods" do
+    
+    context "reset_for_new_game" do
+      
+      it "should work" do
+        @game.update_attributes(:winner_id => 2)
+        @game.winner_id.should == 2
+        @game.reset_for_new_game
+        @game.winner_id.should == nil
+      end
+    end
+    
+    context "clear_players_game_ids" do
+      
+      it "should work" do
+        @game.clear_players_game_ids
+        @game.players.each do |player|
+          player.game_id.should == nil
+        end
+      end
+    end
+    
   end
 end

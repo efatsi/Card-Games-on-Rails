@@ -16,4 +16,7 @@ class User < ActiveRecord::Base
   validates_presence_of :password_confirmation, :on => :create
   validates_confirmation_of :password, :if => :password_required?
     
+  def reset_for_new_game
+    
+  end
 end
