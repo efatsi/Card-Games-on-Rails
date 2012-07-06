@@ -1,5 +1,11 @@
 class HeartsRound < Round
-
+  
+  attr_accessible :hearts_broken
+  
+  def initialize
+    @hearts_broken = false
+  end
+  
   def play_round
     shuffle_cards
     deal_cards

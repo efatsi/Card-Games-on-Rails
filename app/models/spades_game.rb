@@ -30,4 +30,21 @@ class SpadesGame < Game
     end
   end
 
+  def set_teams
+    if teams.nil?
+      team1 = Team.create(:game_id => id)
+      team2 = Team.create(:game_id => id)
+    else
+      team1 = teams.first
+      team2 = teams.last
+    end
+    [0,2].each do |i|
+      players[i].team_id = team1.id
+      players[i].save
+    end
+    [1,3].each do |i|
+      players[i].team_id = team2.id
+      players[i].save
+    end 
+  end
 end

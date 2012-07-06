@@ -1,5 +1,11 @@
 class SpadesRound < Round
   
+  attr_accessible :spades_broken
+  
+  def initialize
+    @spades_broken = false
+  end
+  
   def play_round
     shuffle_cards
     deal_cards

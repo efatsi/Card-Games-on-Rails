@@ -2,7 +2,7 @@ class Game < ActiveRecord::Base
   
   attr_accessible :size, :winner_id, :room_id
 
-  after_create :destroy_and_load_new_deck
+  before_create :destroy_and_load_new_deck
   before_destroy :clear_users_game_ids
 
   belongs_to :room
@@ -10,6 +10,8 @@ class Game < ActiveRecord::Base
   has_many :players, :class_name => "User"
   has_many :teams, :dependent => :destroy
   has_many :rounds, :dependent => :destroy
+  
+  validate :presence_of_deck
   
   def pick_random_player
     players[rand(players.length)]
@@ -56,6 +58,10 @@ class Game < ActiveRecord::Base
     rounds.last
   end
     
-
+  def presence_of_deck
+    unless self.deck.present
+      self.errors[:deck] << 'Deck is not present'
+    end
+  end
 
 end

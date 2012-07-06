@@ -30,5 +30,8 @@ class Room < ActiveRecord::Base
       self.size = self.games.first.size
       self.save
     end
+    
+    def size_of_trick
+    end
 
   end

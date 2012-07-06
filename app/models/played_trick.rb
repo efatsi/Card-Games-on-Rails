@@ -3,7 +3,7 @@ class PlayedTrick < ActiveRecord::Base
   attr_accessible :size, :player_id, :trick_id
   
   belongs_to :player
-  belongs_to :round
+  belongs_to :trick
   has_many :cards, :as => :card_owner
   
   validate :size_of_trick_is_valid, :before => :save

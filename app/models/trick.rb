@@ -6,9 +6,9 @@ class Trick < ActiveRecord::Base
   has_many :played_tricks
   
   def trick_winner
-    best_card = trick.first
+    best_card = trick.cards.first
     4.times do |i|
-      card = trick[i]
+      card = trick.cards[i]
       best_card = card if card.beats?(best_card)
     end
     leader_index = players.index(leader)
@@ -21,8 +21,16 @@ class Trick < ActiveRecord::Base
     User.find(leader_id)
   end
   
+  def leader_index
+    players.index(leader)
+  end
+  
   def players
     round.game.players
+  end
+  
+  def size
+    round.game.size
   end
   
   def trick_winner_id
@@ -30,7 +38,21 @@ class Trick < ActiveRecord::Base
   end
   
   def trick
-    played_tricks.first.cards
+    played_tricks.first
+  end
+  
+  def give_trick_to_winner(played_cards)
+    trick.player_id = trick_winner.id
+    trick.save
+  end
+  
+  def store_trick(played_cards)
+    new_played_trick = PlayedTrick.new(:size => 4, :trick_id => id)
+    played_cards.each do |card|
+      card.card_owner_type = "PlayedTrick"
+      card.card_owner_id = new_played_trick.id
+      card.save
+    end
   end
   
 end
