@@ -6,6 +6,4 @@ describe User do
     should validate_presence_of(:username)
   end
   
-  
-  
 end

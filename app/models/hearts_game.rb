@@ -1,6 +1,4 @@
 class HeartsGame < Game
-
-  # load deck
   
   def play_game
     until(game_over?)
@@ -15,7 +13,8 @@ class HeartsGame < Game
   def check_for_winner
     players.each do |player|
       if player.total_score >= 100
-        winner_id = find_lowest_player_id
+        self.winner_id = find_lowest_player_id
+        self.save
         return
       end
     end
@@ -36,6 +35,7 @@ class HeartsGame < Game
   def reset_scores
     players.each do |player|
       player.total_score = 0
+      player.save
     end
   end
   

@@ -1,5 +1,5 @@
 require 'spec_helper'
 
-describe PlayedTrick do
+describe HeartsTrick do
 
 end

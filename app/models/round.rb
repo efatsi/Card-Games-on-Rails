@@ -29,8 +29,7 @@ class Round < ActiveRecord::Base
         4.times do |i|
           player = players[(dealer_index+i+1)%4]
           top = deck.last
-          player.hand << top
-          deck.delete(top)
+          deal_card_to_player(top, player)
         end
       end
     end
@@ -73,6 +72,13 @@ class Round < ActiveRecord::Base
   
   def last_trick
     tricks.last
+  end
+  
+  def deal_card_to_player(card, player)
+    deck.delete(card)
+    card.card_owner_type = "User"
+    card.card_owner_id = player.id
+    card.save
   end
   
 end

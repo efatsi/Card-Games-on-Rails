@@ -2,16 +2,15 @@ class Game < ActiveRecord::Base
   
   attr_accessible :size, :winner_id, :room_id
 
-  before_create :destroy_and_load_new_deck
+  after_create :destroy_and_load_new_deck
   before_destroy :clear_users_game_ids
 
   belongs_to :room
-  has_many :decks, :dependent => :destroy
+  has_many :decks, :class_name => "Deck", :dependent => :destroy
   has_many :players, :class_name => "User"
   has_many :teams, :dependent => :destroy
   has_many :rounds, :dependent => :destroy
   
-  validate :presence_of_deck
   
   def pick_random_player
     players[rand(players.length)]
@@ -27,8 +26,6 @@ class Game < ActiveRecord::Base
     players.each {|p| p.reset_for_new_game }
   end  
 
-  
-  private
   def clear_users_game_ids
     self.users.each {|user| update_attributes(:game_id => nil) }
   end
