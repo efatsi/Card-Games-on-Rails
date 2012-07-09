@@ -34,6 +34,7 @@ class HeartsGame < Game
   
   def reset_scores
     players.each do |player|
+      player.round_score = 0
       player.total_score = 0
       player.save
     end

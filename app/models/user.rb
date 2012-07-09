@@ -24,4 +24,15 @@ class User < ActiveRecord::Base
     self.cards(true)
   end
   
+  def round_collection
+    round_collection = []
+    self.played_tricks(true)
+    self.played_tricks.each do |trick|
+      trick.cards.each do |card|
+        round_collection << card
+      end
+    end
+    round_collection
+  end
+  
 end

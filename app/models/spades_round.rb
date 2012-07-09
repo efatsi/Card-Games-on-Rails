@@ -1,9 +1,10 @@
 class SpadesRound < Round
   
-  attr_accessible :spades_broken
+  attr_accessor :spades_broken
+  after_initialize :init
   
-  def initialize
-    @spades_broken = false
+  def init
+    self.spades_broken = false
   end
   
   def play_round

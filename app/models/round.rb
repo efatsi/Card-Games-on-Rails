@@ -30,6 +30,7 @@ class Round < ActiveRecord::Base
       player.hand.each do |card|
         return_card_to_deck(card)
       end
+      player.played_tricks(true)
       player.played_tricks.each do |trick|
         trick.cards.each do |card|
           return_card_to_deck(card)
@@ -63,14 +64,12 @@ class Round < ActiveRecord::Base
   end
   
   def deal_card_to_player(card, player)
-    card.card_owner_type = "User"
-    card.card_owner_id = player.id
+    card.card_owner = player
     card.save
   end
   
   def return_card_to_deck(card)
-    card.card_owner_type = "Deck"
-    card.card_owner_id = deck.id
+    card.card_owner = deck
     card.save
   end
 
@@ -83,6 +82,10 @@ class Round < ActiveRecord::Base
       end
     end
     8
+  end
+
+  def owner_index(card)
+    players.index(card.card_owner)
   end
   
 end

@@ -14,6 +14,7 @@ describe Round do
   end
 
   after :all do
+    Card.delete_all
     Game.delete_all
     Round.delete_all
     User.delete_all
@@ -26,6 +27,19 @@ describe Round do
 
       it "should show that round has been initiated" do
         @round.should be_an_instance_of Round
+      end
+      
+      it "should know it's game parent" do
+        @round.game.should == @game
+      end
+      
+      it "should know it's players" do
+        @round.players.include?(@user1).should == true
+        @round.players.length.should == 4
+      end
+      
+      it "should know it's deck" do
+        @round.deck.cards.length.should == 52
       end
 
     end
@@ -47,13 +61,18 @@ describe Round do
     end
 
     context "#deal_cards" do
-
+      
+      after :each do
+        @round.return_cards
+      end
+      
       it "should work" do
         @round.deal_cards
         @players.each do |player|
           player.hand.length.should == 13
           player.hand.first.should be_an_instance_of Card
         end
+        @round.deck.cards.length.should == 0
       end
 
     end
@@ -61,23 +80,40 @@ describe Round do
     context "#return_cards" do
 
       before :each do
-        Card.all.each do |card|
-          card.card_owner_type = "Deck"
-          card.card_owner_id = @deck.id
-        end
         @round.deal_cards
+        @deck.cards(true)
+      end
+      
+      after :each do
+        @round.return_cards
       end
 
-      it "should work" do
+      it "should work with a dealt deck" do
         @players.each {|p| p.hand.length.should == 13 }
         @round.return_cards
         @players.each do |p| 
           p.cards(true)
           p.hand.length.should == 0
         end
-
+        @deck.cards(true)
+        @deck.cards.length.should == 52
       end
+      
+      it "should work with cards in collected PlayedTricks" do
+        trick = PlayedTrick.create(:size => 4)
+        4.times do |i|
+          card = @user1.hand[i]
+          card.update_attributes(:card_owner => trick)
+        end
+        trick.update_attributes(:user_id => @user2.id)
+        @deck.cards.length.should == 0
+        @round.return_cards
+        @deck.cards(true)
+        @deck.cards.length.should == 52
+      end
+      
     end
+    
     context "#players" do
 
       it "should work" do
@@ -104,7 +140,7 @@ describe Round do
       end
 
       it "before any trick is played" do
-        @round.get_leader_index.should == @players.index(@user1)
+        @round.get_leader_index.should == @players.index(@user3)
       end
 
       it "after a trick has been played" do
@@ -116,6 +152,7 @@ describe Round do
       end
 
     end
+    
     context "#tricks" do
 
       it "before any trick is played" do
@@ -164,6 +201,15 @@ describe Round do
         @round.two_of_clubs_owner_index.should == @players.index(@user3)
       end
 
+    end
+    
+    context "#owner_index" do
+      
+      it "should work" do
+        give_two_of_clubs_to_user3
+        @round.owner_index(@card).should == @players.index(@user3)
+      end
+      
     end
 
   end
