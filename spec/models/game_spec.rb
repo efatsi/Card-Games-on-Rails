@@ -9,12 +9,6 @@ describe Game do
     @user3 = FactoryGirl.create(:user, :game_id => @game.id)
     @user4 = FactoryGirl.create(:user, :game_id => @game.id)
   end
-  
-  after :all do
-    User.delete_all
-    Game.delete_all
-    Deck.delete_all
-  end
 
   describe "#setup" do
 

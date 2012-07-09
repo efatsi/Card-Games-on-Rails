@@ -10,12 +10,6 @@ describe HeartsGame do
     @user4 = FactoryGirl.create(:user)
   end
 
-  after :all do
-    User.delete_all
-    Game.delete_all
-    Deck.delete_all
-  end
-
   describe "#setup" do
 
     context "#new_game" do
@@ -94,7 +88,7 @@ describe HeartsGame do
   end
 
 
-  pending "#game_play" do
+  describe "#game_play" do
 
     context "#play_game" do
 

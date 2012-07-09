@@ -4,6 +4,8 @@ class Round < ActiveRecord::Base
   
   belongs_to :game
   has_many :tricks, :dependent => :destroy
+  has_many :players, :through => :game
+  has_many :decks, :through => :game
 
   
   def new_dealer_index
@@ -30,7 +32,7 @@ class Round < ActiveRecord::Base
       player.hand.each do |card|
         return_card_to_deck(card)
       end
-      player.played_tricks(true)
+      player.played_tricks(true) ## need this for round_spec
       player.played_tricks.each do |trick|
         trick.cards.each do |card|
           return_card_to_deck(card)
@@ -40,11 +42,7 @@ class Round < ActiveRecord::Base
   end
   
   def deck
-    game.decks.first
-  end
-  
-  def players
-    game.players
+    decks.first
   end
   
   def dealer

@@ -62,7 +62,6 @@ ActiveRecord::Schema.define(:version => 20120705190113) do
   create_table "teams", :force => true do |t|
     t.integer  "bid",         :default => 0
     t.integer  "bags",        :default => 0
-    t.integer  "tricks_won",  :default => 0
     t.integer  "round_score", :default => 0
     t.integer  "total_score", :default => 0
     t.datetime "created_at",                 :null => false

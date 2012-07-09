@@ -4,51 +4,56 @@ class Trick < ActiveRecord::Base
   
   belongs_to :round
   has_many :played_tricks
+  has_many :players, :through => :round
+  has_many :decks, :through => :round
   
   def trick_winner
-    best_card = trick.cards.first
+    best_card = played_trick.cards.first
     4.times do |i|
-      card = trick.cards[i]
+      card = played_trick.cards[i]
       best_card = card if card.beats?(best_card)
     end
     leader_index = players.index(leader)
-    winner_index = (trick.index(best_card) + leader_index) % 4
+    winner_index = (card_index(best_card) + leader_index) % 4
     players[winner_index]
   end
 
+  def give_trick_to_winner
+    played_trick.update_attributes(:user_id => trick_winner.id)
+  end
+
+  def store_trick(played_cards)
+    new_played_trick = PlayedTrick.create(:size => 4, :trick_id => id)
+    played_cards.each do |card|
+      card.card_owner = new_played_trick
+      card.save
+    end
+    new_played_trick.save
+  end
+
+  def trick_winner_index
+    players.index(trick_winner)
+  end
+
   # private
-  def leader
-    players[leader_index]
+  def deck
+    decks.first
   end
   
-  def players
-    round.game.players
+  def leader
+    players[leader_index]
   end
   
   def size
     round.game.size
   end
   
-  def trick
+  def played_trick
     played_tricks.first
   end
   
-  def give_trick_to_winner(played_cards)
-    trick.player_id = trick_winner.id
-    trick.save
-  end
-  
-  def store_trick(played_cards)
-    new_played_trick = PlayedTrick.new(:size => 4, :trick_id => id)
-    played_cards.each do |card|
-      card.card_owner_type = "PlayedTrick"
-      card.card_owner_id = new_played_trick.id
-      card.save
-    end
-  end
-  
-  def trick_winner_index
-    players.index(trick_winner)
+  def card_index(card)
+    played_trick.cards.index(card)
   end
   
 end

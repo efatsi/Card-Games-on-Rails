@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Round do
 
-  before :all do
+  before :each do
     @game = Game.create(:size => 4)
     @user1 = FactoryGirl.create(:user, :game_id => @game.id)
     @user2 = FactoryGirl.create(:user, :game_id => @game.id)
@@ -11,14 +11,6 @@ describe Round do
     @round = Round.create(:game_id => @game.id, :dealer_index => 0)
     @deck = @round.deck
     @players = @round.players
-  end
-
-  after :all do
-    Card.delete_all
-    Game.delete_all
-    Round.delete_all
-    User.delete_all
-    Deck.delete_all    
   end
 
   describe "#setup" do
@@ -50,7 +42,7 @@ describe Round do
 
     context "#new_dealer_id" do
 
-      before :all do
+      before :each do
         @round.dealer_index = 3
       end
 

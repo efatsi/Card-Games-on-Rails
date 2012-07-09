@@ -7,4 +7,12 @@ class Team < ActiveRecord::Base
   
   before_destroy
   
+  def tricks_won
+    total_won = 0
+    players.each do |player|
+      total_won += player.tricks_won
+    end
+    total_won
+  end
+  
 end

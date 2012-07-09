@@ -72,4 +72,8 @@ class HeartsRound < Round
     end
   end
 
+  def game
+    HeartsGame.find(self.game_id)
+  end
+  
 end

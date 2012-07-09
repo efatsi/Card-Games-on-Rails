@@ -12,13 +12,6 @@ describe SpadesGame do
     @team2 = FactoryGirl.create(:team, :game_id => @spades.id)
   end
 
-  after :all do
-    User.delete_all
-    Game.delete_all
-    Deck.delete_all
-    Team.delete_all
-  end
-
   context "#setup" do
 
     context "#new_game" do

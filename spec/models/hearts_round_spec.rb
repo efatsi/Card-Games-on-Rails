@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe HeartsRound do
 
-  before :all do
+  before :each do
     @hearts = HeartsGame.create(:size => 4)
     @user1 = FactoryGirl.create(:user, :game_id => @hearts.id)
     @user2 = FactoryGirl.create(:user, :game_id => @hearts.id)
@@ -11,15 +11,6 @@ describe HeartsRound do
     @hearts_round = HeartsRound.create(:game_id => @hearts.id, :dealer_index => 0)
     @deck = @hearts_round.deck
     @players = @hearts_round.players
-  end
-
-  after :all do
-    Card.delete_all
-    Game.delete_all
-    Round.delete_all
-    User.delete_all
-    Deck.delete_all
-    PlayedTrick.delete_all   
   end
 
   describe "#setup" do
@@ -32,6 +23,11 @@ describe HeartsRound do
 
       it "should know that hearts have not been broken yet" do
         @hearts_round.hearts_broken.should == false
+      end
+
+      it "should know about it's Hears Game parent" do
+        @hearts_round.game.should be_an_instance_of HeartsGame
+        @hearts_round.game.should == @hearts
       end
 
     end
@@ -54,9 +50,12 @@ describe HeartsRound do
         @hearts_round.pass_cards("right")
         @players.each {|p| p.hand.length.should == 13 }
       end
+      
       it "should leave players with 3 new cards" do
+        @user1.hand.reload
         old_hand = [] + @user1.hand
         @hearts_round.pass_cards("across")
+        @user1.hand.reload
         new_hand = [] + @user1.hand
         new_card_count = 0
         new_hand.each do |card|

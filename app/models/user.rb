@@ -21,18 +21,36 @@ class User < ActiveRecord::Base
   end
   
   def hand
-    self.cards(true)
+    self.cards(true) ## need this for round_spec:two_of_clubs_owner_index test
   end
   
   def round_collection
     round_collection = []
-    self.played_tricks(true)
+    # self.played_tricks(true)
     self.played_tricks.each do |trick|
       trick.cards.each do |card|
         round_collection << card
       end
     end
     round_collection
+  end
+  
+  def tricks_won
+    played_tricks.length
+  end
+  
+  def only_has?(suit)
+    self.hand.each do |card|
+      return false if card.suit != suit
+    end
+    true
+  end
+  
+  def has_none_of?(suit)
+    self.hand.each do |card|
+      return false if card.suit == suit
+    end
+    true
   end
   
 end

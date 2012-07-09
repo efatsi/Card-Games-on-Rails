@@ -1,8 +1,7 @@
 class HeartsTrick < Trick
   
-  
   def play_trick
-    played = []
+    played_cards = []
     size.times do |i|
       player = players[(leader_index+i)%4]
       if player == leader
@@ -11,12 +10,12 @@ class HeartsTrick < Trick
       else
         choice = pick_card(player)
       end
-      played << choice
+      played_cards << choice
       player.hand.delete(choice)
       round.hearts_broken = true if (choice.suit == "heart" && !hearts_broken)
     end
     store_trick(played_cards)
-    give_trick_to_winner(played_cards)
+    give_trick_to_winner
   end
   
   def pick_card(player)
@@ -25,14 +24,18 @@ class HeartsTrick < Trick
       player.hand.each do |card|
         choice = card if card.suit != "heart"
       end
-    else
-      choice = pick_card(player) until choice.is_valid?(lead_suit, player.hand)
+    else  
+      choice = pick_card(player) until choice.is_valid?(lead_suit, player)
     end
     choice
-  end
+  end  
   
   def hearts_broken
     round.hearts_broken
+  end
+
+  def round
+    HeartsRound.find(self.round_id)
   end
   
 end
