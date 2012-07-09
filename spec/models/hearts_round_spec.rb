@@ -29,7 +29,7 @@ describe HeartsRound do
       it "should show that round has been initiated" do
         @hearts_round.should be_an_instance_of HeartsRound
       end
-      
+
       it "should know that hearts have not been broken yet" do
         @hearts_round.hearts_broken.should == false
       end
@@ -37,11 +37,11 @@ describe HeartsRound do
     end
 
   end
-  
+
   describe "#passing" do
-    
+
     context "pass_cards" do
-      
+
       before :each do
         @hearts_round.deal_cards
       end
@@ -49,7 +49,7 @@ describe HeartsRound do
       after :each do
         @hearts_round.return_cards
       end
-      
+
       it "should leave all players with 13 cards still" do
         @hearts_round.pass_cards("right")
         @players.each {|p| p.hand.length.should == 13 }
@@ -64,15 +64,15 @@ describe HeartsRound do
         end
         new_card_count.should == 3
       end
-      
+
     end
-    
+
   end
-  
+
   describe "#scoring" do
-    
+
     context "shared_collection_round" do
-      
+
       before :each do
         13.times do |i|
           trick = PlayedTrick.create(:size => 4)
@@ -85,21 +85,20 @@ describe HeartsRound do
           trick.save
         end
       end
-      
+
       after :each do
         @hearts_round.return_cards
         @hearts.reset_scores
       end
-      
+
       it "round_score should count 26" do
         @user1.played_tricks(true)
-        # raise @user1.played_tricks.length.inspect
         @hearts_round.update_round_scores
         all_round_scores = 0
         @players.each {|p| all_round_scores += p.round_score }
         all_round_scores.should == 26
       end
-      
+
       it "total_score should count 26" do
         @hearts_round.update_total_scores
         all_total_scores = 0
@@ -108,11 +107,11 @@ describe HeartsRound do
         end
         all_total_scores.should == 26
       end
-      
+
     end
-    
+
     context "swept_round" do
-      
+
       before :each do
         13.times do |i|
           trick = PlayedTrick.create(:size => 4)
@@ -125,36 +124,45 @@ describe HeartsRound do
           trick.save
         end
       end
-      
+
       after :each do
         @hearts_round.return_cards
         @hearts.reset_scores
       end
-      
+
       it "round_score should count 26" do
         @hearts_round.update_round_scores
         all_round_scores = 0
         @players.each {|p| all_round_scores += p.round_score }
         all_round_scores.should == 26
       end
-      
+
       it "total_score should count 26*3" do
+        ## I need this here because @hearts.reset_scores isn't cutting it for some reason
+        @players.each do |p| 
+          p.total_score = 0
+          p.save
+        end
+        
         @hearts_round.update_total_scores
         all_total_scores = 0
-        @players.each {|p| all_total_scores += p.total_score }
+        scores = []
+        @players.each do |p| 
+          all_total_scores += p.total_score
+        end
         all_total_scores.should == 26*3
       end
-      
+
     end
-  
+
   end
 
   describe "#play_round" do
-    
+
     it "should_work" do
       @hearts_round.play_round
     end
-    
+
   end
 
 end
