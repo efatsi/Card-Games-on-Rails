@@ -1,6 +1,6 @@
 class Room < ActiveRecord::Base
   
-    GAMES = ["hearts", "spades"]
+    GAMES = ["Hearts", "Spades"]
 
     after_create :create_game
     
@@ -13,25 +13,24 @@ class Room < ActiveRecord::Base
 
     
     def game
-      self.games.first
+      game_id = games.last
+      (game_type + "Game").constantize.find(game_id)
     end
     
     private
     def create_game
-      if game_type == "hearts"
+      case game_type
+      when "Hearts"
         HeartsGame.create(:room_id => self.id, :size => 4)
-      elsif game_type == "spades"
+      when "Spades"
         SpadesGame.create(:room_id => self.id, :size => 4)
       end
       update_size
     end
     
     def update_size
-      self.size = self.games.first.size
+      self.size = self.games.last.size
       self.save
-    end
-    
-    def size_of_trick
     end
 
   end

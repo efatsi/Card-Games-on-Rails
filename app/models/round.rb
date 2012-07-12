@@ -16,7 +16,6 @@ class Round < ActiveRecord::Base
   
   def deal_cards
     if deck.cards.length == 52
-      dealer_index = players.index(dealer)
       13.times do
         4.times do |i|
           player = players[(dealer_index+i+1)%4]
@@ -42,7 +41,7 @@ class Round < ActiveRecord::Base
   end
   
   def deck
-    decks.first
+    decks.last
   end
   
   def dealer

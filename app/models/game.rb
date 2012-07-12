@@ -37,7 +37,7 @@ class Game < ActiveRecord::Base
   end
   
   def deck
-    self.decks.first
+    self.decks.last
   end
   
   def winner

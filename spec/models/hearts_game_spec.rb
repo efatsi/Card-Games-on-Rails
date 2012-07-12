@@ -2,12 +2,12 @@ require 'spec_helper'
 
 describe HeartsGame do
 
-  before :all do
+  before :each do
     @hearts = HeartsGame.create(:size => 4)
-    @user1 = FactoryGirl.create(:user)
-    @user2 = FactoryGirl.create(:user)
-    @user3 = FactoryGirl.create(:user)
-    @user4 = FactoryGirl.create(:user)
+    @user1 = FactoryGirl.create(:user, :game_id => @hearts.id)
+    @user2 = FactoryGirl.create(:user, :game_id => @hearts.id)
+    @user3 = FactoryGirl.create(:user, :game_id => @hearts.id)
+    @user4 = FactoryGirl.create(:user, :game_id => @hearts.id)
   end
 
   describe "#setup" do
@@ -32,11 +32,7 @@ describe HeartsGame do
 
   describe "#methods" do
 
-    before :all do
-      @user1.game_id = @hearts.id
-      @user2.game_id = @hearts.id
-      @user3.game_id = @hearts.id
-      @user4.game_id = @hearts.id
+    before :each do
       @user1.total_score = 120
       @user2.total_score = 119 
       @user3.total_score = 30  
@@ -56,6 +52,7 @@ describe HeartsGame do
       end
       
       it "should find the correct winner" do
+        @hearts.check_for_winner
         @hearts.winner_id.should == @user3.id
       end
       

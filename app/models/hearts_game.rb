@@ -1,12 +1,14 @@
 class HeartsGame < Game
   
   def play_game
-    until(game_over?)
+    while(!game_over?)
+    # 30.times do
       new_dealer_index = get_dealer_index
       new_round = HeartsRound.create(:game_id => self.id, :dealer_index => new_dealer_index)
       new_round.play_round
       check_for_winner
-      winner_id = players.first.id if rounds_played == 100
+      self.update_attributes(:winner_id => players.first.id)
+      
     end    
   end
   

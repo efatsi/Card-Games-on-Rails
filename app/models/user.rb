@@ -13,11 +13,15 @@ class User < ActiveRecord::Base
   validates_presence_of :username
   validates_uniqueness_of :username
   validates_presence_of :password, :on => :create
-  validates_presence_of :password_confirmation, :on => :create
   validates_confirmation_of :password, :if => :password_required?
     
   def reset_for_new_game
-    
+    self.total_score = 0
+    self.round_score = 0
+    self.bid = 0
+    self.going_nil = false
+    self.going_blind = false
+    self.save
   end
   
   def hand

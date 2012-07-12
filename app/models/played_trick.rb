@@ -16,4 +16,8 @@ class PlayedTrick < ActiveRecord::Base
   #   end
   # end
   
+  def player
+    User.find(user_id)
+  end
+  
 end

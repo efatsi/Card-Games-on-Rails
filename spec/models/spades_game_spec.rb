@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe SpadesGame do
 
-  before :all do
+  before :each do
     @spades = SpadesGame.create(:size => 4)
     @user1 = FactoryGirl.create(:user, :game_id => @spades.id)
     @user2 = FactoryGirl.create(:user, :game_id => @spades.id)
@@ -55,7 +55,7 @@ describe SpadesGame do
 
   describe "#methods" do
 
-    before :all do
+    before :each do
       @spades.set_teams
       @team1.update_attributes(:total_score => 510)
       @team2.update_attributes(:total_score => 610)
@@ -95,7 +95,7 @@ describe SpadesGame do
   end
 
 
-  pending "#game_play" do
+  describe "#game_play" do
 
     context "#play_game" do
 

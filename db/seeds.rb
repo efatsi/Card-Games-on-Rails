@@ -5,7 +5,7 @@ Deck.delete_all
 Game.delete_all
 Team.delete_all
 
-Room.create(:game_type => "hearts")
+Room.create(:game_type => "Hearts")
 
 4.times do |i|
   User.create(:username => "user_#{i}", :password => "secret", :password_confirmation => "secret")

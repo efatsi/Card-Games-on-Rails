@@ -2,12 +2,13 @@ require 'spec_helper'
 
 describe Game do
 
-  before :all do
-    @game = Game.create(:size => 4)
-    @user1 = FactoryGirl.create(:user, :game_id => @game.id)
-    @user2 = FactoryGirl.create(:user, :game_id => @game.id)
-    @user3 = FactoryGirl.create(:user, :game_id => @game.id)
-    @user4 = FactoryGirl.create(:user, :game_id => @game.id)
+  before do
+    # User.delete_all
+    @game = FactoryGirl.create(:game)
+    @user1 = FactoryGirl.create(:user, :username => "game_player1", :game_id => @game.id)
+    @user2 = FactoryGirl.create(:user, :username => "game_player2", :game_id => @game.id)
+    @user3 = FactoryGirl.create(:user, :username => "game_player3", :game_id => @game.id)
+    @user4 = FactoryGirl.create(:user, :username => "game_player4", :game_id => @game.id)
   end
 
   describe "#setup" do
@@ -30,12 +31,8 @@ describe Game do
     
     context "#deck" do
       
-      before :all do
-        @game.decks(true)
-      end
-      
       it "should know about it's deck" do
-        @game.deck.should be_an_instance_of Deck
+        @game.reload.deck.should be_an_instance_of Deck
       end
       
     end
