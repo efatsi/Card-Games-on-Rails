@@ -13,6 +13,7 @@ class HeartsRound < Round
     13.times do
       new_leader_index = get_leader_index
       new_trick = HeartsTrick.create(:round_id => self.id, :leader_index => new_leader_index)
+      new_trick.play_trick
     end
     update_total_scores
     return_cards
@@ -52,9 +53,13 @@ class HeartsRound < Round
     update_round_scores
     players.each do |player|
       if player.round_score == 26
-        players.each {|p| p.total_score += 26 unless p == player }
+        players.each do |p| 
+          p.total_score += 26 unless p == player
+          p.save
+        end
       else
         player.total_score += player.round_score
+        player.save
       end
     end
   end
@@ -68,7 +73,8 @@ class HeartsRound < Round
         elsif card.value == "Q" && card.suit == "spade"
           player.round_score += 13
         end
-      end  
+      end
+      player.save
     end
   end
 

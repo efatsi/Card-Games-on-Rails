@@ -15,6 +15,7 @@ class SpadesRound < Round
     13.times do
       new_leader_index = get_leader_index
       new_trick = SpadesTrick.create(:round_id => self.id, :leader_index => new_leader_index)
+      new_trick.play_trick
     end
     update_total_scores
     return_cards

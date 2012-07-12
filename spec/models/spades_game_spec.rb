@@ -100,6 +100,7 @@ describe SpadesGame do
     context "#play_game" do
 
       it "should not crash" do
+        @spades.set_teams
         @spades.play_game
       end
     end

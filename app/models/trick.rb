@@ -13,7 +13,6 @@ class Trick < ActiveRecord::Base
       card = played_trick.cards[i]
       best_card = card if card.beats?(best_card)
     end
-    leader_index = players.index(leader)
     winner_index = (card_index(best_card) + leader_index) % 4
     players[winner_index]
   end

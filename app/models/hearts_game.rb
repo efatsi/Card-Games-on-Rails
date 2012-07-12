@@ -8,7 +8,6 @@ class HeartsGame < Game
       new_round.play_round
       check_for_winner
       self.update_attributes(:winner_id => players.first.id)
-      
     end    
   end
   
