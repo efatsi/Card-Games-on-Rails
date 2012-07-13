@@ -10,6 +10,7 @@ CardGames::Application.routes.draw do
   resources :rooms do
     post :fill, :on => :member
     post :deal_cards, :on => :member
+    post :play_trick, :on => :member
   end
   
 

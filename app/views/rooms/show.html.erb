@@ -1,9 +1,20 @@
 <h1><%= "Room #{@room.id} - #{@room.name}" %></h1>
 
-  <%= link_to "Deck", @room.game.deck %> || <%= "Players in Room: #{@room.players.map{|p| p.username}}"%><br /><br />
-  <%= button_to "Fill The Room", fill_room_path(@room) %>
-  <%= button_to "Deal The Cards", deal_cards_room_path(@room) %>
+<%= link_to "Deck", @room.game.deck %> || <%= "Players in Room: #{@room.players.map{|p| p.username}}"%><br /><br />
+<%= button_to "Fill The Room", fill_room_path(@room) %>
+<%= button_to "Deal The Cards", deal_cards_room_path(@room) %>
+<%= button_to "Play A Trick", play_trick_room_path(@room) %>
 
+<% if @room.game.rounds.any? && @room.game.last_round.tricks.any? %>
+  <h3>Last Trick</h3>
+  <% @last_trick = @room.game.last_round.last_trick %>
+  <% @cards = @last_trick.played_trick.cards %>
+  <% @cards.each do |card| %>
+    <%= card.in_english + " from " + card.was_played_by_username %><br />
+  <% end %>
+  
+<% end %>
+  
 
 <div class="span4">
 <h3>Your Hand:</h3>
@@ -13,7 +24,7 @@
       <% current_user.hand.each do |card| %>
       <tr>
         <td>
-          <%= "#{card.value} of #{card.suit}s" %>
+          <%= card.in_english %>
         </td>
       </tr>
       <% end %>
