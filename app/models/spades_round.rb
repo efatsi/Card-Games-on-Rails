@@ -27,7 +27,7 @@ class SpadesRound < Round
       team.bid = 0
       team.players.each do |player|
         player.bid = 1 + rand(3)
-        if rand > 0.4
+        if rand < 0.05
           player.going_nil = true
           player.bid = 0
         end
@@ -41,7 +41,7 @@ class SpadesRound < Round
   def update_total_scores
     update_round_scores
     teams.each do |team|
-      puts team.round_score.inspect
+      # puts team.round_score.inspect
       team.total_score += team.round_score
       team.save
     end

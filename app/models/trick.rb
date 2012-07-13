@@ -10,7 +10,7 @@ class Trick < ActiveRecord::Base
   def trick_winner
     best_card = played_trick.cards.first
     4.times do |i|
-      card = played_trick.cards[i]
+      card = played_trick.reload.cards[i]
       best_card = card if card.beats?(best_card)
     end
     winner_index = (card_index(best_card) + leader_index) % 4

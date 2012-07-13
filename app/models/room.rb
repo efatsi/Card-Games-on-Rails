@@ -5,6 +5,7 @@ class Room < ActiveRecord::Base
     after_create :create_game
     
     has_many :games, :dependent => :destroy
+    has_many :players, :through => :games
     
     validates_presence_of :game_type
     validates_inclusion_of :game_type, :in => GAMES

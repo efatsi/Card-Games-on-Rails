@@ -137,7 +137,6 @@ describe HeartsRound do
       end
 
       it "total_score should count 26*3" do
-        ## I need this here because @hearts.reset_scores isn't cutting it for some reason
         @players.each do |p| 
           p.total_score = 0
           p.save

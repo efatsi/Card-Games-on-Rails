@@ -58,7 +58,7 @@ describe SpadesRound do
             card.card_owner = trick
             card.save
           end
-          trick.user_id = (i.odd? ? @user1.id : @user2.id)
+          trick.user_id = (i.odd? ? @team1.players[0].id : @team2.players[0].id)
           trick.save
         end
       end
@@ -91,7 +91,7 @@ describe SpadesRound do
           card.card_owner = trick
           card.save
         end
-        trick.user_id = (i.odd? ? @user1.id : @user2.id)
+        trick.user_id = (i.odd? ? @team1.players[0].id : @team2.players[0].id)
         trick.save
       end
     end
@@ -114,8 +114,6 @@ describe SpadesRound do
         @spades_round.update_total_scores; @team1.reload; @team2.reload
         @team1.total_score.should == 60
         @team2.total_score.should == 70
-        @team1.round_score.should == 0
-        @team2.round_score.should == 0
       end
       
     end
@@ -138,8 +136,6 @@ describe SpadesRound do
         @spades_round.update_total_scores; @team1.reload; @team2.reload
         @team1.total_score.should == -80
         @team2.total_score.should == -80
-        @team1.round_score.should == 0
-        @team2.round_score.should == 0
       end
       
     end
@@ -164,8 +160,6 @@ describe SpadesRound do
         @spades_round.update_total_scores; @team1.reload; @team2.reload
         @team1.total_score.should == 50
         @team2.total_score.should == 60
-        @team1.round_score.should == 0
-        @team2.round_score.should == 0
       end
       
     end
@@ -173,72 +167,65 @@ describe SpadesRound do
     context "going nil or blind" do
       
       before :each do
+        # @spades_round.reset_round_values
         @team1.update_attributes(:bid => 6)
         @team2.update_attributes(:bid => 7)
       end
 
       it "update round score should work with successful nil hand" do
-        @user3.update_attributes(:going_nil => true)
+        @team1.players[1].update_attributes(:going_nil => true)
         @spades_round.update_round_scores
         @team1.reload.round_score.should == 160
         @team2.reload.round_score.should == 70
       end
 
       it "update_total_score should work with successful nil hand" do
-        @user3.update_attributes(:going_nil => true)
+        @team1.players[1].update_attributes(:going_nil => true)
         @spades_round.update_total_scores; @team1.reload; @team2.reload
         @team1.total_score.should == 160
         @team2.total_score.should == 70
-        @team1.round_score.should == 0
-        @team2.round_score.should == 0
       end
 
       it "update round score should work with unsuccessful nil hand" do
-        @user1.update_attributes(:going_nil => true)
+        @team1.players[0].update_attributes(:going_nil => true)
         @spades_round.update_round_scores
         @team1.reload.round_score.should == -40
         @team2.reload.round_score.should == 70
       end
 
       it "update_total_score should work with unsuccessful nil hand" do
-        @user1.update_attributes(:going_nil => true)
+        @team1.players[0].update_attributes(:going_nil => true)
         @spades_round.update_total_scores; @team1.reload; @team2.reload
         @team1.total_score.should == -40
         @team2.total_score.should == 70
-        @team1.round_score.should == 0
-        @team2.round_score.should == 0
       end
 
       it "update round score should work with successful blind hand" do
-        @user3.update_attributes(:going_blind => true)
+        @team1.players[1].update_attributes(:going_blind => true)
         @spades_round.update_round_scores
         @team1.reload.round_score.should == 260
         @team2.reload.round_score.should == 70
       end
 
       it "update_total_score should work with successful blind hand" do
-        @user3.update_attributes(:going_blind => true)
+        @team1.players[1].update_attributes(:going_blind => true)
         @spades_round.update_total_scores; @team1.reload; @team2.reload
         @team1.total_score.should == 260
         @team2.total_score.should == 70
-        @team1.round_score.should == 0
-        @team2.round_score.should == 0
       end
 
       it "update round score should work with unsuccessul blind hand" do
-        @user1.update_attributes(:going_blind => true)
+        @team1.players[0].update_attributes(:going_blind => true)
         @spades_round.update_round_scores
         @team1.reload.round_score.should == -140
         @team2.reload.round_score.should == 70
       end
 
       it "update_total_score should work with unsuccessful blind hand" do
-        @user1.update_attributes(:going_blind => true)
+        @team1.players[0].update_attributes(:going_blind => true)
         @spades_round.update_total_scores; @team1.reload; @team2.reload
         @team1.total_score.should == -140
         @team2.total_score.should == 70
-        @team1.round_score.should == 0
-        @team2.round_score.should == 0
       end
 
     end

@@ -7,9 +7,9 @@ class SessionsController < ApplicationController
     if user = User.authenticate(params[:username], params[:password])
       session[:user_id] = user.id
       flash[:notice] = 'Welcome!'
-      redirect_to root_path
+      redirect_back_or_default(root_path)
     else
-      flash.now[:error] =  "Couldn't locate a user with those credentials"
+      flash.now[:error] =  "Username or password was incorrect"
       render :action => :new
     end
   end
