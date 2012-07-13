@@ -30,6 +30,7 @@ class SpadesRound < Round
       end
       p.team.bid += p.bid
       p.save
+      p.team.save
     end
   end
 

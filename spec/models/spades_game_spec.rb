@@ -4,10 +4,10 @@ describe SpadesGame do
 
   before :each do
     @spades = SpadesGame.create(:size => 4)
-    @user1 = FactoryGirl.create(:user, :game_id => @spades.id)
-    @user2 = FactoryGirl.create(:user, :game_id => @spades.id)
-    @user3 = FactoryGirl.create(:user, :game_id => @spades.id)
-    @user4 = FactoryGirl.create(:user, :game_id => @spades.id)
+    @user1 = FactoryGirl.create(:user, :username => "spades_game_user1", :game_id => @spades.id)
+    @user2 = FactoryGirl.create(:user, :username => "spades_game_user2", :game_id => @spades.id)
+    @user3 = FactoryGirl.create(:user, :username => "spades_game_user3", :game_id => @spades.id)
+    @user4 = FactoryGirl.create(:user, :username => "spades_game_user4", :game_id => @spades.id)
     @team1 = FactoryGirl.create(:team, :game_id => @spades.id)
     @team2 = FactoryGirl.create(:team, :game_id => @spades.id)
   end
@@ -104,6 +104,7 @@ describe SpadesGame do
         @spades.play_game
       end
     end
+  end
   end
 
 end

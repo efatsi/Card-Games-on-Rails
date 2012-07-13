@@ -2,12 +2,12 @@ require 'spec_helper'
 
 describe Trick do
   
-  before :each do
+  before do
     @game = Game.create(:size => 4)
-    @user1 = FactoryGirl.create(:user, :game_id => @game.id)
-    @user2 = FactoryGirl.create(:user, :game_id => @game.id)
-    @user3 = FactoryGirl.create(:user, :game_id => @game.id)
-    @user4 = FactoryGirl.create(:user, :game_id => @game.id)
+    @user1 = FactoryGirl.create(:user, :username => "trick_user1", :game_id => @game.id)
+    @user2 = FactoryGirl.create(:user, :username => "trick_user2", :game_id => @game.id)
+    @user3 = FactoryGirl.create(:user, :username => "trick_user3", :game_id => @game.id)
+    @user4 = FactoryGirl.create(:user, :username => "trick_user4", :game_id => @game.id)
     @round = Round.create(:game_id => @game.id, :dealer_index => 0)
     @trick = Trick.create(:round_id => @round.id, :leader_index => 0)
     @deck = @trick.deck
@@ -79,7 +79,7 @@ describe Trick do
       before :each do
         trick = PlayedTrick.create(:size => 4, :trick_id => @trick.id)
         4.times do |i|
-          card = @deck.cards.last ## (2 through 5 of clubs)
+          card = @deck.cards.first ## (2 through 5 of clubs)
           card.card_owner = trick
           card.save
         end      
@@ -93,14 +93,14 @@ describe Trick do
         @trick.trick_winner_index.should == @players.index(@trick.trick_winner)
       end
       
-      it "should know the last player won the trick" do
-        @trick.trick_winner.should == @players[0]
+      it "should know the first player won the trick" do
+        @trick.trick_winner.should == @players[3]
       end
-      
+    
       it "should give the trick to the winner" do
         @trick.give_trick_to_winner
         total = 0
-        @players[0].played_tricks.length.should == 1
+        @players[3].played_tricks.length.should == 1
       end
       
     end
