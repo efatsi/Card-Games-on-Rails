@@ -7,7 +7,11 @@ CardGames::Application.routes.draw do
 
   resources :rounds
 
-  resources :rooms
+  resources :rooms do
+    post :fill, :on => :member
+    post :deal_cards, :on => :member
+  end
+  
 
   resources :teams
 

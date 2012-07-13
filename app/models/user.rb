@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   
   validates_presence_of :username
   validates_uniqueness_of :username
-  validates_presence_of :password, :on => :create
+  # validates_presence_of :password, :on => :create
   validates_confirmation_of :password, :if => :password_required?
     
   def reset_for_new_game
@@ -30,7 +30,6 @@ class User < ActiveRecord::Base
   
   def round_collection
     round_collection = []
-    # self.played_tricks(true)
     self.played_tricks.each do |trick|
       trick.cards.each do |card|
         round_collection << card

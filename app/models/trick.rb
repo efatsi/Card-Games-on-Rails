@@ -36,7 +36,7 @@ class Trick < ActiveRecord::Base
 
   # private
   def deck
-    decks.first
+    decks.last
   end
   
   def leader
@@ -48,7 +48,7 @@ class Trick < ActiveRecord::Base
   end
   
   def played_trick
-    played_tricks.first
+    played_tricks.last
   end
   
   def card_index(card)

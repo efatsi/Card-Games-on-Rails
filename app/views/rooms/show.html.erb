@@ -1,7 +1,25 @@
 <h1><%= "Room #{@room.id} - #{@room.name}" %></h1>
 
+  <%= link_to "Deck", @room.game.deck %> || <%= "Players in Room: #{@room.players.map{|p| p.username}}"%><br /><br />
+  <%= button_to "Fill The Room", fill_room_path(@room) %>
+  <%= button_to "Deal The Cards", deal_cards_room_path(@room) %>
+
+
+<div class="span4">
+<h3>Your Hand:</h3>
 <div class="mytable">
-  <%= link_to "Deck", @room.game.deck %>
+  <table class="table table-striped">
+    <tbody>
+      <% current_user.hand.each do |card| %>
+      <tr>
+        <td>
+          <%= "#{card.value} of #{card.suit}s" %>
+        </td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</table>
 </div>
 
 <%= link_to 'Back', rooms_path %> | 
