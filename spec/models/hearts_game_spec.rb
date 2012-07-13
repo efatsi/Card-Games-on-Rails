@@ -43,16 +43,16 @@ describe HeartsGame do
       @user4.save
     end
 
-    context "#check_for_winner" do
+    context "#check_for_and_set_winner" do
 
       it "should know there is a winner" do
         @hearts.winner_id.should == nil
-        @hearts.check_for_winner
+        @hearts.check_for_and_set_winner
         @hearts.winner_id.should_not == nil
       end
       
       it "should find the correct winner" do
-        @hearts.check_for_winner
+        @hearts.check_for_and_set_winner
         @hearts.winner_id.should == @user3.id
       end
       
@@ -89,8 +89,11 @@ describe HeartsGame do
 
     context "#play_game" do
 
+      # 20.times do
       it "should not crash" do
         @hearts.play_game
+        # raise @hearts.players.map{|p| [p.total_score, p.round_score]}.inspect
+      # end
       end
     end
   end

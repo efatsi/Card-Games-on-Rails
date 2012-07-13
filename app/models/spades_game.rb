@@ -5,15 +5,16 @@ class SpadesGame < Game
       new_dealer_index = get_dealer_index
       new_round = SpadesRound.create(:game_id => self.id, :dealer_index => new_dealer_index)
       new_round.play_round
-      check_for_winner
-      self.update_attributes(:winner_id => players.first.id)
+      check_for_and_set_winner
+      # puts teams.map{|t| [t.total_score]}.inspect
+      # self.update_attributes(:winner_id => players.first.id)
     end    
   end
 
-  def check_for_winner      
+  def check_for_and_set_winner      
     winning_value = 500
     self.teams.each do |team|
-      if team.total_score >= winning_value
+      if team.reload.total_score >= winning_value
         winning_value = team.total_score
         self.winner_id = team.id
         self.save
@@ -47,5 +48,9 @@ class SpadesGame < Game
       players[i].team_id = team2.id
       players[i].save
     end 
+  end
+  
+  def winner
+    Team.find(winner_id) if winner_id.present?
   end
 end

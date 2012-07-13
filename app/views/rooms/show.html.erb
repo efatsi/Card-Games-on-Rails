@@ -1,7 +1,7 @@
-<h1><%= "Room #{@room.id} - #{@room.game.capitalize}" %></h1>
+<h1><%= "Room #{@room.id} - #{@room.name}" %></h1>
 
 <div class="mytable">
-  <%= link_to "Deck", @room.decks.first %>
+  <%= link_to "Deck", @room.game.deck %>
 </div>
 
 <%= link_to 'Back', rooms_path %> | 

@@ -19,26 +19,30 @@ class SpadesRound < Round
     end
     update_total_scores
     return_cards
+    reset_round_values
   end
   
   def make_bids
-    players.each do |p|
-      p.bid = 1 + rand(3)
-      if rand < 0.01
-        p.going_nil = true
-        p.bid = 0
+    teams.each do |team|
+      team.bid = 0
+      team.players.each do |player|
+        player.bid = 1 + rand(3)
+        if rand > 0.4
+          player.going_nil = true
+          player.bid = 0
+        end
+        team.bid += player.bid
+        player.save
+        team.save
       end
-      p.team.bid += p.bid
-      p.save
-      p.team.save
     end
   end
 
   def update_total_scores
     update_round_scores
-    teams.reload.each do |team|
+    teams.each do |team|
+      puts team.round_score.inspect
       team.total_score += team.round_score
-      team.round_score = 0
       team.save
     end
   end
@@ -46,19 +50,19 @@ class SpadesRound < Round
   def update_round_scores
     teams.each do |team|
       calculate_team_score(team)
-    end 
-    players.each do |player|
-      add_player_bonus(player)
+      team.players.each do |player|
+        add_player_bonus(player, team)
+      end
     end
   end  
   
   # private
   def calculate_team_score(team)
     if met_their_bid?(team)
-      team.round_score += 10*team.bid 
+      team.round_score = 10*team.bid 
       team.bags += team.tricks_won - team.bid
     else
-      team.round_score -= 10*team.bid
+      team.reload.round_score = -10*team.bid
     end
     team.save
   end
@@ -67,17 +71,29 @@ class SpadesRound < Round
     team.tricks_won >= team.bid
   end
   
-  def add_player_bonus(player)
+  def add_player_bonus(player, team)
     if player.going_nil
-      player.team.round_score += (player.played_tricks.empty? ? 100 : -100)
+      team.round_score += (player.played_tricks.empty? ? 100 : -100)
     elsif player.going_blind
-      player.team.round_score += (player.played_tricks.empty? ? 200 : -200)
+      team.round_score += (player.played_tricks.empty? ? 200 : -200)
     end
-    player.team.save
+    team.save
   end  
   
   def game
     SpadesGame.find(self.game_id)
+  end
+  
+  def reset_round_values
+    teams.each do |team|
+      team.round_score = 0
+      team.players.each do |player|
+        player.going_nil = false
+        player.going_blind = false
+        player.save
+      end
+      team.save
+    end
   end
   
   

@@ -85,4 +85,8 @@ class Round < ActiveRecord::Base
     players.index(card.card_owner)
   end
   
+  def size
+    game.size
+  end
+  
 end

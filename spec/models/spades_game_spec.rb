@@ -61,16 +61,16 @@ describe SpadesGame do
       @team2.update_attributes(:total_score => 610)
     end
 
-    context "#check_for_winner" do
+    context "#check_for_and_set_winner" do
       
       it "should know there is a winner" do
         @spades.winner_id.should == nil
-        @spades.check_for_winner
+        @spades.check_for_and_set_winner
         @spades.winner_id.should_not == nil
       end
 
       it "should find the correct winner" do
-        @spades.check_for_winner
+        @spades.check_for_and_set_winner
         @spades.winner_id.should == @team2.id
       end
       
@@ -105,6 +105,4 @@ describe SpadesGame do
       end
     end
   end
-  end
-
 end
