@@ -11,12 +11,6 @@ class Game < ActiveRecord::Base
   has_many :teams, :dependent => :destroy
   has_many :rounds, :dependent => :destroy
   
-  # validate :presence_of_deck, :after => :create
-  
-  def pick_random_player
-    players[rand(players.length)]
-  end
-  
   def game_over?
     winner.present?
   end
@@ -54,12 +48,6 @@ class Game < ActiveRecord::Base
   
   def last_round
     rounds.last
-  end
-  
-  def presence_of_deck
-    unless self.deck.present
-      self.errors[:deck] << 'Deck is not present'
-    end
   end
 
 end

@@ -31,7 +31,7 @@ class SpadesGame < Game
   end
 
   def set_teams
-    if teams.nil?
+    if teams.empty?
       team1 = Team.create(:game_id => id)
       team2 = Team.create(:game_id => id)
     else

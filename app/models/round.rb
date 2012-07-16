@@ -78,7 +78,7 @@ class Round < ActiveRecord::Base
         end
       end
     end
-    8
+    8000000000
   end
 
   def owner_index(card)

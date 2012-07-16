@@ -60,8 +60,4 @@ class Trick < ActiveRecord::Base
     played_tricks.last
   end
   
-  def card_index(card)
-    played_trick.cards.index(card)
-  end
-  
 end

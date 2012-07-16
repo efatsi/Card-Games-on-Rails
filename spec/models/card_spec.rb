@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Card do
 
   before do
-    @user = FactoryGirl.create(:user)
+    @user = FactoryGirl.create(:user, :username => "card_user")
     @low_club = FactoryGirl.create(:card, :suit => "club", :value => "2", :card_owner => @user)
     @high_club = FactoryGirl.create(:card, :suit => "club", :value => "9", :card_owner => @user)
     @high_heart = FactoryGirl.create(:card, :suit => "heart", :value => "9", :card_owner => @user)
@@ -27,6 +27,10 @@ describe Card do
       @user.cards.length.should == 3
       @user.cards.should include(@low_club)
       @low_club.card_owner.should == @user
+    end
+    
+    it "should be presentable in english" do
+      @low_club.in_english.should == "2 of clubs"
     end
   end
   
@@ -58,6 +62,19 @@ describe Card do
       @high_heart.beats?(@low_club).should == false
       @high_heart.beats?(@high_club).should == false
     end  
+  end
+  
+  context "was_played_by_username" do
+    
+    it "works when no one has played the card" do
+      @low_club.was_played_by_username.should == ""      
+    end
+    
+    it "works when someone has played the card" do
+      @trick = FactoryGirl.create(:trick)
+      @trick.set_memory_attributes(@user, @low_club)
+      @low_club.was_played_by_username.should == "card_user"
+    end
   end
     
 end

@@ -33,6 +33,10 @@ describe Round do
       it "should know it's deck" do
         @round.deck.cards.length.should == 52
       end
+      
+      it "should know it's size" do
+        @round.size.should == @game.size
+      end
 
     end
 
@@ -190,6 +194,11 @@ describe Round do
 
       it "should work" do
         @round.two_of_clubs_owner_index.should == @players.index(@user3)
+      end
+      
+      it "should return 8,000,000 if no one has it" do
+        @round.return_cards
+        @round.two_of_clubs_owner_index.should == 8000000000
       end
 
     end
