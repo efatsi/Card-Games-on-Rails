@@ -6,8 +6,6 @@ class SpadesGame < Game
       new_round = SpadesRound.create(:game_id => self.id, :dealer_index => new_dealer_index)
       new_round.play_round
       check_for_and_set_winner
-      # puts teams.map{|t| [t.total_score]}.inspect
-      # self.update_attributes(:winner_id => players.first.id)
     end    
   end
 

@@ -89,10 +89,8 @@ describe HeartsGame do
 
     context "#play_game" do
 
-      # 20.times do
       it "should not crash" do
         @hearts.play_game
-        # raise @hearts.players.map{|p| [p.total_score, p.round_score]}.inspect
       # end
       end
     end

@@ -139,7 +139,6 @@ describe Round do
         trick = double("my trick")
         trick.stub(:trick_winner_index).and_return(@players.index(@user2))
         @round.stub(:tricks).and_return([trick])
-
         @round.get_leader_index.should == @players.index(@user2)
       end
 

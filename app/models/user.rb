@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
   include SimplestAuth::Model
   authenticate_by :username
   
-  attr_accessible :username, :round_score, :total_score, :bid, :going_blind, :going_nil, :team_id, :game_id, :password, :password_confirmation
+  attr_accessible :username, :round_score, :total_score, :bid, :going_blind, :going_nil, :team_id, :game_id, :password, :password_confirmation, :last_played_card_id
   
   belongs_to :team #sometimes
   belongs_to :game #when playing a game
@@ -54,6 +54,10 @@ class User < ActiveRecord::Base
       return false if card.suit == suit
     end
     true
+  end
+  
+  def last_played_card
+    Card.find(last_played_card_id)
   end
   
 end

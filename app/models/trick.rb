@@ -8,13 +8,7 @@ class Trick < ActiveRecord::Base
   has_many :decks, :through => :round
   
   def trick_winner
-    # best_card = played_trick.cards.last
-    best_card = nil
-    played_trick.cards.each do |c| 
-      if c.was_played_by_id == players[0].id
-        best_card = c
-      end
-    end
+    best_card = leader.last_played_card
     4.times do |i|
       card = played_trick.reload.cards[i]
       best_card = card if card.beats?(best_card)
@@ -38,11 +32,15 @@ class Trick < ActiveRecord::Base
         card.update_attributes(:card_owner_id => new_played_trick.id)
       end
     end
-    raise played_cards.map{|c| [c.reload.card_owner_type, c.reload.card_owner_id]}.inspect if new_played_trick.cards.length != 4
   end
 
   def trick_winner_index
     players.index(trick_winner)
+  end
+  
+  def set_memory_attributes(player, card)
+    card.update_attributes(:was_played_by_id => player.id)
+    player.update_attributes(:last_played_card_id => card.id)
   end
 
   # private

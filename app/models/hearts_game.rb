@@ -1,12 +1,11 @@
 class HeartsGame < Game
   
   def play_game
-    while(!game_over?)
+    until(game_over?)
       new_dealer_index = get_dealer_index
       new_round = HeartsRound.create(:game_id => self.id, :dealer_index => new_dealer_index)
       new_round.play_round
       check_for_and_set_winner
-      # puts players.map{|p| [p.total_score]}.inspect
     end    
   end
   

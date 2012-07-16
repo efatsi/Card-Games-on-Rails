@@ -80,6 +80,7 @@ describe Trick do
         trick = PlayedTrick.create(:size => 4, :trick_id => @trick.id)
         4.times do |i|
           card = @deck.cards.first ## (2 through 5 of clubs)
+          @trick.set_memory_attributes(@players[i], card)
           card.card_owner = trick
           card.save
         end      

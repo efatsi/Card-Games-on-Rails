@@ -2,14 +2,15 @@ class SpadesTrick < Trick
   
   def play_trick
     played_cards = []
-    size.times do |i|
+    4.times do |i|
       player = players[(leader_index+i)%4]
       if player == leader
         choice = pick_card(player)
-        lead_suit = choice.suit
+        self.update_attributes(:lead_suit => choice.suit)
       else
         choice = pick_card(player)
       end
+      set_memory_attributes(player, choice)
       played_cards << choice
       player.hand.delete(choice)
       round.spades_broken = true if (choice.suit == "spade" && !spades_broken)

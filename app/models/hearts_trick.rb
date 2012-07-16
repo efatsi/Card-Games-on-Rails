@@ -10,8 +10,8 @@ class HeartsTrick < Trick
       else
         choice = pick_card(player)
       end
+      set_memory_attributes(player, choice)
       played_cards << choice
-      choice.was_played_by_id = player.id
       player.hand.delete(choice)
       round.hearts_broken = true if (choice.suit == "heart" && !hearts_broken)
     end

@@ -53,7 +53,7 @@ class Round < ActiveRecord::Base
   end
 
   def tricks_played
-    tricks.length
+    self.reload.tricks.length
   end
   
   def last_trick

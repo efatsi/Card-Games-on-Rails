@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120713225117) do
+ActiveRecord::Schema.define(:version => 20120716150249) do
 
   create_table "cards", :force => true do |t|
     t.string   "suit"
@@ -80,16 +80,17 @@ ActiveRecord::Schema.define(:version => 20120713225117) do
 
   create_table "users", :force => true do |t|
     t.string   "username"
-    t.integer  "total_score",      :default => 0
-    t.integer  "round_score",      :default => 0
-    t.integer  "bid",              :default => 0
-    t.boolean  "going_nil",        :default => false
-    t.boolean  "going_blind",      :default => false
+    t.integer  "total_score",         :default => 0
+    t.integer  "round_score",         :default => 0
+    t.integer  "bid",                 :default => 0
+    t.boolean  "going_nil",           :default => false
+    t.boolean  "going_blind",         :default => false
     t.integer  "team_id"
-    t.datetime "created_at",                          :null => false
-    t.datetime "updated_at",                          :null => false
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
     t.integer  "game_id"
     t.string   "crypted_password"
+    t.integer  "last_played_card_id"
   end
 
 end
