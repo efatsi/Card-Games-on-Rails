@@ -26,7 +26,7 @@ class Game < ActiveRecord::Base
   end
   
   def destroy_and_load_new_deck
-    decks.delete_all
+    self.decks.delete_all
     Deck.create(:game_id => self.id)
   end
   

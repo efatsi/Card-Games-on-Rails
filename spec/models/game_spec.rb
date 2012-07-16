@@ -72,10 +72,27 @@ describe Game do
     context "destroy_and_load_new_deck" do
       
       it "should work" do
-        
+        @game.decks(true).length.should == 1
+        old_deck = @game.deck
+        @game.destroy_and_load_new_deck
+        @game.decks(true).length.should == 1
+        old_deck.should_not == @game.deck
       end
     end
     
+    context "last_round" do
+      
+      it "should work with one round" do
+        new_round = FactoryGirl.create(:round, :game_id => @game.id)
+        @game.reload.last_round.should == new_round
+      end
+      
+      it "should work with a few rounds" do
+        next_round = FactoryGirl.create(:round, :game_id => @game.id)
+        newest_round = FactoryGirl.create(:round, :game_id => @game.id)
+        @game.reload.last_round.should == newest_round
+      end
+    end
     
   end
 end
