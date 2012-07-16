@@ -1,37 +1,37 @@
 class Room < ActiveRecord::Base
   
-  GAMES = ["hearts", "spades"]
-  
-  after_create :new_deck
-  before_destroy :clear_users_room_ids
-  before_destroy :clear_teams_room_ids
+    GAMES = ["Hearts", "Spades"]
 
-  has_many :decks, :dependent => :destroy
-  has_many :users
-  has_many :teams #sometimes
+    after_create :create_game
+    
+    has_many :games, :dependent => :destroy
+    has_many :players, :through => :games
+    
+    validates_presence_of :game_type
+    validates_inclusion_of :game_type, :in => GAMES
 
-  validates_presence_of :game
-  validates_inclusion_of :game, :in => GAMES
+    attr_accessible :name, :game_type, :size
 
-  attr_accessible :game
-  
+    
+    def game
+      game_id = games.last
+      (game_type + "Game").constantize.find(game_id)
+    end
+    
+    private
+    def create_game
+      case game_type
+      when "Hearts"
+        HeartsGame.create(:room_id => self.id, :size => 4)
+      when "Spades"
+        SpadesGame.create(:room_id => self.id, :size => 4)
+      end
+      update_size
+    end
+    
+    def update_size
+      self.size = self.games.last.size
+      self.save
+    end
 
-  def deck
-    self.decks.first.cards
   end
-  
-  private
-  
-  def new_deck
-    Deck.create(:room_id => self.id)
-  end
-
-  def clear_users_room_ids
-    self.users.each {|user| update_attributes(:room_id => nil)}
-  end
-
-  def clear_teams_room_ids
-    self.teams.each {|team| update_attributes(:room_id => nil)}
-  end
-
-end

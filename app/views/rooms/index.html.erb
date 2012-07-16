@@ -5,7 +5,7 @@
 
   <% @rooms.each do |room| %>
     <tr>
-      <td><%= link_to "Room #{room.id} - #{room.game.capitalize}", room %></td>
+      <td><%= link_to "Room #{room.id} - #{room.name}", room %></td>
     </tr>
   <% end %>
   </table>
