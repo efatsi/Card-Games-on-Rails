@@ -11,22 +11,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120716182110) do
+ActiveRecord::Schema.define(:version => 20120716220444) do
 
   create_table "cards", :force => true do |t|
     t.string   "suit"
     t.string   "value"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
-    t.string   "card_owner_type"
-    t.integer  "card_owner_id"
-    t.integer  "was_played_by_id"
-  end
-
-  create_table "decks", :force => true do |t|
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
-    t.integer  "game_id"
   end
 
   create_table "games", :force => true do |t|
@@ -41,6 +32,21 @@ ActiveRecord::Schema.define(:version => 20120716182110) do
     t.integer  "size"
     t.integer  "user_id"
     t.integer  "trick_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "player_cards", :force => true do |t|
+    t.integer  "player_id"
+    t.integer  "card_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "players", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "game_id"
+    t.integer  "seat"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
@@ -60,16 +66,6 @@ ActiveRecord::Schema.define(:version => 20120716182110) do
     t.datetime "updated_at",  :null => false
   end
 
-  create_table "teams", :force => true do |t|
-    t.integer  "bid",         :default => 0
-    t.integer  "bags",        :default => 0
-    t.integer  "round_score", :default => 0
-    t.integer  "total_score", :default => 0
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
-    t.integer  "game_id"
-  end
-
   create_table "tricks", :force => true do |t|
     t.integer  "leader_seat"
     t.string   "lead_suit"
@@ -80,18 +76,9 @@ ActiveRecord::Schema.define(:version => 20120716182110) do
 
   create_table "users", :force => true do |t|
     t.string   "username"
-    t.integer  "total_score",         :default => 0
-    t.integer  "round_score",         :default => 0
-    t.integer  "bid",                 :default => 0
-    t.boolean  "going_nil",           :default => false
-    t.boolean  "going_blind",         :default => false
-    t.integer  "team_id"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
-    t.integer  "game_id"
     t.string   "crypted_password"
-    t.integer  "last_played_card_id"
-    t.integer  "seat"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
   end
 
 end

@@ -29,10 +29,6 @@ class Card < ActiveRecord::Base
     end
   end
   
-  def seat_of_owner
-    self.card_owner.seat
-  end
-  
   def is_valid?(lead_suit, player)
     if self.suit == lead_suit || player.has_none_of?(lead_suit)
       true
@@ -43,14 +39,6 @@ class Card < ActiveRecord::Base
   
   def in_english
     "#{self.value} of #{self.suit}s"
-  end
-  
-  def was_played_by_username
-    if was_played_by_id.present?
-      User.find(was_played_by_id).username
-    else
-      ""
-    end
   end
     
   

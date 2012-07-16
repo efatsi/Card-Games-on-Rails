@@ -5,7 +5,6 @@ class Round < ActiveRecord::Base
   belongs_to :game
   has_many :tricks, :dependent => :destroy
   has_many :players, :through => :game
-  has_many :decks, :through => :game
 
   
   def new_dealer_seat
@@ -13,33 +12,15 @@ class Round < ActiveRecord::Base
   end
   
   def deal_cards
-    if deck.cards.length == 52
-      13.times do
-        4.times do |i|
-          player = seated_at((dealer_seat+i+1)%4)
-          card = deck.cards[rand(deck.cards.length)]
-          deal_card_to_player(card, player)
-        end
+    new_deck = Card.all
+    13.times do
+      4.times do |i|
+        player = seated_at((dealer_seat+i+1)%4)
+        random_card = new_deck[rand(new_deck.length)]
+        PlayerCard.create(:card_id => random_card.id, :player_id = player.id)
+        new_deck.delete(random_card)
       end
     end
-  end
-
-  def return_cards
-    players.each do |player|
-      player.hand.each do |card|
-        return_card_to_deck(card)
-      end
-      player.played_tricks(true) ## need this for round_spec
-      player.played_tricks.each do |trick|
-        trick.cards.each do |card|
-          return_card_to_deck(card)
-        end
-      end
-    end
-  end
-  
-  def deck
-    decks.last
   end
   
   def dealer
@@ -63,13 +44,7 @@ class Round < ActiveRecord::Base
   end
   
   def deal_card_to_player(card, player)
-    card.card_owner = player
-    card.save
-  end
-  
-  def return_card_to_deck(card)
-    card.card_owner = deck
-    card.save
+
   end
 
   def two_of_clubs_owner_seat

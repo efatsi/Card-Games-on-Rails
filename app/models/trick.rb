@@ -5,7 +5,6 @@ class Trick < ActiveRecord::Base
   belongs_to :round
   has_many :played_tricks
   has_many :players, :through => :round
-  has_many :decks, :through => :round
   
   def trick_winner
     best_card = leader.last_played_card
@@ -41,10 +40,6 @@ class Trick < ActiveRecord::Base
   def set_memory_attributes(player, card)
     card.update_attributes(:was_played_by_id => player.id)
     player.update_attributes(:last_played_card_id => card.id)
-  end
-
-  def deck
-    decks.last
   end
   
   def leader
