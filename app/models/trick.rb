@@ -43,7 +43,6 @@ class Trick < ActiveRecord::Base
     player.update_attributes(:last_played_card_id => card.id)
   end
 
-  # private
   def deck
     decks.last
   end

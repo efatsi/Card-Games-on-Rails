@@ -56,7 +56,6 @@ class SpadesRound < Round
     end
   end  
   
-  # private
   def calculate_team_score(team)
     if met_their_bid?(team)
       team.round_score = 10*team.bid 

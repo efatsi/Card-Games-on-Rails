@@ -6,16 +6,6 @@ class PlayedTrick < ActiveRecord::Base
   belongs_to :trick
   has_many :cards, :as => :card_owner
   
-  # validate :size_of_trick_is_valid, :before => :save
-  # 
-  # 
-  # private
-  # def size_of_trick_is_valid
-  #   unless self.size == self.cards.length
-  #     self.errors[:size] << 'Size does not match'
-  #   end
-  # end
-  
   def player
     User.find(user_id)
   end

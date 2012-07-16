@@ -12,8 +12,6 @@ class Round < ActiveRecord::Base
     (dealer_index + 1) % game.size
   end
   
-  # private
-  
   def deal_cards
     if deck.cards.length == 52
       13.times do

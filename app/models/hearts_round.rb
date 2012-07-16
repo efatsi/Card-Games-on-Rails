@@ -18,8 +18,6 @@ class HeartsRound < Round
     update_total_scores
     return_cards
   end
-
-  # private
   
   def pass_cards(direction)
     return if direction == "none"
