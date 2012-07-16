@@ -1,6 +1,6 @@
 <h1><%= "Room #{@room.id} - #{@room.name}" %></h1>
 
-<%= link_to "Deck", @room.game.deck %> || <%= "Players in Room: #{@room.players.map(&:username)}"%><br /><br />
+<%= link_to "Deck", @room.game.deck %> || <%= "Players in Room: #{@room.players.map{|p| [p.username, p.seat]}}"%><br /><br />
 <%= button_to "Fill The Room", fill_room_path(@room) %>
 <%= button_to "Deal The Cards", deal_cards_room_path(@room) %>
 <%= button_to "Play A Trick", play_trick_room_path(@room) %>

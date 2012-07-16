@@ -4,14 +4,14 @@ describe SpadesRound do
 
   before do
     @spades = SpadesGame.create(:size => 4)
-    @user1 = FactoryGirl.create(:user, :username => "spades_round_user1", :game_id => @spades.id)
-    @user2 = FactoryGirl.create(:user, :username => "spades_round_user2", :game_id => @spades.id)
-    @user3 = FactoryGirl.create(:user, :username => "spades_round_user3", :game_id => @spades.id)
-    @user4 = FactoryGirl.create(:user, :username => "spades_round_user4", :game_id => @spades.id)
+    @user1 = FactoryGirl.create(:user, :username => "spades_round_user1", :game_id => @spades.id, :seat => 0)
+    @user2 = FactoryGirl.create(:user, :username => "spades_round_user2", :game_id => @spades.id, :seat => 1)
+    @user3 = FactoryGirl.create(:user, :username => "spades_round_user3", :game_id => @spades.id, :seat => 2)
+    @user4 = FactoryGirl.create(:user, :username => "spades_round_user4", :game_id => @spades.id, :seat => 3)
     @team1 = FactoryGirl.create(:team, :game_id => @spades.id)
     @team2 = FactoryGirl.create(:team, :game_id => @spades.id)
     @spades.set_teams
-    @spades_round = SpadesRound.create(:game_id => @spades.id, :dealer_index => 0)
+    @spades_round = SpadesRound.create(:game_id => @spades.id, :dealer_seat => 0)
     @deck = @spades_round.deck
     @players = @spades_round.players
   end

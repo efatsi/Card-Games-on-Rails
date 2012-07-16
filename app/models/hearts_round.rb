@@ -11,8 +11,8 @@ class HeartsRound < Round
     deal_cards
     pass_cards("left")
     13.times do
-      new_leader_index = get_leader_index
-      new_trick = HeartsTrick.create(:round_id => self.id, :leader_index => new_leader_index)
+      new_leader_seat = get_leader_seat
+      new_trick = HeartsTrick.create(:round_id => self.id, :leader_seat => new_leader_seat)
       new_trick.play_trick
     end
     update_total_scores
@@ -24,7 +24,7 @@ class HeartsRound < Round
     cards_to_pass = [ [] , [] , [] , [] ]
     4.times do |i|
       3.times do |j|
-        choice = players[i].hand[4*j + rand(4)]
+        choice = seated_at(i).hand[4*j + rand(4)]
         cards_to_pass[i] << choice
       end
     end
@@ -38,10 +38,10 @@ class HeartsRound < Round
     end
     cards_to_pass.each do |set|
       set.each do |card|
-        current_owner_index = owner_index(card)
-        new_owner_index = (current_owner_index + giving_shift) % 4
-        receiver = players[new_owner_index]
-        card.card_owner_id = receiver.id
+        current_owner_seat = card.seat_of_owner
+        new_owner_seat = (current_owner_seat + giving_shift) % 4
+        receiver = seated_at(new_owner_seat)
+        card.card_owner = receiver
         card.save
       end
     end

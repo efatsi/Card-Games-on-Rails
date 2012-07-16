@@ -8,8 +8,8 @@ describe User do
   before do
     @spades_room = FactoryGirl.create(:room, :game_type => "Spades")
     @spades_game = @spades_room.game
-    @spades_round = SpadesRound.create(:game_id => @spades_game.id, :dealer_index => 0)
-    @user = FactoryGirl.create(:user, :username => "user_user", :game_id => @spades_game.id)
+    @spades_round = SpadesRound.create(:game_id => @spades_game.id, :dealer_seat => 0)
+    @user = FactoryGirl.create(:user, :username => "user_user", :game_id => @spades_game.id, :seat => 0)
   end
 
   it "should know it is a user" do

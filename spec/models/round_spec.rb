@@ -4,11 +4,11 @@ describe Round do
 
   before :each do
     @game = Game.create(:size => 4)
-    @user1 = FactoryGirl.create(:user, :game_id => @game.id)
-    @user2 = FactoryGirl.create(:user, :game_id => @game.id)
-    @user3 = FactoryGirl.create(:user, :game_id => @game.id)
-    @user4 = FactoryGirl.create(:user, :game_id => @game.id)
-    @round = Round.create(:game_id => @game.id, :dealer_index => 0)
+    @user1 = FactoryGirl.create(:user, :game_id => @game.id, :seat => 0)
+    @user2 = FactoryGirl.create(:user, :game_id => @game.id, :seat => 1)
+    @user3 = FactoryGirl.create(:user, :game_id => @game.id, :seat => 2)
+    @user4 = FactoryGirl.create(:user, :game_id => @game.id, :seat => 3)
+    @round = Round.create(:game_id => @game.id, :dealer_seat => 0)
     @deck = @round.deck
     @players = @round.players
   end
@@ -47,11 +47,11 @@ describe Round do
     context "#new_dealer_id" do
 
       before :each do
-        @round.dealer_index = 3
+        @round.dealer_seat = 3
       end
 
       it "should work" do
-        @round.new_dealer_index.should == 0
+        @round.new_dealer_seat.should == 0
       end
 
     end
@@ -107,7 +107,6 @@ describe Round do
         @deck.cards(true)
         @deck.cards.length.should == 52
       end
-      
     end
     
     context "#players" do
@@ -118,34 +117,33 @@ describe Round do
           p.should be_instance_of User
         end
       end
-
     end
+    
     context "#dealer" do
 
       it "should work" do
-        @round.dealer_index = @players.index(@user2)
-        @round.dealer_index = @players.index(@user3)
+        @round.dealer_seat = @user2.seat
+        @round.dealer_seat = @user3.seat
         @round.dealer.should == @user3
       end
-
     end
-    context "#get_leader_index" do
+    
+    context "#get_leader_seat" do
 
       before :each do
         give_two_of_clubs_to_user3
       end
 
       it "before any trick is played" do
-        @round.get_leader_index.should == @players.index(@user3)
+        @round.get_leader_seat.should == @user3.seat
       end
 
       it "after a trick has been played" do
         trick = double("my trick")
-        trick.stub(:trick_winner_index).and_return(@players.index(@user2))
+        trick.stub(:trick_winner_seat).and_return(@user2.seat)
         @round.stub(:tricks).and_return([trick])
-        @round.get_leader_index.should == @players.index(@user2)
+        @round.get_leader_seat.should == @user2.seat
       end
-
     end
     
     context "#tricks" do
@@ -160,7 +158,6 @@ describe Round do
         @round.tricks(true).length.should == 1
         @round.last_trick.should == @new_trick
       end
-
     end
 
     context "#card_manipulating" do
@@ -182,10 +179,9 @@ describe Round do
         @user3.hand.include?(@card).should == false
         @round.deck.cards.include?(@card).should == true
       end
-
     end
 
-    context "#two_of_clubs_owner_index" do
+    context "#two_of_clubs_owner_seat" do
 
       before :each do
         @round.return_cards
@@ -193,23 +189,13 @@ describe Round do
       end
 
       it "should work" do
-        @round.two_of_clubs_owner_index.should == @players.index(@user3)
+        @round.two_of_clubs_owner_seat.should == @user3.seat
       end
       
       it "should return 8,000,000 if no one has it" do
         @round.return_cards
-        @round.two_of_clubs_owner_index.should == 8000000000
+        @round.two_of_clubs_owner_seat.should == 8000000000
       end
-
-    end
-    
-    context "#owner_index" do
-      
-      it "should work" do
-        give_two_of_clubs_to_user3
-        @round.owner_index(@card).should == @players.index(@user3)
-      end
-      
     end
 
   end

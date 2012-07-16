@@ -4,10 +4,10 @@ describe HeartsGame do
 
   before :each do
     @hearts = HeartsGame.create(:size => 4)
-    @user1 = FactoryGirl.create(:user, :game_id => @hearts.id)
-    @user2 = FactoryGirl.create(:user, :game_id => @hearts.id)
-    @user3 = FactoryGirl.create(:user, :game_id => @hearts.id)
-    @user4 = FactoryGirl.create(:user, :game_id => @hearts.id)
+    @user1 = FactoryGirl.create(:user, :game_id => @hearts.id, :seat => 0)
+    @user2 = FactoryGirl.create(:user, :game_id => @hearts.id, :seat => 1)
+    @user3 = FactoryGirl.create(:user, :game_id => @hearts.id, :seat => 2)
+    @user4 = FactoryGirl.create(:user, :game_id => @hearts.id, :seat => 3)
   end
 
   describe "#setup" do

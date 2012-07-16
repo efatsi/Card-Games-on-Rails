@@ -1,6 +1,6 @@
 class Round < ActiveRecord::Base
   
-  attr_accessible :dealer_index, :game_id
+  attr_accessible :dealer_seat, :game_id
   
   belongs_to :game
   has_many :tricks, :dependent => :destroy
@@ -8,15 +8,15 @@ class Round < ActiveRecord::Base
   has_many :decks, :through => :game
 
   
-  def new_dealer_index
-    (dealer_index + 1) % game.size
+  def new_dealer_seat
+    (dealer_seat + 1) % game.size
   end
   
   def deal_cards
     if deck.cards.length == 52
       13.times do
         4.times do |i|
-          player = players[(dealer_index+i+1)%4]
+          player = seated_at((dealer_seat+i+1)%4)
           card = deck.cards[rand(deck.cards.length)]
           deal_card_to_player(card, player)
         end
@@ -43,15 +43,19 @@ class Round < ActiveRecord::Base
   end
   
   def dealer
-    players[dealer_index]
+    seated_at(dealer_seat)
   end
   
-  def get_leader_index
-    tricks_played == 0 ? two_of_clubs_owner_index : last_trick.trick_winner_index
+  def get_leader_seat
+    tricks_played == 0 ? two_of_clubs_owner_seat : last_trick.trick_winner_seat
+  end
+  
+  def seated_at(seat)
+    self.game.seated_at(seat)
   end
 
   def tricks_played
-    self.reload.tricks.length
+    self.reload.tricks.length  # need this for any upper level test (play_game, play_round)
   end
   
   def last_trick
@@ -68,19 +72,15 @@ class Round < ActiveRecord::Base
     card.save
   end
 
-  def two_of_clubs_owner_index
+  def two_of_clubs_owner_seat
     players.each do |player|
       player.hand.each do |card|
-        if card.suit == "club" && card.value = "2"
-          return players.index(player)
+        if card.value == "2" && card.suit = "club"
+          return player.seat
         end
       end
     end
     8000000000
-  end
-
-  def owner_index(card)
-    players.index(card.card_owner)
   end
   
   def size

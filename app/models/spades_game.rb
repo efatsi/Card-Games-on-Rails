@@ -2,8 +2,8 @@ class SpadesGame < Game
   
   def play_game
     until(game_over?)
-      new_dealer_index = get_dealer_index
-      new_round = SpadesRound.create(:game_id => self.id, :dealer_index => new_dealer_index)
+      new_dealer_seat = get_dealer_seat
+      new_round = SpadesRound.create(:game_id => self.id, :dealer_seat => new_dealer_seat)
       new_round.play_round
       check_for_and_set_winner
     end    
@@ -39,12 +39,10 @@ class SpadesGame < Game
       team2 = teams.last
     end
     [0,2].each do |i|
-      players[i].team_id = team1.id
-      players[i].save
+      seated_at(i).update_attributes(:team_id => team1.id)
     end
     [1,3].each do |i|
-      players[i].team_id = team2.id
-      players[i].save
+      seated_at(i).update_attributes(:team_id => team2.id)
     end 
   end
   

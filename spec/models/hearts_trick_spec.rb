@@ -4,12 +4,12 @@ describe HeartsTrick do
 
   before :each do
     @hearts = HeartsGame.create(:size => 4)
-    @user1 = FactoryGirl.create(:user, :game_id => @hearts.id)
-    @user2 = FactoryGirl.create(:user, :game_id => @hearts.id)
-    @user3 = FactoryGirl.create(:user, :game_id => @hearts.id)
-    @user4 = FactoryGirl.create(:user, :game_id => @hearts.id)
-    @hearts_round = HeartsRound.create(:game_id => @hearts.id, :dealer_index => 0)
-    @hearts_trick = HeartsTrick.create(:round_id => @hearts_round.id, :leader_index => 0)
+    @user1 = FactoryGirl.create(:user, :game_id => @hearts.id, :seat => 0)
+    @user2 = FactoryGirl.create(:user, :game_id => @hearts.id, :seat => 1)
+    @user3 = FactoryGirl.create(:user, :game_id => @hearts.id, :seat => 2)
+    @user4 = FactoryGirl.create(:user, :game_id => @hearts.id, :seat => 3)
+    @hearts_round = HeartsRound.create(:game_id => @hearts.id, :dealer_seat => 0)
+    @hearts_trick = HeartsTrick.create(:round_id => @hearts_round.id, :leader_seat => 0)
     @deck = @hearts_trick.deck
     @players = @hearts_trick.players
   end

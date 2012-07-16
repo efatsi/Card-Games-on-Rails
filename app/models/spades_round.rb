@@ -13,8 +13,8 @@ class SpadesRound < Round
     deal_cards
     make_bids
     13.times do
-      new_leader_index = get_leader_index
-      new_trick = SpadesTrick.create(:round_id => self.id, :leader_index => new_leader_index)
+      new_leader_seat = get_leader_seat
+      new_trick = SpadesTrick.create(:round_id => self.id, :leader_seat => new_leader_seat)
       new_trick.play_trick
     end
     update_total_scores
@@ -41,7 +41,6 @@ class SpadesRound < Round
   def update_total_scores
     update_round_scores
     teams.each do |team|
-      # puts team.round_score.inspect
       team.total_score += team.round_score
       team.save
     end
