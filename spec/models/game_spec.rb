@@ -1,9 +1,8 @@
 require 'spec_helper'
 
 describe Game do
-
+  
   before do
-    # User.delete_all
     @game = FactoryGirl.create(:game)
     @user1 = FactoryGirl.create(:user, :username => "game_player1", :game_id => @game.id, :seat => 0)
     @user2 = FactoryGirl.create(:user, :username => "game_player2", :game_id => @game.id, :seat => 1)
@@ -98,6 +97,13 @@ describe Game do
       
       it "should work" do
         @game.seated_at(0).should == @user1
+      end
+    end
+    
+    context "next_seat" do
+      
+      it "should work" do
+        @game.next_seat.should == @game.players.length
       end
     end
     

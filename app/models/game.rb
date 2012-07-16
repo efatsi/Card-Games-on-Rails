@@ -53,5 +53,9 @@ class Game < ActiveRecord::Base
   def seated_at(seat)
     User.where("game_id = ? and seat = ?", self.id, seat).first
   end
+  
+  def next_seat
+    self.players(true).length
+  end
 
 end

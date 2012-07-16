@@ -34,8 +34,8 @@ class RoomsController < ApplicationController
   # UNRESTFUL ACTIONS
   
   def fill
-    (4 - @room.players.length).times do
-      User.create(:username => "cp#{User.all.length+10}", :game_id => @room.game.id)
+    (4 - @room.players.length).times do |i|
+      User.create(:username => "cp#{12+i}", :game_id => @room.game.id, :seat => @room.game.reload.next_seat)
     end
     redirect_to @room
   end
@@ -62,7 +62,11 @@ class RoomsController < ApplicationController
   end
   
   def join_the_room
-    current_user.update_attributes(:game_id => @room.game.id) if current_user.game_id != @room.game.id
+    if current_user.game_id != @room.game.id
+      current_user.game_id = @room.game.id
+      current_user.seat = @room.game.next_seat
+      current_user.save
+    end
   end
   
   
