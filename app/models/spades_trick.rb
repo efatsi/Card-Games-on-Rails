@@ -3,7 +3,7 @@ class SpadesTrick < Trick
   def play_trick
     played_cards = []
     4.times do |i|
-      player = players[(leader_index+i)%4]
+      player = seated_at((leader_seat+i)%4)
       if player == leader
         choice = pick_card(player)
         self.update_attributes(:lead_suit => choice.suit)

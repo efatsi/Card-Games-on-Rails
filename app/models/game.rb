@@ -38,8 +38,8 @@ class Game < ActiveRecord::Base
     User.find(winner_id) if winner_id.present?
   end
 
-  def get_dealer_index
-    rounds_played == 0 ? 0 : last_round.new_dealer_index
+  def get_dealer_seat
+    rounds_played == 0 ? 0 : last_round.new_dealer_seat
   end
   
   def rounds_played
@@ -48,6 +48,10 @@ class Game < ActiveRecord::Base
   
   def last_round
     rounds.last
+  end
+  
+  def seated_at(seat)
+    User.where("game_id = ? and seat = ?", self.id, seat).first
   end
 
 end

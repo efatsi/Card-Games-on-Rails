@@ -43,14 +43,14 @@ class RoomsController < ApplicationController
   def deal_cards
     @game = @room.game
     @round = @game.last_round
-    @round ||= HeartsRound.create(:game_id => @game.id, :dealer_index => 0)
+    @round ||= HeartsRound.create(:game_id => @game.id, :dealer_seat => 0)
     @round.deal_cards
     redirect_to @room
   end
 
   def play_trick
     @round = @room.game.last_round
-    new_trick = HeartsTrick.create(:round_id => @room.game.rounds.last.id, :leader_index => @round.get_leader_index)
+    new_trick = HeartsTrick.create(:round_id => @room.game.rounds.last.id, :leader_seat => @round.get_leader_seat)
     new_trick.play_trick
     redirect_to @room
   end

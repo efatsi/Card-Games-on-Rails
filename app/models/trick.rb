@@ -1,6 +1,6 @@
 class Trick < ActiveRecord::Base
   
-  attr_accessible :lead_suit, :leader_index, :round_id
+  attr_accessible :lead_suit, :leader_seat, :round_id
   
   belongs_to :round
   has_many :played_tricks
@@ -34,8 +34,8 @@ class Trick < ActiveRecord::Base
     end
   end
 
-  def trick_winner_index
-    players.index(trick_winner)
+  def trick_winner_seat
+    trick_winner.seat
   end
   
   def set_memory_attributes(player, card)
@@ -48,7 +48,7 @@ class Trick < ActiveRecord::Base
   end
   
   def leader
-    players[leader_index]
+    seated_at(leader_seat)
   end
   
   def size
@@ -57,6 +57,10 @@ class Trick < ActiveRecord::Base
   
   def played_trick
     played_tricks.last
+  end
+  
+  def seated_at(seat)
+    self.round.seated_at(seat)
   end
   
 end

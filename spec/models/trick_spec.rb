@@ -4,12 +4,12 @@ describe Trick do
   
   before do
     @game = Game.create(:size => 4)
-    @user1 = FactoryGirl.create(:user, :username => "trick_user1", :game_id => @game.id)
-    @user2 = FactoryGirl.create(:user, :username => "trick_user2", :game_id => @game.id)
-    @user3 = FactoryGirl.create(:user, :username => "trick_user3", :game_id => @game.id)
-    @user4 = FactoryGirl.create(:user, :username => "trick_user4", :game_id => @game.id)
-    @round = Round.create(:game_id => @game.id, :dealer_index => 0)
-    @trick = Trick.create(:round_id => @round.id, :leader_index => 0)
+    @user1 = FactoryGirl.create(:user, :username => "trick_user1", :game_id => @game.id, :seat => 0)
+    @user2 = FactoryGirl.create(:user, :username => "trick_user2", :game_id => @game.id, :seat => 1)
+    @user3 = FactoryGirl.create(:user, :username => "trick_user3", :game_id => @game.id, :seat => 2)
+    @user4 = FactoryGirl.create(:user, :username => "trick_user4", :game_id => @game.id, :seat => 3)
+    @round = Round.create(:game_id => @game.id, :dealer_seat => 0)
+    @trick = Trick.create(:round_id => @round.id, :leader_seat => 0)
     @deck = @trick.deck
     @players = @trick.players
   end
@@ -80,7 +80,7 @@ describe Trick do
         trick = PlayedTrick.create(:size => 4, :trick_id => @trick.id)
         4.times do |i|
           card = @deck.cards.first ## (2 through 5 of clubs)
-          @trick.set_memory_attributes(@players[i], card)
+          @trick.set_memory_attributes(@trick.seated_at(i), card)
           card.card_owner = trick
           card.save
         end      
@@ -90,18 +90,18 @@ describe Trick do
         @trick.played_trick.should be_an_instance_of PlayedTrick
       end
 
-      it "should know the index of the trick winner" do
-        @trick.trick_winner_index.should == @players.index(@trick.trick_winner)
+      it "should know the seat of the trick winner" do
+        @trick.trick_winner_seat.should == @trick.trick_winner.seat
       end
       
       it "should know the first player won the trick" do
-        @trick.trick_winner.should == @players[3]
+        @trick.trick_winner.should == @trick.seated_at(3)
       end
     
       it "should give the trick to the winner" do
         @trick.give_trick_to_winner
         total = 0
-        @players[3].played_tricks.length.should == 1
+        @trick.seated_at(3).played_tricks.length.should == 1
       end
       
     end

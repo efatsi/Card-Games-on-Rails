@@ -4,12 +4,12 @@ describe SpadesTrick do
 
   before :each do
     @spades = SpadesGame.create(:size => 4)
-    @user1 = FactoryGirl.create(:user, :game_id => @spades.id)
-    @user2 = FactoryGirl.create(:user, :game_id => @spades.id)
-    @user3 = FactoryGirl.create(:user, :game_id => @spades.id)
-    @user4 = FactoryGirl.create(:user, :game_id => @spades.id)
-    @spades_round = SpadesRound.create(:game_id => @spades.id, :dealer_index => 0)
-    @spades_trick = SpadesTrick.create(:round_id => @spades_round.id, :leader_index => 0)
+    @user1 = FactoryGirl.create(:user, :game_id => @spades.id, :seat => 0)
+    @user2 = FactoryGirl.create(:user, :game_id => @spades.id, :seat => 1)
+    @user3 = FactoryGirl.create(:user, :game_id => @spades.id, :seat => 2)
+    @user4 = FactoryGirl.create(:user, :game_id => @spades.id, :seat => 3)
+    @spades_round = SpadesRound.create(:game_id => @spades.id, :dealer_seat => 0)
+    @spades_trick = SpadesTrick.create(:round_id => @spades_round.id, :leader_seat => 0)
     @deck = @spades_trick.deck
     @players = @spades_trick.players
   end
@@ -25,6 +25,7 @@ describe SpadesTrick do
       it "should know it's parent is a SpadesRound" do
         @spades_trick.round.should be_an_instance_of SpadesRound
         @spades_trick.round.should == @spades_round
+
       end
       
       it "should know that spades have not been broken" do

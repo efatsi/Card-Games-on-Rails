@@ -2,8 +2,8 @@ class HeartsGame < Game
   
   def play_game
     until(game_over?)
-      new_dealer_index = get_dealer_index
-      new_round = HeartsRound.create(:game_id => self.id, :dealer_index => new_dealer_index)
+      new_dealer_seat = get_dealer_seat
+      new_round = HeartsRound.create(:game_id => self.id, :dealer_seat => new_dealer_seat)
       new_round.play_round
       check_for_and_set_winner
     end    

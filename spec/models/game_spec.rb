@@ -5,10 +5,10 @@ describe Game do
   before do
     # User.delete_all
     @game = FactoryGirl.create(:game)
-    @user1 = FactoryGirl.create(:user, :username => "game_player1", :game_id => @game.id)
-    @user2 = FactoryGirl.create(:user, :username => "game_player2", :game_id => @game.id)
-    @user3 = FactoryGirl.create(:user, :username => "game_player3", :game_id => @game.id)
-    @user4 = FactoryGirl.create(:user, :username => "game_player4", :game_id => @game.id)
+    @user1 = FactoryGirl.create(:user, :username => "game_player1", :game_id => @game.id, :seat => 0)
+    @user2 = FactoryGirl.create(:user, :username => "game_player2", :game_id => @game.id, :seat => 1)
+    @user3 = FactoryGirl.create(:user, :username => "game_player3", :game_id => @game.id, :seat => 2)
+    @user4 = FactoryGirl.create(:user, :username => "game_player4", :game_id => @game.id, :seat => 3)
   end
 
   describe "#setup" do
@@ -91,6 +91,13 @@ describe Game do
         next_round = FactoryGirl.create(:round, :game_id => @game.id)
         newest_round = FactoryGirl.create(:round, :game_id => @game.id)
         @game.reload.last_round.should == newest_round
+      end
+    end
+    
+    context "seated_at" do
+      
+      it "should work" do
+        @game.seated_at(0).should == @user1
       end
     end
     

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120716150249) do
+ActiveRecord::Schema.define(:version => 20120716182110) do
 
   create_table "cards", :force => true do |t|
     t.string   "suit"
@@ -54,10 +54,10 @@ ActiveRecord::Schema.define(:version => 20120716150249) do
   end
 
   create_table "rounds", :force => true do |t|
-    t.integer  "dealer_index"
+    t.integer  "dealer_seat"
     t.integer  "game_id"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "teams", :force => true do |t|
@@ -71,11 +71,11 @@ ActiveRecord::Schema.define(:version => 20120716150249) do
   end
 
   create_table "tricks", :force => true do |t|
-    t.integer  "leader_index"
+    t.integer  "leader_seat"
     t.string   "lead_suit"
     t.integer  "round_id"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "users", :force => true do |t|
@@ -91,6 +91,7 @@ ActiveRecord::Schema.define(:version => 20120716150249) do
     t.integer  "game_id"
     t.string   "crypted_password"
     t.integer  "last_played_card_id"
+    t.integer  "seat"
   end
 
 end

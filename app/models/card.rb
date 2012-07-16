@@ -29,7 +29,9 @@ class Card < ActiveRecord::Base
     end
   end
   
-  
+  def seat_of_owner
+    self.card_owner.seat
+  end
   
   def is_valid?(lead_suit, player)
     if self.suit == lead_suit || player.has_none_of?(lead_suit)

@@ -3,16 +3,16 @@ class User < ActiveRecord::Base
   include SimplestAuth::Model
   authenticate_by :username
   
-  attr_accessible :username, :round_score, :total_score, :bid, :going_blind, :going_nil, :team_id, :game_id, :password, :password_confirmation, :last_played_card_id
+  attr_accessible :username, :round_score, :total_score, :bid, :going_blind, :going_nil, :team_id, :game_id, :password, :password_confirmation, :last_played_card_id, :seat
   
   belongs_to :team #sometimes
   belongs_to :game #when playing a game
+  # has_many :user_games  # will add this soon
   has_many :played_tricks
   has_many :cards, :as => :card_owner
   
   validates_presence_of :username
   validates_uniqueness_of :username
-  # validates_presence_of :password, :on => :create
   validates_confirmation_of :password, :if => :password_required?
     
   def reset_for_new_game
@@ -25,7 +25,7 @@ class User < ActiveRecord::Base
   end
   
   def hand
-    self.cards(true) ## need this for round_spec:two_of_clubs_owner_index test
+    self.cards(true) ## need this for round_spec:two_of_clubs_owner_seat test
   end
   
   def round_collection
