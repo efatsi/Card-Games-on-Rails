@@ -8,10 +8,19 @@ class PlayedCard < ActiveRecord::Base
   belongs_to :trick
   
   validates_presence_of :player_card_id
-  validates_presence_of :trick_id  
+  validates_presence_of :trick_id 
+  validates_presence_of :position 
   
   delegate :suit, :value, :to => :player_card
   delegate :beats?, :point_value, :to => :card
   
+  
+  def is_a_heart
+    suit == "heart"
+  end
+  
+  def is_queen_of_spades
+    value == "Q" && suit == "spade"
+  end
   
 end

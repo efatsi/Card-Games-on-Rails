@@ -24,7 +24,7 @@ class HeartsRound < Round
     cards_to_pass = [ [] , [] , [] , [] ]
     4.times do |i|
       3.times do |j|
-        choice = seated_at(i).hand[4*j + rand(4)]
+        choice = player_seated_at(i).hand[4*j + rand(4)]
         cards_to_pass[i] << choice
       end
     end
@@ -40,7 +40,7 @@ class HeartsRound < Round
       set.each do |card|
         current_owner_seat = card.seat_of_owner
         new_owner_seat = (current_owner_seat + giving_shift) % 4
-        receiver = seated_at(new_owner_seat)
+        receiver = player_seated_at(new_owner_seat)
         card.card_owner = receiver
         card.save
       end

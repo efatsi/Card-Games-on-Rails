@@ -3,7 +3,7 @@ require 'spec_helper'
 describe PlayedCard do
   
   before do
-    @game = FactoryGirl.create(:game, :size => 2)
+    @game = FactoryGirl.create(:game)
     @user1 = FactoryGirl.create(:user, :username => "trick_user1")
     @user2 = FactoryGirl.create(:user, :username => "trick_user2")
     @player1 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user1.id, :seat => 0)

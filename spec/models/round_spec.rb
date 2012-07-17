@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Round do
 
   before do
-    @game = FactoryGirl.create(:game, :size => 4)
+    @game = FactoryGirl.create(:game)
     @user1 = FactoryGirl.create(:user, :username => "round_user1")
     @user2 = FactoryGirl.create(:user, :username => "round_user2")
     @user3 = FactoryGirl.create(:user, :username => "round_user3")
@@ -13,7 +13,6 @@ describe Round do
     @player3 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user3.id, :seat => 2)
     @player4 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user4.id, :seat => 3)
     @round = FactoryGirl.create(:round, :game_id => @game.id, :dealer_id => @player1.id)
-    @players = @round.players
   end
 
   describe "#setup" do
@@ -36,11 +35,6 @@ describe Round do
       it "should know who the dealer is" do
         @round.dealer.should == @player1
       end
-      
-      it "should know it's size" do
-        @round.size.should == @game.size
-      end
-
     end
 
   end
@@ -158,6 +152,33 @@ describe Round do
         @round.get_new_leader.should == @player4
       end
     end
+    
+    context "direction_for_round(position)" do
+      
+      it "should return :left for positions 0, 4, 8" do
+        @round.direction_for_round(0).should == :left
+        @round.direction_for_round(4).should == :left
+        @round.direction_for_round(8).should == :left
+      end
+      
+      it "should return :across for positions 1, 5 ,9" do
+        @round.direction_for_round(1).should == :across
+        @round.direction_for_round(5).should == :across
+        @round.direction_for_round(9).should == :across
+      end
+      
+      it "should return :right for positions 2, 6, 10" do
+        @round.direction_for_round(2).should == :right
+        @round.direction_for_round(6).should == :right
+        @round.direction_for_round(10).should == :right
+      end
+      
+      it "should return :none for positions 3, 7, 11" do
+        @round.direction_for_round(3).should == :none
+        @round.direction_for_round(7).should == :none
+        @round.direction_for_round(11).should == :none
+      end
+    end
   
   end
   
@@ -171,7 +192,7 @@ describe Round do
       end
       
       it "should increment trick count of the round" do
-        expect{ Trick.create(:round_id => @round.id, :leader_id => @player1.id) }.to change{ @round.tricks(true).length }.by(1)
+        expect{ Trick.create(:round_id => @round.id, :leader_id => @player1.id, :position => 0) }.to change{ @round.tricks(true).length }.by(1)
       end
       
       it "should assign appropriate position to a new trick" do
@@ -186,13 +207,39 @@ describe Round do
     
   end
   
-  pending "#round_scoring" do
+  describe "#round_scoring" do
     
     context "shared_round" do
       
+      before do
+        @pr1 = FactoryGirl.create(:player_round, :player_id => @player1.id, :round_id => @round.id)
+        @pr2 = FactoryGirl.create(:player_round, :player_id => @player2.id, :round_id => @round.id)
+        @pr3 = FactoryGirl.create(:player_round, :player_id => @player3.id, :round_id => @round.id)
+        @pr4 = FactoryGirl.create(:player_round, :player_id => @player4.id, :round_id => @round.id)
+        
+        first_trick = double("first trick")
+        second_trick = double("second trick")
+        third_trick = double("third trick")
+        fourth_trick = double("fourth trick")
+        
+        first_trick.stub(:trick_winner).and_return(@player1)
+        second_trick.stub(:trick_winner).and_return(@player2)
+        third_trick.stub(:trick_winner).and_return(@player3)
+        fourth_trick.stub(:trick_winner).and_return(@player4)
+        
+        first_trick.stub(:trick_score).and_return(10)
+        second_trick.stub(:trick_score).and_return(3)
+        third_trick.stub(:trick_score).and_return(10)
+        fourth_trick.stub(:trick_score).and_return(3)
+        
+        @round.stub(:tricks).and_return([first_trick, second_trick, third_trick, fourth_trick])
+      end
+      
       it "should calculate round score to total 26" do
         @round.calculate_round_scores
-        @player_rounds.each {|pr| all_round_scores += pr.round_score }
+        all_round_scores = 0
+        @round.player_rounds.each {|pr| all_round_scores += pr.reload.round_score }
+        all_round_scores.should == 26
       end
     end
     
@@ -236,7 +283,16 @@ describe Round do
       end
     end
   end
-
+  
+  describe "#play_round" do
+    
+    before do
+      create_cards
+    end
+    
+    it "should not crash" do
+      @round.play_round
+    end
+    
+  end
 end
-
-

@@ -33,7 +33,7 @@ class Game < ActiveRecord::Base
     rounds.last
   end
   
-  def seated_at(seat)
+  def player_seated_at(seat)
     User.where("game_id = ? and seat = ?", self.id, seat).first
   end
   

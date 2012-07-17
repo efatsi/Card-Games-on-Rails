@@ -5,4 +5,8 @@ class PlayerRound < ActiveRecord::Base
   belongs_to :player
   belongs_to :round
   
+  validates_presence_of :player_id
+  validates_presence_of :round_id
+  validates_presence_of :round_score
+  
 end

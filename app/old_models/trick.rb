@@ -1,6 +1,6 @@
 class Trick < ActiveRecord::Base
   
-  attr_accessible :lead_suit, :leader_seat, :round_id
+  attr_accessible :lead_suit, :leader_seat, :round_id, :position
   
   belongs_to :round
   has_many :played_tricks
@@ -43,7 +43,7 @@ class Trick < ActiveRecord::Base
   end
   
   def leader
-    seated_at(leader_seat)
+    player_seated_at(leader_seat)
   end
   
   def size
@@ -54,8 +54,8 @@ class Trick < ActiveRecord::Base
     played_tricks.last
   end
   
-  def seated_at(seat)
-    self.round.seated_at(seat)
+  def player_seated_at(seat)
+    self.round.player_seated_at(seat)
   end
   
 end

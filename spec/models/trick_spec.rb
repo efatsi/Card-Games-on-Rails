@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Trick do
   
   before do
-    @game = FactoryGirl.create(:game, :size => 4)
+    @game = FactoryGirl.create(:game)
     @user1 = FactoryGirl.create(:user, :username => "trick_user1")
     @user2 = FactoryGirl.create(:user, :username => "trick_user2")
     @user3 = FactoryGirl.create(:user, :username => "trick_user3")
@@ -36,12 +36,7 @@ describe Trick do
       
       it "should know who the leader is" do
         @trick.leader.should == @player1
-      end
-      
-      it "should know it's game size" do
-        @trick.size.should == 4
-      end
-      
+      end      
     end
     
   end
@@ -109,9 +104,9 @@ describe Trick do
     
   end
   
-  describe "specific cards being played" do
+  describe "finding the winner and score" do
     
-    context "all clubs are played" do
+    context "when all clubs are played" do
       
       before do
         @c1 = FactoryGirl.create(:card, :suit => "club", :value => "2")
@@ -141,9 +136,13 @@ describe Trick do
         @trick.trick_winner.should == @player4
       end
       
+      it "should know the score of the trick" do
+        @trick.trick_score.should == 0
+      end
+      
     end
     
-    context "mixed suits are played" do
+    context "when mixed suits are played" do
       
       before do
         @c1 = FactoryGirl.create(:card, :suit => "club", :value => "2")
@@ -171,6 +170,15 @@ describe Trick do
 
       it "should know the trick winning player" do
         @trick.trick_winner.should == @player1
+      end
+      
+      it "should find the score of the trick" do
+        @trick.trick_score.should == 1
+      end
+      
+      it "should find the score if the Q of Spades is present" do
+        @c3.update_attributes(:value => "Q")
+        @trick.trick_score.should == 14
       end
     end
     

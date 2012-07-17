@@ -9,6 +9,6 @@ class PlayerCard < ActiveRecord::Base
   validates_presence_of :player_id
   validates_presence_of :card_id
   
-  delegate :suit, :value, :to => :card
+  delegate :suit, :value, :in_english, :to => :card
   
 end
