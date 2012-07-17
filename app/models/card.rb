@@ -1,56 +1,24 @@
 class Card < ActiveRecord::Base
+  
+  attr_accessible :suit, :value
 
-  attr_accessible :suit, :value, :card_owner_type, :card_owner_id, :card_owner, :was_played_by_id
-
-  belongs_to :card_owner, :polymorphic => true
-
-  def beats?(card)
-    return false if self.suit != card.suit
-
-    # if it's a face card
-    if self.value.to_i == 0
-      return true if card.value.to_i != 0
-
-      case self.value
-      when "A"
-        ["K", "Q", "J"].include?(card.value)
-      when "K"
-        ["Q", "J"].include?(card.value)
-      when "Q"
-        ["J"].include?(card.value)
-      else
-        false
-      end
-
-    # if it isn't a face card
-    else
-      return false if card.value.to_i == 0
-      self.value.to_i > card.value.to_i
-    end
+  has_many :player_cards, :dependent => :destroy
+  
+  validates_presence_of :suit
+  validates_presence_of :value
+  
+  POINT_VALUE = Hash[%w(1 2 3 4 5 6 7 8 9 10 J Q K A).zip((1..14).to_a)]
+  
+  def beats?(current_winner)
+    suit == current_winner.suit && point_value > current_winner.point_value
   end
   
-  def seat_of_owner
-    self.card_owner.seat
-  end
-  
-  def is_valid?(lead_suit, player)
-    if self.suit == lead_suit || player.has_none_of?(lead_suit)
-      true
-    else
-      false
-    end
+  def point_value
+    POINT_VALUE[value]
   end
   
   def in_english
-    "#{self.value} of #{self.suit}s"
-  end
-  
-  def was_played_by_username
-    if was_played_by_id.present?
-      User.find(was_played_by_id).username
-    else
-      ""
-    end
+    value.to_s + " of " + suit.to_s.pluralize
   end
     
   

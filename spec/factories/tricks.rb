@@ -1,6 +1,7 @@
 FactoryGirl.define do
   factory :trick do
-    leader_seat 0
     round
+    leader_id 0
+    position 0
   end
 end

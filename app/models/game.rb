@@ -1,61 +1,77 @@
 class Game < ActiveRecord::Base
-  
-  attr_accessible :size, :winner_id, :room_id
 
-  after_create :destroy_and_load_new_deck
-  before_destroy :clear_players_game_ids
+  attr_accessible :winner_id
 
-  belongs_to :room
-  has_many :decks, :dependent => :destroy
-  has_many :players, :class_name => "User"
-  has_many :teams, :dependent => :destroy
-  has_many :rounds, :dependent => :destroy
+  has_many :players, :dependent => :destroy, :order => "seat ASC"
+  has_many :rounds, :dependent => :destroy, :order => "position ASC"
+  belongs_to :winner, :class_name => "Player"
   
-  def game_over?
-    winner.present?
-  end
-  
-  def reset_for_new_game
-    self.update_attributes(:winner_id => nil)
-    destroy_and_load_new_deck
-    players.each {|p| p.reset_for_new_game }
-  end  
-
-  def clear_players_game_ids
-    self.players.each {|p| p.game_id = nil; p.save }
-  end
-  
-  def destroy_and_load_new_deck
-    self.decks.delete_all
-    Deck.create(:game_id => self.id)
-  end
-  
-  def deck
-    self.decks.last
-  end
-  
-  def winner
-    User.find(winner_id) if winner_id.present?
+  def play_game
+    until(game_over?)
+      new_dealer = get_new_dealer
+      new_round = Round.create(:game_id => self.id, :dealer_id => new_dealer.id, :position => next_round_position)
+      new_round.play_round
+      check_for_and_set_winner
+    end    
   end
 
-  def get_dealer_seat
-    rounds_played == 0 ? 0 : last_round.new_dealer_seat
+  def check_for_and_set_winner
+    players.each do |player|
+      if player.reload.total_score >= 100
+        self.update_attributes(:winner_id => find_lowest_player.id)
+        return
+      end
+    end
+  end
+
+  def find_lowest_player
+    min = 101
+    winner = nil
+    players.each do |player|
+      if player.total_score <= min
+        winner = player
+        min = player.total_score
+      end
+    end  
+    winner
+  end
+
+  def get_new_dealer
+    rounds_played == 0 ? player_seated_at(0) : next_dealer
   end
   
+  def next_dealer
+    old_seat = last_round.dealer.seat
+    new_seat = (old_seat + 1) % 4
+    player_seated_at(new_seat)
+  end
+
   def rounds_played
-    rounds.length
+    rounds(true).length
   end
-  
+
   def last_round
     rounds.last
   end
-  
-  def seated_at(seat)
-    User.where("game_id = ? and seat = ?", self.id, seat).first
-  end
-  
+
   def next_seat
     self.players(true).length
+  end
+  
+  def next_round_position
+    rounds_played
+  end
+
+  def is_full?
+    players(true).length >= 4
+  end
+
+  def game_over?
+    winner_id.present?
+  end
+
+  def player_seated_at(seat)
+    self.players.where("seat = ?", seat).first
   end
 
 end

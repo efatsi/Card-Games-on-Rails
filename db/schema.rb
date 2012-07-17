@@ -11,87 +11,75 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120716182110) do
+ActiveRecord::Schema.define(:version => 20120717200112) do
 
   create_table "cards", :force => true do |t|
     t.string   "suit"
     t.string   "value"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
-    t.string   "card_owner_type"
-    t.integer  "card_owner_id"
-    t.integer  "was_played_by_id"
-  end
-
-  create_table "decks", :force => true do |t|
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
-    t.integer  "game_id"
   end
 
   create_table "games", :force => true do |t|
-    t.integer  "room_id"
-    t.integer  "size"
     t.integer  "winner_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
-  create_table "played_tricks", :force => true do |t|
-    t.integer  "size"
-    t.integer  "user_id"
+  create_table "played_cards", :force => true do |t|
     t.integer  "trick_id"
+    t.integer  "player_card_id"
+    t.integer  "position"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
+
+  create_table "player_cards", :force => true do |t|
+    t.integer  "player_id"
+    t.integer  "card_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
-  create_table "rooms", :force => true do |t|
-    t.string   "name"
-    t.integer  "size"
-    t.string   "game_type"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  create_table "rounds", :force => true do |t|
-    t.integer  "dealer_seat"
-    t.integer  "game_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
-  end
-
-  create_table "teams", :force => true do |t|
-    t.integer  "bid",         :default => 0
-    t.integer  "bags",        :default => 0
+  create_table "player_rounds", :force => true do |t|
+    t.integer  "player_id"
+    t.integer  "round_id"
     t.integer  "round_score", :default => 0
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
+  end
+
+  create_table "players", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "game_id"
+    t.integer  "seat"
     t.integer  "total_score", :default => 0
     t.datetime "created_at",                 :null => false
     t.datetime "updated_at",                 :null => false
+  end
+
+  create_table "rounds", :force => true do |t|
     t.integer  "game_id"
+    t.integer  "dealer_id"
+    t.integer  "position",   :default => 0
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
   end
 
   create_table "tricks", :force => true do |t|
-    t.integer  "leader_seat"
-    t.string   "lead_suit"
     t.integer  "round_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.integer  "leader_id"
+    t.string   "lead_suit"
+    t.integer  "position"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "users", :force => true do |t|
     t.string   "username"
-    t.integer  "total_score",         :default => 0
-    t.integer  "round_score",         :default => 0
-    t.integer  "bid",                 :default => 0
-    t.boolean  "going_nil",           :default => false
-    t.boolean  "going_blind",         :default => false
-    t.integer  "team_id"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
-    t.integer  "game_id"
     t.string   "crypted_password"
-    t.integer  "last_played_card_id"
-    t.integer  "seat"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
   end
 
 end

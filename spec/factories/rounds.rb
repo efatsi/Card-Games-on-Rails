@@ -1,6 +1,7 @@
 FactoryGirl.define do
   factory :round do
-    dealer_seat 0
     game
+    dealer_id 0
+    position 0
   end
 end

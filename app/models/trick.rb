@@ -1,66 +1,56 @@
 class Trick < ActiveRecord::Base
-  
-  attr_accessible :lead_suit, :leader_seat, :round_id
-  
+
+  attr_accessible :round_id, :leader_id, :lead_suit, :position
+
   belongs_to :round
-  has_many :played_tricks
-  has_many :players, :through => :round
-  has_many :decks, :through => :round
-  
+  belongs_to :leader, :class_name => "Player"
+  has_many :played_cards, :dependent => :destroy, :order => "position ASC"
+
+  validates_presence_of :round_id
+  validates_presence_of :leader_id
+  validates_presence_of :position
+
+  delegate :players, :to => :round
+
+  def play_trick
+    players.each do |player|
+      get_card_from(player)
+    end
+  end
+
+  def get_card_from(player)
+    player_card = player.select_random_card
+    card_position = self.next_position
+    PlayedCard.create(:player_card_id => player_card.id, :trick_id => self.id, :position => card_position)
+    self.update_attributes(:lead_suit => player_card.suit) if card_position == 0
+  end
+
+  def next_position
+    self.played_cards.length
+  end
+
   def trick_winner
-    best_card = leader.last_played_card
-    4.times do |i|
-      card = played_trick.reload.cards[i]
-      best_card = card if card.beats?(best_card)
-    end
-    User.find(best_card.was_played_by_id)
+    winning_card.player
   end
 
-  def give_trick_to_winner
-    played_trick.update_attributes(:user_id => trick_winner.id)
+  def winning_card
+    best_card = played_cards.first
+    played_cards.each do |played_card|
+      best_card = played_card if played_card.beats?(best_card)
+    end
+    best_card
   end
 
-  def store_trick(played_cards)
-    new_played_trick = PlayedTrick.create(:size => 4, :trick_id => id)
-    played_cards.each do |card|
-      card.card_owner_type = "PlayedTrick" 
-      card.card_owner_id = new_played_trick.id
-      card.save
-    end
-    played_cards.each do |card|
-      if card.reload.card_owner_id.nil?
-        card.update_attributes(:card_owner_id => new_played_trick.id)
+  def trick_score
+    score = 0
+    played_cards.each do |played_card|
+      if played_card.is_a_heart
+        score += 1
+      elsif played_card.is_queen_of_spades
+        score += 13
       end
-    end
+    end  
+    score
   end
 
-  def trick_winner_seat
-    trick_winner.seat
-  end
-  
-  def set_memory_attributes(player, card)
-    card.update_attributes(:was_played_by_id => player.id)
-    player.update_attributes(:last_played_card_id => card.id)
-  end
-
-  def deck
-    decks.last
-  end
-  
-  def leader
-    seated_at(leader_seat)
-  end
-  
-  def size
-    round.game.size
-  end
-  
-  def played_trick
-    played_tricks.last
-  end
-  
-  def seated_at(seat)
-    self.round.seated_at(seat)
-  end
-  
 end
