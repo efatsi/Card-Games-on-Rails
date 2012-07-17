@@ -3,7 +3,7 @@ class CreateTricks < ActiveRecord::Migration
     create_table :tricks do |t|
       t.integer :round_id
       t.integer :leader_id
-      t.integer :winner_id
+      t.string :lead_suit
       t.integer :position
 
       t.timestamps

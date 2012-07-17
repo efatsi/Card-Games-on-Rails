@@ -1,11 +1,12 @@
 class Round < ActiveRecord::Base
   
+  PASS_SHIFT = {:left => 1, :across => 2, :right => 3, :none = 0}
+  
   attr_accessible :dealer_seat, :game_id
   
   belongs_to :game
   has_many :tricks, :dependent => :destroy
   has_many :players, :through => :game
-
   
   def new_dealer_seat
     (dealer_seat + 1) % game.size

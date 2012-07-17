@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120716220444) do
+ActiveRecord::Schema.define(:version => 20120716225806) do
 
   create_table "cards", :force => true do |t|
     t.string   "suit"
@@ -25,6 +25,14 @@ ActiveRecord::Schema.define(:version => 20120716220444) do
     t.integer  "winner_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "played_cards", :force => true do |t|
+    t.integer  "trick_id"
+    t.integer  "player_card_id"
+    t.integer  "position"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
   end
 
   create_table "player_cards", :force => true do |t|
@@ -43,18 +51,19 @@ ActiveRecord::Schema.define(:version => 20120716220444) do
   end
 
   create_table "rounds", :force => true do |t|
-    t.integer  "dealer_seat"
     t.integer  "game_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.integer  "dealer_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "tricks", :force => true do |t|
-    t.integer  "leader_seat"
-    t.string   "lead_suit"
     t.integer  "round_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.integer  "leader_id"
+    t.string   "lead_suit"
+    t.integer  "position"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "users", :force => true do |t|

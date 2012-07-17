@@ -2,14 +2,17 @@ require 'spec_helper'
 
 describe Round do
 
-  before :each do
-    @game = Game.create(:size => 4)
-    @user1 = FactoryGirl.create(:user, :game_id => @game.id, :seat => 0)
-    @user2 = FactoryGirl.create(:user, :game_id => @game.id, :seat => 1)
-    @user3 = FactoryGirl.create(:user, :game_id => @game.id, :seat => 2)
-    @user4 = FactoryGirl.create(:user, :game_id => @game.id, :seat => 3)
-    @round = Round.create(:game_id => @game.id, :dealer_seat => 0)
-    @deck = @round.deck
+  before do
+    @game = FactoryGirl.create(:game, :size => 4)
+    @user1 = FactoryGirl.create(:user, :username => "round_user1")
+    @user2 = FactoryGirl.create(:user, :username => "round_user2")
+    @user3 = FactoryGirl.create(:user, :username => "round_user3")
+    @user4 = FactoryGirl.create(:user, :username => "round_user4")
+    @player1 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user1.id, :seat => 0)
+    @player2 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user2.id, :seat => 1)
+    @player3 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user3.id, :seat => 2)
+    @player4 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user4.id, :seat => 3)
+    @round = FactoryGirl.create(:round, :game_id => @game.id, :dealer_id => @player1.id)
     @players = @round.players
   end
 
@@ -20,18 +23,18 @@ describe Round do
       it "should show that round has been initiated" do
         @round.should be_an_instance_of Round
       end
-      
+
       it "should know it's game parent" do
         @round.game.should == @game
       end
-      
-      it "should know it's players" do
-        @round.players.include?(@user1).should == true
+
+      it "should know it's player" do
         @round.players.length.should == 4
+        @round.players.include?(@player1).should == true
       end
-      
-      it "should know it's deck" do
-        @round.deck.cards.length.should == 52
+
+      it "should know who the dealer is" do
+        @round.dealer.should == @player1
       end
       
       it "should know it's size" do
@@ -44,168 +47,145 @@ describe Round do
 
   describe "#methods" do
 
-    context "#new_dealer_id" do
-
-      before :each do
-        @round.dealer_seat = 3
-      end
-
-      it "should work" do
-        @round.new_dealer_seat.should == 0
-      end
-
-    end
-
-    context "#deal_cards" do
+    context "deal_cards" do
       
-      after :each do
-        @round.return_cards
+      before do        
+        create_cards
       end
       
-      it "should work" do
+      it "should deal 13 cards to every player" do
         @round.deal_cards
-        @players.each do |player|
+        @round.players.each do |player|
           player.hand.length.should == 13
-          player.hand.first.should be_an_instance_of Card
         end
-        @round.deck.cards.length.should == 0
       end
-
     end
-
-    context "#return_cards" do
-
-      before :each do
+    
+    context "pass_cards" do
+      
+      before do
+        create_cards
         @round.deal_cards
-        @deck.cards(true)
       end
       
-      after :each do
-        @round.return_cards
-      end
-
-      it "should work with a dealt deck" do
-        @players.each {|p| p.hand.length.should == 13 }
-        @round.return_cards
-        @players.each do |p| 
-          p.cards(true)
-          p.hand.length.should == 0
-        end
-        @deck.cards(true)
-        @deck.cards.length.should == 52
+      it "should not crash" do
+        @round.pass_cards(:left)
       end
       
-      it "should work with cards in collected PlayedTricks" do
-        trick = PlayedTrick.create(:size => 4)
-        4.times do |i|
-          card = @user1.hand[i]
-          card.update_attributes(:card_owner => trick)
+      it "should pass 3 cards to the left" do
+        current_1_hand = [] + @player1.hand
+        current_2_hand = [] + @player2.hand
+        @round.pass_cards(:left)
+        new_cards = 0
+        @player2.reload.hand.each do |card|
+          if !current_2_hand.include?(card)
+            new_cards += 1
+            current_1_hand.should include(card)
+          end
         end
-        trick.update_attributes(:user_id => @user2.id)
-        @deck.cards.length.should == 0
-        @round.return_cards
-        @deck.cards(true)
-        @deck.cards.length.should == 52
+        new_cards.should == 3
       end
-    end
-    
-    context "#players" do
-
-      it "should work" do
-        @players.length.should == 4
-        @players.each do |p|
-          p.should be_instance_of User
+      
+      it "should pass 3 cards to the right" do
+        current_1_hand = [] + @player1.hand
+        current_4_hand = [] + @player4.hand
+        @round.pass_cards(:right)
+        new_cards = 0
+        @player4.reload.hand.each do |card|
+          if !current_4_hand.include?(card)
+            new_cards += 1
+            current_1_hand.should include(card)
+          end
         end
+        new_cards.should == 3
+      end
+        
+      it "should pass 3 cards across" do
+        current_1_hand = [] + @player1.hand
+        current_3_hand = [] + @player3.hand
+        @round.pass_cards(:across)
+        new_cards = 0
+        @player3.reload.hand.each do |card|
+          if !current_3_hand.include?(card)
+            new_cards += 1
+            current_1_hand.should include(card)
+          end
+        end
+        new_cards.should == 3
+      end
+      
+      it "should not pass any cards for none" do
+        current_1_hand = [] + @player1.hand
+        @round.pass_cards(:none)
+        new_cards = 0
+        @player1.reload.hand.each do |card|
+          new_cards += 1 unless current_1_hand.include?(card)
+        end
+        new_cards.should == 0
       end
     end
     
-    context "#dealer" do
-
-      it "should work" do
-        @round.dealer_seat = @user2.seat
-        @round.dealer_seat = @user3.seat
-        @round.dealer.should == @user3
+    context "two_of_clubs_owner" do
+      
+      it "should correctly find a Player" do
+        create_cards
+        @round.deal_cards
+        @round.two_of_clubs_owner.should be_an_instance_of Player
       end
+      
+      it "should find the correct Player" do
+        two_club = Card.create(:value => "2", :suit => "club")
+        pc = PlayerCard.create(:player_id => @player1.id, :card_id => two_club.id)
+        @round.two_of_clubs_owner.should == @player1
+        pc.update_attributes(:player_id => @player2.id)
+        @round.two_of_clubs_owner.should == @player2
+      end      
     end
     
-    context "#get_leader_seat" do
-
-      before :each do
-        give_two_of_clubs_to_user3
+    context "get_new_leader" do
+      
+      it "should find the two of clubs owner without any tricks played" do
+        two_club = Card.create(:value => "2", :suit => "club")
+        pc = PlayerCard.create(:player_id => @player1.id, :card_id => two_club.id)
+        @round.get_new_leader.should == @player1
       end
-
-      it "before any trick is played" do
-        @round.get_leader_seat.should == @user3.seat
-      end
-
-      it "after a trick has been played" do
+      
+      it "should find last trick winner when trick(s) have been played" do
+        first_trick = double("my first trick")
         trick = double("my trick")
-        trick.stub(:trick_winner_seat).and_return(@user2.seat)
-        @round.stub(:tricks).and_return([trick])
-        @round.get_leader_seat.should == @user2.seat
+        trick.stub(:trick_winner).and_return(@player4)
+        @round.stub(:tricks).and_return([first_trick, trick])
+        @round.get_new_leader.should == @player4
+      end
+    end
+  
+  end
+  
+  describe "#round_play" do
+      
+    context "making new tricks" do
+      
+      before do
+        create_cards
+        @round.deal_cards
+      end
+      
+      it "should increment trick count of the round" do
+        expect{ Trick.create(:round_id => @round.id, :leader_id => @player1.id) }.to change{ @round.tricks(true).length }.by(1)
+      end
+      
+      it "should assign appropriate position to a new trick" do
+        trick1 = Trick.create(:round_id => @round.id, :leader_id => @player1.id, :position => @round.tricks_played); @round.reload
+        trick2 = Trick.create(:round_id => @round.id, :leader_id => @player1.id, :position => @round.tricks_played); @round.reload
+        trick3 = Trick.create(:round_id => @round.id, :leader_id => @player1.id, :position => @round.tricks_played); @round.reload
+        trick1.position.should == 0
+        trick2.position.should == 1
+        trick3.position.should == 2
       end
     end
     
-    context "#tricks" do
-
-      it "before any trick is played" do
-        @round.tricks_played.should == 0
-        @round.last_trick.should == nil
-      end
-
-      it "after a trick is played" do
-        @new_trick = Trick.create(:round_id => @round.id)
-        @round.tricks(true).length.should == 1
-        @round.last_trick.should == @new_trick
-      end
-    end
-
-    context "#card_manipulating" do
-
-      before :each do
-        give_two_of_clubs_to_user3
-      end
-      
-      after :each do
-        @round.return_cards
-      end
-
-      it "deal_card_to_player should work" do
-        @user3.hand.include?(@card).should == true
-      end
-
-      it "return_card_to_deck" do
-        @round.return_card_to_deck(@card)
-        @user3.hand.include?(@card).should == false
-        @round.deck.cards.include?(@card).should == true
-      end
-    end
-
-    context "#two_of_clubs_owner_seat" do
-
-      before :each do
-        @round.return_cards
-        give_two_of_clubs_to_user3
-      end
-
-      it "should work" do
-        @round.two_of_clubs_owner_seat.should == @user3.seat
-      end
-      
-      it "should return 8,000,000 if no one has it" do
-        @round.return_cards
-        @round.two_of_clubs_owner_seat.should == 8000000000
-      end
-    end
-
-  end
-
-  def give_two_of_clubs_to_user3
-    @card = FactoryGirl.create(:card)
-    @round.deal_card_to_player(@card, @user3)
   end
 
 end
-
 
 
