@@ -7,6 +7,7 @@ class Round < ActiveRecord::Base
   belongs_to :game
   belongs_to :dealer, :class_name => "Player"
   has_many :tricks, :dependent => :destroy, :order => "position ASC"
+  has_many :player_rounds
   
   validates_presence_of :game_id
   validates_presence_of :dealer_id
@@ -58,6 +59,25 @@ class Round < ActiveRecord::Base
       end
     end
     nil
+  end
+  
+  def calculate_round_scores
+    # Oh man...
+  end
+  
+  def update_total_scores
+    player_rounds.each do |player_round|
+      player = player_round.player
+      if player_round.round_score == 26
+        players.each do |p| 
+          p.total_score += 26 unless p == player
+          p.save
+        end
+      else
+        player.total_score += player_round.round_score
+        player.save
+      end
+    end
   end
   
   def get_new_leader

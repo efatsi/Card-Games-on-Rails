@@ -185,6 +185,57 @@ describe Round do
     end
     
   end
+  
+  pending "#round_scoring" do
+    
+    context "shared_round" do
+      
+      it "should calculate round score to total 26" do
+        @round.calculate_round_scores
+        @player_rounds.each {|pr| all_round_scores += pr.round_score }
+      end
+    end
+    
+  end
+  
+  describe "#total_scoring" do
+    
+    context "during a regular round" do
+      
+      before do
+        @pr1 = FactoryGirl.create(:player_round, :player_id => @player1.id, :round_id => @round.id, :round_score => 3)
+        @pr2 = FactoryGirl.create(:player_round, :player_id => @player2.id, :round_id => @round.id, :round_score => 6)
+        @pr3 = FactoryGirl.create(:player_round, :player_id => @player3.id, :round_id => @round.id, :round_score => 10)
+        @pr4 = FactoryGirl.create(:player_round, :player_id => @player4.id, :round_id => @round.id, :round_score => 7)
+      end
+      
+      it "should update players total_scores appropriately" do
+        @round.update_total_scores
+        @player1.reload.total_score.should == 3
+        @player2.reload.total_score.should == 6
+        @player3.reload.total_score.should == 10
+        @player4.reload.total_score.should == 7
+      end
+    end
+    
+    context "during a swept round" do
+      
+      before do
+        @pr1 = FactoryGirl.create(:player_round, :player_id => @player1.id, :round_id => @round.id, :round_score => 0)
+        @pr2 = FactoryGirl.create(:player_round, :player_id => @player2.id, :round_id => @round.id, :round_score => 26)
+        @pr3 = FactoryGirl.create(:player_round, :player_id => @player3.id, :round_id => @round.id, :round_score => 0)
+        @pr4 = FactoryGirl.create(:player_round, :player_id => @player4.id, :round_id => @round.id, :round_score => 0)
+      end
+      
+      it "should acknowledge the moon shooting" do
+        @round.update_total_scores
+        @player1.reload.total_score.should == 26
+        @player2.reload.total_score.should == 0
+        @player3.reload.total_score.should == 26
+        @player4.reload.total_score.should == 26
+      end
+    end
+  end
 
 end
 

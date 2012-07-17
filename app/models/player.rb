@@ -7,6 +7,7 @@ class Player < ActiveRecord::Base
   has_many :player_cards
   has_many :cards, :through => :player_cards
   has_many :played_cards, :through => :player_cards
+  has_many :player_rounds
   
   validates_presence_of :game_id
   validates_presence_of :user_id
