@@ -5,6 +5,4 @@ class ApplicationController < ActionController::Base
   include SimplestAuth::Controller
   include CardGames::Authentication
   
-
-  
 end

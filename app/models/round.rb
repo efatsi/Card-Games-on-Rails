@@ -65,18 +65,10 @@ class Round < ActiveRecord::Base
     end
   end
   
-  def two_of_clubs_owner
-    players.each do |player|
-      player.hand.each do |card|
-        if card.value == "2" && card.suit == "club"
-          return player
-        end
-      end
-    end
-    nil
-  end
-  
   def calculate_round_scores
+    player_rounds.each do |p_r| 
+      p_r.update_attributes(:round_score => 0)
+    end
     tricks(true).each do |trick|
       winner = trick.trick_winner
       p_r = player_round_of(winner)
@@ -86,16 +78,17 @@ class Round < ActiveRecord::Base
   end
   
   def update_total_scores
-    player_rounds.each do |player_round|
-      player = player_round.player
-      if player_round.round_score == 26
-        players.each do |p| 
+    players.each do |player|
+      if player.round_score == 26
+        players.each do |p|
           p.total_score += 26 unless p == player
           p.save
         end
       else
-        player.total_score += player_round.round_score
+        player.total_score += player.round_score
         player.save
+        
+        # raise player.total_score.inspect
       end
     end
   end
@@ -128,6 +121,17 @@ class Round < ActiveRecord::Base
   
   def next_trick_position
     tricks_played
+  end
+
+  def two_of_clubs_owner
+    players.each do |player|
+      player.hand.each do |card|
+        if card.value == "2" && card.suit == "club"
+          return player
+        end
+      end
+    end
+    nil
   end
       
   

@@ -1,6 +1,6 @@
 class Game < ActiveRecord::Base
 
-  attr_accessible :winner_id
+  attr_accessible :winner_id, :name
 
   has_many :players, :dependent => :destroy, :order => "seat ASC"
   has_many :rounds, :dependent => :destroy, :order => "position ASC"
@@ -72,6 +72,14 @@ class Game < ActiveRecord::Base
 
   def player_seated_at(seat)
     self.players.where("seat = ?", seat).first
+  end
+  
+  def already_has(user)
+    present_usernames.include?(user.username)
+  end
+  
+  def present_usernames
+    players.map(&:username)
   end
 
 end

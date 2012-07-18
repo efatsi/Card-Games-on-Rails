@@ -10,10 +10,10 @@ class Trick < ActiveRecord::Base
   validates_presence_of :leader_id
   validates_presence_of :position
 
-  delegate :players, :to => :round
+  delegate :players, :player_seated_at, :to => :round
 
   def play_trick
-    players.each do |player|
+    players_in_order.each do |player|
       get_card_from(player)
     end
   end
@@ -22,11 +22,11 @@ class Trick < ActiveRecord::Base
     player_card = player.select_random_card
     card_position = self.next_position
     PlayedCard.create(:player_card_id => player_card.id, :trick_id => self.id, :position => card_position)
-    self.update_attributes(:lead_suit => player_card.suit) if card_position == 0
+    self.update_attributes(:lead_suit => player_card.suit) if player == leader
   end
 
   def next_position
-    self.played_cards.length
+    self.played_cards(true).length
   end
 
   def trick_winner
@@ -51,6 +51,14 @@ class Trick < ActiveRecord::Base
       end
     end  
     score
+  end
+  
+  def players_in_order
+    in_order = []
+    4.times do |i|
+      in_order << player_seated_at((leader.seat + i) % 4)
+    end
+    in_order
   end
 
 end

@@ -1,10 +1,13 @@
-# User.delete_all
-# Card.delete_all
-# Game.delete_all
-# Round.delete_all
-# Trick.delete_all
-# 
+Game.delete_all
+Round.delete_all
+Trick.delete_all
+Player.delete_all
+PlayerCard.delete_all
+PlayedCard.delete_all
+PlayerRound.delete_all
+Card.delete_all
 
+User.delete_all
 User.create(:username => "efatsi", :password => "secret", :password_confirmation => "secret")
 User.create(:username => "amelia")
 
@@ -14,6 +17,8 @@ User.create(:username => "amelia")
     card = Card.create(:suit => suit, :value => value.to_s)
   end
 end
+
+Game.create(:name => "Hearts Baby")
 
 
 

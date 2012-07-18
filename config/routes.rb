@@ -1,19 +1,15 @@
 CardGames::Application.routes.draw do
-  resources :games
-
-  resources :played_tricks
-
-  resources :tricks
-
-  resources :rounds
-
-  resources :teams
-
-  resources :cards
-
+  
+  resources :games do
+    post :fill, :on => :member
+    post :deal_cards, :on => :member
+    post :play_trick, :on => :member
+    post :update_scores, :on => :member
+  end
+  
   resources :users
 
-  root :to => 'rooms#index'
+  root :to => 'games#index'
 
   
 	resources :sessions

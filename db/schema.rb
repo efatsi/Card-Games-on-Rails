@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(:version => 20120717200112) do
 
   create_table "games", :force => true do |t|
     t.integer  "winner_id"
+    t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end

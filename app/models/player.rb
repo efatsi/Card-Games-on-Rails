@@ -7,12 +7,15 @@ class Player < ActiveRecord::Base
   has_many :player_cards
   has_many :cards, :through => :player_cards
   has_many :played_cards, :through => :player_cards
-  has_many :player_rounds
+  has_many :player_rounds, :order => "created_at ASC"
   
   validates_presence_of :game_id
   validates_presence_of :user_id
   validates_presence_of :seat
   validates_presence_of :total_score
+  
+  delegate :username, :to => :user
+  delegate :round_score, :to => :last_player_round
   
   def hand
     self.reload.player_cards(true).joins("LEFT JOIN played_cards ON played_cards.player_card_id = player_cards.id").where("played_cards.id IS NULL").readonly(false)
@@ -30,5 +33,10 @@ class Player < ActiveRecord::Base
     end
     selection
   end
+  
+  def last_player_round
+    player_rounds.last
+  end
+  
   
 end

@@ -1,0 +1,10 @@
+<%= simple_form_for(@game) do |f| %>
+
+  <div class="field">
+    <%= f.input :name %>
+  </div>
+
+  <div class="actions">
+    <%= submit_tag "Create Game", :class => "btn"  %>
+  </div>
+<% end %>

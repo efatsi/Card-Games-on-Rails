@@ -12,7 +12,7 @@ class PlayedCard < ActiveRecord::Base
   validates_presence_of :position 
   
   delegate :suit, :value, :to => :player_card
-  delegate :beats?, :point_value, :to => :card
+  delegate :beats?, :point_value, :in_english, :to => :card
   
   
   def is_a_heart

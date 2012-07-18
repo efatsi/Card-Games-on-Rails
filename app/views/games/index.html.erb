@@ -1,0 +1,15 @@
+<h1>Listing Games</h1>
+
+<div class="mytable">
+  <table class="table table-striped">
+  <% i = 1 %>
+  <% @games.each do |game| %>
+    <tr>
+      <td><%= link_to "Game #{i} - #{game.name}", game %></td>
+    </tr>
+    <% i += 1 %>
+  <% end %>
+  </table>
+</div>
+
+<%= link_to 'New Game', new_game_path, :class => "btn" %>
