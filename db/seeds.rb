@@ -7,9 +7,9 @@ PlayedCard.delete_all
 PlayerRound.delete_all
 Card.delete_all
 
-User.delete_all
-User.create(:username => "efatsi", :password => "secret", :password_confirmation => "secret")
-User.create(:username => "amelia")
+# User.delete_all
+# User.create(:username => "efatsi", :password => "secret", :password_confirmation => "secret")
+# User.create(:username => "amelia")
 
 # Make all of the cards you need
 %w(club heart spade diamond).each do |suit|

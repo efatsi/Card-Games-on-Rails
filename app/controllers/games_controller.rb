@@ -1,7 +1,7 @@
 class GamesController < ApplicationController
 
 
-  before_filter :assign_game, :only => [:show, :destroy, :fill, :new_round, :play_trick, :update_scores, :play_rest_of_tricks]
+  before_filter :assign_game, :except => [:index, :new, :create]
   before_filter :store_location, :only => :show
   before_filter :require_user, :only => :show
 
@@ -11,6 +11,9 @@ class GamesController < ApplicationController
 
   def show
     join_game
+    @hand = current_user.hand
+    @trick_over = (@game.last_round.last_trick.played_cards.length == 4)
+    # raise @trick_over.inspect
   end
 
   def new
@@ -49,7 +52,7 @@ class GamesController < ApplicationController
     round.create_player_rounds
     redirect_to @game
   end
-  
+
   def play_rest_of_tricks    
     round = @game.last_round
     (13 - round.tricks_played).times do
@@ -62,28 +65,32 @@ class GamesController < ApplicationController
     round.update_total_scores if round.tricks_played == 13
     redirect_to @game
   end
-  
-  def play_trick
+
+  def new_trick
     round = @game.last_round
-    if round.tricks_played != 13
-      trick = Trick.create(:round_id => round.id, :leader_id => round.get_new_leader.id, :position => round.next_trick_position)
-      trick.play_trick
-      round.calculate_round_scores
-    end  
+    trick = Trick.create(:round_id => round.id, :leader_id => round.get_new_leader.id, :position => round.next_trick_position)
+    redirect_to @game
+  end
+  
+  def play_one_card
+    round = @game.last_round
+    trick = round.last_trick
+    player = trick.next_player
+    trick.get_card_from(player)
     redirect_to @game
   end
 
-  
+
   private
   def assign_game    
     @game = Game.find(params[:id])
   end
-  
+
   def join_game
     unless @game.already_has(current_user) or @game.is_full?
       Player.create(:user_id => current_user.id, :game_id => @game.id, :seat => @game.next_seat)
     end
   end
-  
+
 
 end

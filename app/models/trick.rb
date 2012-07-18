@@ -29,6 +29,10 @@ class Trick < ActiveRecord::Base
     self.played_cards(true).length
   end
 
+  def next_player
+    player_seated_at((leader.seat + next_position) % 4)
+  end
+
   def trick_winner
     winning_card.player
   end
