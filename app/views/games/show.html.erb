@@ -11,11 +11,13 @@
     <center>
       <%= button_to "Fill The Game", fill_game_path(@game) %>
       <%= button_to "New Round", new_round_game_path(@game) %>
-      <%= button_to "Play Rest Of Tricks", play_rest_of_tricks_game_path(@game) %>
-      <% if @trick_over %> 
-        <%= button_to "New Trick", new_trick_game_path(@game) %>
-      <% else %>
-        <%= button_to "Play One Card", play_one_card_game_path(@game) %> 
+      <% unless @round_over %>
+        <% if @trick_over %> 
+          <%= button_to "New Trick", new_trick_game_path(@game) %>
+          <%= button_to "Play All But One Trick", play_rest_of_tricks_game_path(@game) %>
+        <% else %>
+          <%= button_to "Play One Card", play_one_card_game_path(@game) %> 
+        <% end %>
       <% end %>
     </center>
   </div>

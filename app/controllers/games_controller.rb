@@ -12,8 +12,8 @@ class GamesController < ApplicationController
   def show
     join_game
     @hand = current_user.hand
-    @trick_over = (@game.last_round.last_trick.played_cards.length == 4)
-    # raise @trick_over.inspect
+    @round_over = @game.round_over
+    @trick_over = @game.trick_over
   end
 
   def new
@@ -55,7 +55,7 @@ class GamesController < ApplicationController
 
   def play_rest_of_tricks    
     round = @game.last_round
-    (13 - round.tricks_played).times do
+    (12 - round.tricks_played).times do
       if round.tricks_played != 13
         trick = Trick.create(:round_id => round.id, :leader_id => round.get_new_leader.id, :position => round.next_trick_position)
         trick.play_trick
@@ -77,6 +77,11 @@ class GamesController < ApplicationController
     trick = round.last_trick
     player = trick.next_player
     trick.get_card_from(player)
+    if trick.played_cards(true).length == 4
+      round.calculate_round_scores
+      round.update_total_scores if round.tricks_played == 13
+      @game.check_for_and_set_winner
+    end
     redirect_to @game
   end
 

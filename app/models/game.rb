@@ -80,6 +80,26 @@ class Game < ActiveRecord::Base
   
   def present_usernames
     players.map(&:username)
+  end  
+
+  def round_over
+    if last_round.present? && last_trick.present?
+      last_round.tricks_played == 13 && trick_over
+    else
+      rounds.empty?
+    end
+  end
+
+  def trick_over
+    if last_round.present? && last_trick.present?
+      last_trick.played_cards.length == 4
+    else
+      true
+    end
+  end
+
+  def last_trick
+    last_round.last_trick
   end
 
 end

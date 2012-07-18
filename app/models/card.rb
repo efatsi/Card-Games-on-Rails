@@ -19,7 +19,6 @@ class Card < ActiveRecord::Base
   
   def in_english
     value.to_s + " of " + suit.to_s.pluralize
-  end
-    
+  end  
   
 end
