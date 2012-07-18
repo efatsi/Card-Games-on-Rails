@@ -19,7 +19,7 @@ class Trick < ActiveRecord::Base
   end
 
   def get_card_from(player)
-    player_card = player.select_random_card
+    player_card = player.play_card(lead_suit)
     card_position = self.next_position
     PlayedCard.create(:player_card_id => player_card.id, :trick_id => self.id, :position => card_position)
     self.update_attributes(:lead_suit => player_card.suit) if player == leader

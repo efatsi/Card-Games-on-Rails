@@ -21,6 +21,23 @@ class Player < ActiveRecord::Base
     self.reload.player_cards(true).joins("LEFT JOIN played_cards ON played_cards.player_card_id = player_cards.id").where("played_cards.id IS NULL").readonly(false)
   end
   
+  def play_card(lead_suit)
+    if has_none_of?(lead_suit)
+      select_random_card
+    else
+      hand.each do |card|
+        return card if card.suit == lead_suit
+      end
+    end
+  end
+
+  def has_none_of?(suit)
+    self.hand.each do |card|
+      return false if card.suit == suit
+    end
+    true
+  end
+  
   def select_random_card
     hand[rand(hand.length)]
   end
