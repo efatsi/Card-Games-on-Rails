@@ -46,23 +46,28 @@ class GamesController < ApplicationController
   def deal_cards
     round = Round.create(:game_id => @game.id, :dealer_id => @game.get_new_dealer.id, :position => @game.next_round_position)
     round.deal_cards
+    round.create_player_rounds
     redirect_to @game
   end
   
   def play_trick    
     round = @game.last_round
-    unless round.tricks_played == 13
-      trick = Trick.create(:round_id => round.id, :leader_id => round.get_new_leader.id, :position => round.next_trick_position)
-      trick.play_trick
-    end
+    13.times do
+      if round.tricks_played != 13
+        trick = Trick.create(:round_id => round.id, :leader_id => round.get_new_leader.id, :position => round.next_trick_position)
+        trick.play_trick
+      end  
+    end  
+    round.calculate_round_scores
     redirect_to @game
   end
   
   def update_scores
     round = @game.last_round
-    round.create_player_rounds if round.player_rounds.empty?
-    round.calculate_round_scores
-    round.update_total_scores if round.tricks_played == 13
+    if round.tricks_played == 13
+      round.update_total_scores 
+      @game.check_for_and_set_winner
+    end    
     redirect_to @game
   end
     
@@ -73,7 +78,7 @@ class GamesController < ApplicationController
   end
   
   def join_game
-    unless @game.already_has(current_user)
+    unless @game.already_has(current_user) or @game.is_full?
       Player.create(:user_id => current_user.id, :game_id => @game.id, :seat => @game.next_seat)
     end
   end
