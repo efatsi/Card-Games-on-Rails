@@ -87,8 +87,6 @@ class Round < ActiveRecord::Base
       else
         player.total_score += player.round_score
         player.save
-        
-        # raise player.total_score.inspect
       end
     end
   end

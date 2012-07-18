@@ -2,9 +2,9 @@ CardGames::Application.routes.draw do
   
   resources :games do
     post :fill, :on => :member
-    post :deal_cards, :on => :member
+    post :new_round, :on => :member
     post :play_trick, :on => :member
-    post :update_scores, :on => :member
+    post :play_rest_of_tricks, :on => :member
   end
   
   resources :users

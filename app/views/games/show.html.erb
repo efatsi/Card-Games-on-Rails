@@ -5,45 +5,59 @@
 <% else %>
   <%= "Players in Game: #{@game.players.map{|p| [p.username, p.round_score, p.total_score]}}"%><br /><br />
 <% end %>
-<%= button_to "Fill The Game", fill_game_path(@game) %>
-<%= button_to "New Round", deal_cards_game_path(@game) %>
-<%= button_to "Play 13 Tricks", play_trick_game_path(@game) %>
-<%= button_to "Update Scores", update_scores_game_path(@game) %>
 
-<% if @game.game_over? %>
-  <h3>GAME'S OVER!!! The winner is <%= @game.winner.username %></h3><br />
-<% else %>
-  <% if @game.rounds.any? && @game.last_round.tricks.any? %>
-    <h3>Last Trick</h3>
-    <% @last_trick = @game.last_round.last_trick %>
-    <% @cards = @last_trick.played_cards %>
-    <% @cards.each do |card| %>
-      <%= card.in_english + " from " + card.player.username %><br />
-    <% end %>
-    <br />
-    Trick was lead by <%= @last_trick.leader.username %>, and won by <%= @last_trick.trick_winner.username %><br />
-    The lead suit was <%= @last_trick.lead_suit.pluralize %>
-  
-  <% end %>
-  
-
-  <div class="span4">
-  <h3>Your Hand:</h3>
-  <div class="mytable">
-    <table class="table table-striped">
-      <tbody>
-        <% current_user.hand.each do |card| %>
-        <tr>
-          <td>
-            <%= card.in_english %>
-          </td>
-        </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </table>
+<div style="float: left; width: auto;">
+  <div class="well">
+    <center>
+    <%= button_to "Fill The Game", fill_game_path(@game) %>
+    <%= button_to "New Round", deal_cards_game_path(@game) %>
+    <%= button_to "Play A Trick", play_trick_game_path(@game) %>
+    <%= button_to "Play Rest Of Tricks", play_rest_of_tricks_game_path(@game) %>
+    </center>
   </div>
-<% end %>
+</div>
+
+<div style="float: left; width: auto;">
+  <div class="span9">
+    <div class="well">
+      <% if @game.game_over? %>
+      <h3>GAME'S OVER!!! The winner is <%= @game.winner.username %></h3><br />
+      <% else %>
+      <% if @game.rounds.any? && @game.last_round.tricks.any? %>
+      <h3>Last Trick</h3>
+      <% @last_trick = @game.last_round.last_trick %>
+      <% @cards = @last_trick.played_cards %>
+      <% @cards.each do |card| %>
+      <%= card.in_english + " from " + card.player.username %><br />
+      <% end %>
+      <br />
+      Trick was lead by <%= @last_trick.leader.username %>, and won by <%= @last_trick.trick_winner.username %><br />
+      The lead suit was <%= @last_trick.lead_suit.pluralize %>
+
+      <% end %>
+
+      <% if current_user.hand.any? %>
+      <div class="span4">
+        <h3>Your Hand:</h3>
+        <div class="mytable">
+          <table class="table table-striped">
+            <tbody>
+              <% current_user.hand.each do |card| %>
+              <tr>
+                <td>
+                  <%= card.in_english %>
+                </td>
+              </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </table>
+      </div>
+      <% end %>
+    </div>
+    <% end %>
+  </div>
+</div>
 
 <%= link_to 'Back', games_path %> | 
 <%= link_to 'Delete', @game, method: :delete, data: { confirm: 'Are you sure?' } %>
