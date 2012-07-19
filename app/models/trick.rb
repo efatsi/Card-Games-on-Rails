@@ -14,15 +14,15 @@ class Trick < ActiveRecord::Base
 
   def play_trick
     players_in_order.each do |player|
-      get_card_from(player)
+      play_card_from(player)
     end
   end
 
-  def get_card_from(player)
-    player_card = player.play_card(lead_suit)
+  def play_card_from(player, card = nil)
+    card ||= player.choose_card(lead_suit)
     card_position = self.next_position
-    PlayedCard.create(:player_card_id => player_card.id, :trick_id => self.id, :position => card_position)
-    self.update_attributes(:lead_suit => player_card.suit) if player == leader
+    PlayedCard.create(:player_card_id => card.id, :trick_id => self.id, :position => card_position)
+    self.update_attributes(:lead_suit => card.suit) if player == leader
   end
 
   def next_position

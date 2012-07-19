@@ -11,4 +11,9 @@ class PlayerCard < ActiveRecord::Base
   
   delegate :suit, :value, :in_english, :to => :card
   
+  
+  def is_valid?(lead_suit)
+    player.has_none_of?(lead_suit) || suit == lead_suit
+  end
+  
 end

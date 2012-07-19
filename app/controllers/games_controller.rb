@@ -14,6 +14,18 @@ class GamesController < ApplicationController
     @hand = current_user.hand
     @round_over = @game.round_over
     @trick_over = @game.trick_over
+    @my_turn = false
+    
+    round = @game.last_round
+    if round
+      trick = round.last_trick 
+      if trick
+        @lead_suit = trick.lead_suit
+        if current_user.current_player == trick.next_player && !@trick_over
+          @my_turn = true
+        end
+      end
+    end
   end
 
   def new
@@ -76,14 +88,20 @@ class GamesController < ApplicationController
     round = @game.last_round
     trick = round.last_trick
     player = trick.next_player
-    trick.get_card_from(player)
-    if trick.played_cards(true).length == 4
+    # raise params[:card].inspect
+    player_choice = PlayerCard.find(params[:card].to_i) if params[:card]
+    trick.play_card_from(player, player_choice)
+    if @game.trick_over
       round.calculate_round_scores
-      round.update_total_scores if round.tricks_played == 13
-      @game.check_for_and_set_winner
+      if @game.round_over
+        round.update_total_scores
+        @game.check_for_and_set_winner
+      end
     end
     redirect_to @game
   end
+  
+  
 
 
   private

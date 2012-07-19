@@ -38,10 +38,10 @@
         <% end %>
         <br />
         <% if @trick_over %>
-        Trick was lead by <%= @last_trick.leader.username %>, and won by <%= @last_trick.trick_winner.username %><br />
-        The lead suit was <%= @last_trick.lead_suit.pluralize %>
+          Trick was lead by <%= @last_trick.leader.username %>, and won by <%= @last_trick.trick_winner.username %><br />
+          The lead suit was <%= @last_trick.lead_suit.pluralize %>
         <% else %>
-        Trick is lead by <%= @last_trick.leader.username %>
+          Trick is lead by <%= @last_trick.leader.username %>, it is <%= @last_trick.next_player.username %>'s turn.
         <% end %>     
       <% end %>
 
@@ -54,7 +54,11 @@
               <% @hand.each do |card| %>
               <tr>
                 <td>
-                  <%= card.in_english %>
+                  <% if @my_turn && card.is_valid?(@lead_suit) %>
+                    <%= button_to card.in_english, play_one_card_game_path(@game, :card => card)%>
+                  <% else %>
+                    <%= card.in_english %>
+                  <% end %>
                 </td>
               </tr>
               <% end %>
