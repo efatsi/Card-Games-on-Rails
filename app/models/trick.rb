@@ -1,6 +1,8 @@
 class Trick < ActiveRecord::Base
 
   attr_accessible :round_id, :leader_id, :lead_suit, :position
+  
+  after_create :start_with_two_of_clubs
 
   belongs_to :round
   belongs_to :leader, :class_name => "Player"
@@ -63,6 +65,12 @@ class Trick < ActiveRecord::Base
       in_order << player_seated_at((leader.seat + i) % 4)
     end
     in_order
+  end
+  
+  def start_with_two_of_clubs
+    if position == 0
+      play_card_from(leader, leader.two_of_clubs)
+    end
   end
 
 end
