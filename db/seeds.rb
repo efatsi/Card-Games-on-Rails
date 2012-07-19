@@ -18,7 +18,11 @@ Card.delete_all
   end
 end
 
-Game.create(:name => "Hearts Baby")
+Game.create(:name => "Hearts Baby1")
+Game.create(:name => "Hearts Baby2")
+Game.create(:name => "Hearts Baby3")
+Game.create(:name => "Hearts Baby4")
+Game.create(:name => "Hearts Baby5")
 
 
 

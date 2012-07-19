@@ -4,6 +4,8 @@ class Round < ActiveRecord::Base
   
   attr_accessible :game_id, :dealer_id, :position
   
+  after_create :create_player_rounds
+  
   belongs_to :game
   belongs_to :dealer, :class_name => "Player"
   has_many :tricks, :dependent => :destroy, :order => "position ASC"
@@ -16,7 +18,6 @@ class Round < ActiveRecord::Base
   delegate :players, :player_seated_at, :to => :game
   
   def play_round
-    create_player_rounds
     deal_cards
     pass_cards
     13.times do

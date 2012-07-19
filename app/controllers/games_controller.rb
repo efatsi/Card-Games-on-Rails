@@ -61,7 +61,6 @@ class GamesController < ApplicationController
   def new_round
     round = Round.create(:game_id => @game.id, :dealer_id => @game.get_new_dealer.id, :position => @game.next_round_position)
     round.deal_cards
-    round.create_player_rounds
     redirect_to @game
   end
 
@@ -81,6 +80,9 @@ class GamesController < ApplicationController
   def new_trick
     round = @game.last_round
     trick = Trick.create(:round_id => round.id, :leader_id => round.get_new_leader.id, :position => round.next_trick_position)
+    if trick.position == 0
+      trick.play_card_from(trick.leader, trick.leader.two_of_clubs)
+    end
     redirect_to @game
   end
   

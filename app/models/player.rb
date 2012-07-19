@@ -55,5 +55,12 @@ class Player < ActiveRecord::Base
     player_rounds.last
   end
   
+  def two_of_clubs
+    player_cards.each do |card|
+      return card if (card.value == "2" && card.suit == "club")
+    end
+    nil
+  end
+  
   
 end
