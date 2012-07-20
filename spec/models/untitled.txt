@@ -1,0 +1,13 @@
+$myDiv.click(function(){
+  $.post('myUrl', function(data){
+    $myHand.html(data);
+  });
+})
+
+respond_to do |format|
+  format.html {
+    if request.xhr?
+      render :partial => 'my_hand', :locals => {}
+    end
+  }
+end

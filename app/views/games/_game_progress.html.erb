@@ -1,0 +1,18 @@
+<% if @game.game_over? %>
+  <h3>GAME'S OVER!!! The winner is <%= @game.winner.username %></h3><br />
+<% else %>
+  <% if @game.rounds.any? && @game.last_round.tricks.any? %>
+    <h3>Last Trick</h3>
+    <% @last_trick = @game.last_round.last_trick %>
+    <% @cards = @last_trick.played_cards %>
+    <% @cards.each do |card| %>
+      <%= card.in_english + " from " + card.player.username %><br />
+    <% end %><br />
+    <% if @trick_over %>
+      Trick was lead by <%= @last_trick.leader.username %>, and won by <%= @last_trick.trick_winner.username %><br />
+      The lead suit was <%= @last_trick.lead_suit.pluralize %>
+    <% else %>
+      Trick is lead by <%= @last_trick.leader.username %>, it is <%= @last_trick.next_player.username %>'s turn.
+    <% end %>     
+  <% end %>
+<% end %>

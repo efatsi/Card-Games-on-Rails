@@ -1,74 +1,26 @@
 <h1><%= @game.name.to_s %></h1>
 
-<% if @game.rounds.empty? %>
-<%= "Players in Game: #{@game.players.map{|p| [p.username, p.total_score]}}"%><br /><br />
-<% else %>
-<%= "Players in Game: #{@game.players.map{|p| [p.username, p.round_score, p.total_score]}}"%><br /><br />
-<% end %>
+<div class ="scoreboard">
+  <%= render :partial => 'scoreboard' %>
+</div>
 
-<div style="float: left; width: auto;">
-  <div class="well">
-    <center>
-      <%= button_to "Fill The Game", fill_game_path(@game) %>
-      <%= button_to "New Round", new_round_game_path(@game) %>
-      <% unless @round_over %>
-        <% if @trick_over %> 
-          <%= button_to "New Trick", new_trick_game_path(@game) %>
-          <%= button_to "Play All But One Trick", play_rest_of_tricks_game_path(@game) %>
-        <% else %>
-          <%= button_to "Play One Card", play_one_card_game_path(@game) %> 
-        <% end %>
-      <% end %>
-    </center>
-  </div>
+<div class="game_buttons">
+  <%= render :partial => 'game_buttons', :game => @game, :round_over => @round_over, :trick_over => @trick_over %>
 </div>
 
 <div style="float: left; width: auto;">
   <div class="span9">
     <div class="well">
-      <% if @game.game_over? %>
-      <h3>GAME'S OVER!!! The winner is <%= @game.winner.username %></h3><br />
-      <% else %>
-        <% if @game.rounds.any? && @game.last_round.tricks.any? %>
-        <h3>Last Trick</h3>
-        <% @last_trick = @game.last_round.last_trick %>
-        <% @cards = @last_trick.played_cards %>
-        <% @cards.each do |card| %>
-        <%= card.in_english + " from " + card.player.username %><br />
-        <% end %>
-        <br />
-        <% if @trick_over %>
-          Trick was lead by <%= @last_trick.leader.username %>, and won by <%= @last_trick.trick_winner.username %><br />
-          The lead suit was <%= @last_trick.lead_suit.pluralize %>
-        <% else %>
-          Trick is lead by <%= @last_trick.leader.username %>, it is <%= @last_trick.next_player.username %>'s turn.
-        <% end %>     
-      <% end %>
-
-      <% if @hand.any? %>
-      <div class="span4">
-        <h3>Your Hand:</h3>
-        <div class="mytable">
-          <table class="table table-striped">
-            <tbody>
-              <% @hand.each do |card| %>
-              <tr>
-                <td>
-                  <% if @my_turn && card.is_valid?(@lead_suit) %>
-                    <%= button_to card.in_english, play_one_card_game_path(@game, :card => card)%>
-                  <% else %>
-                    <%= card.in_english %>
-                  <% end %>
-                </td>
-              </tr>
-              <% end %>
-            </tbody>
-          </table>
-        </table>
+      
+      <div class="game_progress">
+        <%= render :partial => 'game_progress' %>
       </div>
-      <% end %>
+      
+      <div class="my_hand">
+        <%= render :partial => 'my_hand' %>
+      </div>
+      
     </div>
-    <% end %>
   </div>
 </div>
 
