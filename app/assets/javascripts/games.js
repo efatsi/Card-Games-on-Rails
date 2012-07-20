@@ -1,23 +1,13 @@
 $(document).ready(function(){
   $(".game-buttons").find(".play-one-card").click(function(data) {
-    // $(".my-hand").slideToggle("fast");
     var $hand = $(".my-hand");
-    ($hand).text("okay...");
+    $.post(window.location.pathname + "/play_one_card", function(data){
+      ($hand).html(data);
+    });
   });
 });
 
+$("#comment-notice").html('<div class="flash notice"><%= escape_javascript(flash.delete(:notice)) %></div>');
 
 
-// $myDiv.click(function(){
-//   $.post('myUrl', function(data){
-//     $myHand.html(data);
-//   });
-// })
 
-// respond_to do |format|
-//   format.html {
-//     if request.xhr?
-//       render :partial => 'my_hand', :locals => {}
-//     end
-//   }
-// end

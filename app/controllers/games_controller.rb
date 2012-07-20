@@ -81,12 +81,13 @@ class GamesController < ApplicationController
     redirect_to @game
   end
   
-  def play_one_card
+  def play_one_card    
     round = @game.last_round
     trick = round.last_trick
     player = trick.next_player
     player_choice = PlayerCard.find(params[:card].to_i) if params[:card]
     trick.play_card_from(player, player_choice)
+    
     if @game.trick_over
       round.calculate_round_scores
       if @game.round_over
@@ -94,10 +95,21 @@ class GamesController < ApplicationController
         @game.check_for_and_set_winner
       end
     end
+
+    @hand = current_user.hand
+    @my_turn = false
+    if current_user.current_player == trick.next_player && !@trick_over
+      @my_turn = true
+    end
+
     respond_to do |format|
       format.json
       format.html {
-        redirect_to @game
+        if request.xhr?
+          render :partial => 'my_hand', :locals => {:game => @game, :hand => @hand, :my_turn => @my_turn, :lead_suit => trick.lead_suit}
+        else
+          redirect_to @game
+        end
       }
     end
   end
