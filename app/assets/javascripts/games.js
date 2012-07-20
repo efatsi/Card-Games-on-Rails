@@ -1,27 +1,18 @@
 $(document).ready(function(){
-  $(".new-player").click(function() {
-    $(".new-player-form").slideToggle("fast");
+  $(".game-buttons").find(".play-one-card").click(function(data) {
+    // $(".my-hand").slideToggle("fast");
+    var $hand = $(".my-hand");
+    ($hand).text("okay...");
   });
-  $(".new-penalty").click(function() {
-    $(".new-penalty-form").slideToggle("fast");
-  });
-  $(".new-hole").click(function() {
-    $(".new-hole-form").slideToggle("fast");
-  });
-  $(".new-score").click(function() {
-    $(this).next(".new-score-form").slideToggle("fast");
-  });
-  
-  // $myDiv.click(function(){
-  //   $.post('myUrl', function(data){
-  //     $myHand.html(data);
-  //   });
-  // })
-  
 });
 
 
 
+// $myDiv.click(function(){
+//   $.post('myUrl', function(data){
+//     $myHand.html(data);
+//   });
+// })
 
 // respond_to do |format|
 //   format.html {

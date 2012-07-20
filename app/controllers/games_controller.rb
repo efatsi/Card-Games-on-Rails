@@ -94,7 +94,12 @@ class GamesController < ApplicationController
         @game.check_for_and_set_winner
       end
     end
-    redirect_to @game
+    respond_to do |format|
+      format.json
+      format.html {
+        redirect_to @game
+      }
+    end
   end
   
   

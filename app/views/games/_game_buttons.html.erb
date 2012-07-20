@@ -8,7 +8,9 @@
           <%= button_to "New Trick", new_trick_game_path(@game) %>
           <%= button_to "Play All But One Trick", play_rest_of_tricks_game_path(@game) %>
         <% else %>
-          <%= button_to "Play One Card", play_one_card_game_path(@game) %> 
+          <div class="play-one-card">
+            <%= button_to "Play One Card", play_one_card_game_path(@game), :remote => true, :form => {'data-type' => 'json'} %> 
+          </div>
         <% end %>
       <% end %>
     </center>
