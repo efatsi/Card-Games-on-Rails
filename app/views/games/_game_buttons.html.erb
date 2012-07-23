@@ -1,18 +1,22 @@
 <div style="float: left; width: auto;">
   <div class="well">
     <center>
-      <%= button_to "Fill The Game", fill_game_path(@game) %>
-      <%= button_to "New Round", new_round_game_path(@game) %>
-      <% unless @round_over %>
-        <% if @trick_over %> 
-          <%= button_to "New Trick", new_trick_game_path(@game) %>
-          <%= button_to "Play All But One Trick", play_rest_of_tricks_game_path(@game) %>
+      <% unless @game.is_full? %>
+        <%= button_to "Fill The Game", fill_game_path(@game) %>
+      <% else %>
+        <% if @round_over %>
+          <%= button_to "New Round", new_round_game_path(@game), :remote => true, :form_class => "new-round", :class => "button" %>
         <% else %>
-          <div class="play-one-card">
-            <%= button_to "Play One Card", play_one_card_game_path(@game), :remote => true, :form_class => "play-card", :class => "button"%> 
-          </div>
+          <% if @trick_over %> 
+            <%= button_to "New Trick", new_trick_game_path(@game), :remote => true, :form_class => "new-trick", :class => "button" %>
+            <%= button_to "Play All But One Trick", play_rest_of_tricks_game_path(@game) %>
+          <% else %>
+            <div class="play-one-card">
+              <%= button_to "Play One Card", play_one_card_game_path(@game), :remote => true, :form_class => "play-card", :class => "button" %> 
+            </div>
+          <% end %>
         <% end %>
-      <% end %>
+      <% end%>
     </center>
   </div>
 </div>

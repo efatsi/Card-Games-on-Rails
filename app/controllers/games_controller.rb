@@ -59,7 +59,31 @@ class GamesController < ApplicationController
   def new_round
     round = Round.create(:game_id => @game.id, :dealer_id => @game.get_new_dealer.id, :position => @game.next_round_position)
     round.deal_cards
-    redirect_to @game
+    
+    @hand = current_user.hand
+    @round_over = @game.reload.round_over
+    @trick_over = @game.trick_over
+    @my_turn = false
+    if round
+      trick = round.last_trick 
+      if trick
+        @lead_suit = trick.lead_suit
+        if current_user.current_player == trick.next_player && !@trick_over
+          @my_turn = true
+        end
+      end
+    end
+    
+    respond_to do |format|
+      format.html {
+        if request.xhr?
+          render :partial => 'game_page'
+        else
+          redirect_to @game
+        end
+      }
+    end
+    
   end
 
   def play_rest_of_tricks    
@@ -78,7 +102,30 @@ class GamesController < ApplicationController
   def new_trick
     round = @game.last_round
     trick = Trick.create(:round_id => round.id, :leader_id => round.get_new_leader.id, :position => round.next_trick_position)
-    redirect_to @game
+    
+    @hand = current_user.hand
+    @round_over = @game.round_over
+    @trick_over = @game.trick_over
+    @my_turn = false
+    if round
+      trick = round.last_trick 
+      if trick
+        @lead_suit = trick.lead_suit
+        if current_user.current_player == trick.next_player && !@trick_over
+          @my_turn = true
+        end
+      end
+    end
+    
+    respond_to do |format|
+      format.html {
+        if request.xhr?
+          render :partial => 'game_page'
+        else
+          redirect_to @game
+        end
+      }
+    end
   end
   
   def play_one_card
@@ -113,17 +160,13 @@ class GamesController < ApplicationController
     respond_to do |format|
       format.html {
         if request.xhr?
-          render :partial => 'game_page', :locals => {:game => @game, :hand => @hand, :my_turn => @my_turn, :lead_suit => trick.lead_suit}
+          render :partial => 'game_page'
         else
           redirect_to @game
         end
       }
     end
   end
-  
-  
-
-  
   
 
 
@@ -137,6 +180,21 @@ class GamesController < ApplicationController
       Player.create(:user_id => current_user.id, :game_id => @game.id, :seat => @game.next_seat)
     end
   end
-
+  
+  def set_i_variables
+    @hand = current_user.hand
+    @round_over = @game.round_over
+    @trick_over = @game.trick_over
+    @my_turn = false
+    if round
+      trick = round.last_trick 
+      if trick
+        @lead_suit = trick.lead_suit
+        if current_user.current_player == trick.next_player && !@trick_over
+          @my_turn = true
+        end
+      end
+    end
+  end
 
 end
