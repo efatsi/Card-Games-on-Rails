@@ -14,7 +14,11 @@ class PlayerCard < ActiveRecord::Base
   
   
   def is_valid?(lead_suit)
-    player.has_none_of?(lead_suit) || suit == lead_suit
+    if player.is_leading?
+      self.is_valid_lead?
+    else
+      suit == lead_suit || player.has_none_of?(lead_suit)
+    end
   end
   
   def is_valid_lead?
