@@ -1,28 +1,9 @@
 <h1><%= @game.name.to_s %></h1>
 
-<div class ="scoreboard">
-  <%= render :partial => 'scoreboard' %>
-</div>
+<div id="game-page">
+  <%= render :partial => 'game_page' %>
+<div>
 
-<div class="game-buttons">
-  <%= render :partial => 'game_buttons', :game => @game, :round_over => @round_over, :trick_over => @trick_over %>
-</div>
-
-<div style="float: left; width: auto;">
-  <div class="span9">
-    <div class="well">
-      
-      <div class="game-progress">
-        <%= render :partial => 'game_progress' %>
-      </div>
-      
-      <div id="my-hand">
-        <%= render :partial => 'my_hand' %>
-      </div>
-      
-    </div>
-  </div>
-</div>
 
 <%= link_to 'Back', games_path %> | 
 <%= link_to 'Delete', @game, method: :delete, data: { confirm: 'Are you sure?' } %>

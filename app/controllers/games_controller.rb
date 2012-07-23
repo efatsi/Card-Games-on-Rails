@@ -95,21 +95,34 @@ class GamesController < ApplicationController
         @game.check_for_and_set_winner
       end
     end
+    
     @hand = current_user.hand
+    @round_over = @game.round_over
+    @trick_over = @game.trick_over
     @my_turn = false
-    if current_user.current_player == trick.next_player && !@trick_over
-      @my_turn = true
+    if round
+      trick = round.last_trick 
+      if trick
+        @lead_suit = trick.lead_suit
+        if current_user.current_player == trick.next_player && !@trick_over
+          @my_turn = true
+        end
+      end
     end
+    
     respond_to do |format|
       format.html {
         if request.xhr?
-          render :partial => 'my_hand', :locals => {:game => @game, :hand => @hand, :my_turn => @my_turn, :lead_suit => trick.lead_suit}
+          render :partial => 'game_page', :locals => {:game => @game, :hand => @hand, :my_turn => @my_turn, :lead_suit => trick.lead_suit}
         else
           redirect_to @game
         end
       }
     end
   end
+  
+  
+
   
   
 
