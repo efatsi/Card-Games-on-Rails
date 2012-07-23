@@ -7,6 +7,7 @@ describe PlayerCard do
     @user = FactoryGirl.create(:user, :username => "p_c_user")
     @player = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user.id)
     @round = FactoryGirl.create(:round, :game_id => @game.id, :dealer_id => @player.id)
+    @trick = FactoryGirl.create(:trick, :round_id => @round.id, :leader_id => @player.id + 1)
     @c1 = FactoryGirl.create(:card, :suit => "club", :value => "2")
     @c2 = FactoryGirl.create(:card, :suit => "club", :value => "5")
     @c3 = FactoryGirl.create(:card, :suit => "heart", :value => "5")

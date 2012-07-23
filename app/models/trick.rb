@@ -25,6 +25,8 @@ class Trick < ActiveRecord::Base
     card_position = self.next_position
     PlayedCard.create(:player_card_id => card.id, :trick_id => self.id, :position => card_position)
     self.update_attributes(:lead_suit => card.suit) if player == leader
+    round.hearts_broken = true if card.suit == "heart"
+    round.save
   end
 
   def next_position
@@ -68,9 +70,8 @@ class Trick < ActiveRecord::Base
   end
   
   def start_with_two_of_clubs
-    if position == 100
+    if position == 0 && Rails.env != "test"
       play_card_from(leader, leader.two_of_clubs)
     end
   end
-
 end
