@@ -5,7 +5,7 @@
         <%= button_to "Fill The Game", fill_game_path(@game), :remote => true, :form_class => "fill-game", :class => "button" %>
       <% else %>
         <% if @round_over %>
-          <%= button_to "New Round", new_round_game_path(@game), :remote => false, :form_class => "new-round", :class => "button" %>
+          <%= button_to "New Round", new_round_game_path(@game), :remote => true, :form_class => "new-round", :class => "button" %>
         <% else %>
           <% if @trick_over %> 
             <%= button_to "New Trick", new_trick_game_path(@game), :remote => true, :form_class => "new-trick", :class => "button" %>

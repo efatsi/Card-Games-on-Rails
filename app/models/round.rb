@@ -127,7 +127,7 @@ class Round < ActiveRecord::Base
   def fill_passing_sets
     card_passing_sets.each do |set|
       (3 - set.player_cards.length).times do |i|
-        set.player_cards << set.player.player_cards[i]
+        set.player_cards << set.player.hand[i]
       end
     end
   end
