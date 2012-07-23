@@ -101,7 +101,6 @@ class GamesController < ApplicationController
       @my_turn = true
     end
     respond_to do |format|
-      format.json
       format.html {
         if request.xhr?
           render :partial => 'my_hand', :locals => {:game => @game, :hand => @hand, :my_turn => @my_turn, :lead_suit => trick.lead_suit}
