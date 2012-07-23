@@ -1,5 +1,5 @@
 $(document).ready(function(){
-  $('form.play-card').on("ajax:success", function(event, data){
+  $('form.play-card').live("ajax:success", function(event, data){
     // console.log(data);
     $("#game-page").html(data);
   });
