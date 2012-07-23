@@ -18,6 +18,7 @@ class Player < ActiveRecord::Base
   delegate :round_score, :to => :last_player_round
   delegate :hearts_broken, :to => :last_player_round
   delegate :leader, :to => :last_player_round
+  delegate :card_passing_set, :to => :last_player_round
   
   def hand
     self.reload.player_cards(true).joins("LEFT JOIN played_cards ON played_cards.player_card_id = player_cards.id").where("played_cards.id IS NULL").readonly(false)

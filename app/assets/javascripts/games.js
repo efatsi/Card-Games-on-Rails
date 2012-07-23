@@ -18,5 +18,17 @@ $(document).ready(function(){
   $('form.pass-cards').live("ajax:success", function(event, data){
     $("#game-page").html(data);
   });
+
+  $('form.choose-to-pass').live("ajax:success", function(event, data){
+    $("#my-hand").html(data);
+  });
+
+
+  $('form.fill-passing-sets').live("ajax:success", function(event, data){
+    $("#game-page").html(data);
+  });
+  
+  
+  
   
 });

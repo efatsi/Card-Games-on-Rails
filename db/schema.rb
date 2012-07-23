@@ -13,20 +13,17 @@
 
 ActiveRecord::Schema.define(:version => 20120723202031) do
 
+  create_table "card_passing_sets", :force => true do |t|
+    t.integer  "player_round_id"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
   create_table "cards", :force => true do |t|
     t.string   "suit"
     t.string   "value"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
-  end
-
-  create_table "cards_to_passes", :force => true do |t|
-    t.integer  "player_round_id"
-    t.integer  "card1_id"
-    t.integer  "card2_id"
-    t.integer  "card3_id"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
   end
 
   create_table "games", :force => true do |t|
@@ -47,8 +44,9 @@ ActiveRecord::Schema.define(:version => 20120723202031) do
   create_table "player_cards", :force => true do |t|
     t.integer  "player_id"
     t.integer  "card_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.integer  "card_passing_set_id"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
   end
 
   create_table "player_rounds", :force => true do |t|
@@ -71,10 +69,9 @@ ActiveRecord::Schema.define(:version => 20120723202031) do
   create_table "rounds", :force => true do |t|
     t.integer  "game_id"
     t.integer  "dealer_id"
-    t.boolean  "hearts_broken", :default => false
-    t.integer  "position",      :default => 0
-    t.datetime "created_at",                       :null => false
-    t.datetime "updated_at",                       :null => false
+    t.integer  "position",   :default => 0
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
   end
 
   create_table "tricks", :force => true do |t|

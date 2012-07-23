@@ -105,7 +105,7 @@ class Round < ActiveRecord::Base
   def create_player_rounds_and_card_passing_sets
     players.each do |player|
       pr = PlayerRound.create(:player_id => player.id, :round_id => self.id)
-      CardsToPass.create(:player_round_id => pr.id)
+      CardPassingSet.create(:player_round_id => pr.id)
     end
   end
   
@@ -124,5 +124,12 @@ class Round < ActiveRecord::Base
     nil
   end
       
+  def fill_passing_sets
+    card_passing_sets.each do |set|
+      (3 - set.player_cards.length).times do |i|
+        set.player_cards << set.player.player_cards[i]
+      end
+    end
+  end
   
 end

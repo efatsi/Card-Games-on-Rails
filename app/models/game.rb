@@ -74,8 +74,8 @@ class Game < ActiveRecord::Base
     self.players.where("seat = ?", seat).first
   end
   
-  def already_has(user)
-    present_usernames.include?(user.username)
+  def already_has(player)
+    present_usernames.include?(player.username)
   end
   
   def present_usernames

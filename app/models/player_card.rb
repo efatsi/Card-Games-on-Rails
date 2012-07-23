@@ -29,4 +29,8 @@ class PlayerCard < ActiveRecord::Base
     end
   end
   
+  def is_not_chosen
+    card_passing_set_id.nil?
+  end
+  
 end

@@ -11,7 +11,7 @@ class GamesController < ApplicationController
 
   def show
     join_game
-    @hand = current_user.hand
+    @hand = current_player.hand
     @round_over = @game.round_over
     @trick_over = @game.trick_over
     @my_turn = false
@@ -21,9 +21,12 @@ class GamesController < ApplicationController
       trick = round.last_trick 
       if trick
         @lead_suit = trick.lead_suit
-        if current_user.current_player == trick.next_player && !@trick_over
+        if current_player == trick.next_player && !@trick_over
           @my_turn = true
         end
+      else
+        @time_to_pass = true
+        @cards_to_pass = current_player.card_passing_set.player_cards
       end
     end
   end
@@ -54,7 +57,7 @@ class GamesController < ApplicationController
       Player.create(:user_id => u.id, :game_id => @game.id, :seat => @game.reload.next_seat)
     end
     
-    @hand = current_user.hand
+    @hand = current_player.hand
     @round_over = @game.round_over
     @trick_over = @game.trick_over
     @my_turn = false
@@ -63,7 +66,7 @@ class GamesController < ApplicationController
       trick = round.last_trick 
       if trick
         @lead_suit = trick.lead_suit
-        if current_user.current_player == trick.next_player && !@trick_over
+        if current_player == trick.next_player && !@trick_over
           @my_turn = true
         end
       end
@@ -84,7 +87,7 @@ class GamesController < ApplicationController
     round = Round.create(:game_id => @game.id, :dealer_id => @game.get_new_dealer.id, :position => @game.next_round_position)
     round.deal_cards
     
-    @hand = current_user.hand
+    @hand = current_player.hand
     @round_over = @game.reload.round_over
     @trick_over = @game.trick_over
     @my_turn = false
@@ -92,7 +95,7 @@ class GamesController < ApplicationController
       trick = round.last_trick 
       if trick
         @lead_suit = trick.lead_suit
-        if current_user.current_player == trick.next_player && !@trick_over
+        if current_player == trick.next_player && !@trick_over
           @my_turn = true
         end
       end
@@ -127,7 +130,7 @@ class GamesController < ApplicationController
     round = @game.last_round
     trick = Trick.create(:round_id => round.id, :leader_id => round.get_new_leader.id, :position => round.next_trick_position)
     
-    @hand = current_user.hand
+    @hand = current_player.hand
     @round_over = @game.round_over
     @trick_over = @game.trick_over
     @my_turn = false
@@ -135,7 +138,7 @@ class GamesController < ApplicationController
       trick = round.last_trick 
       if trick
         @lead_suit = trick.lead_suit
-        if current_user.current_player == trick.next_player && !@trick_over
+        if current_player == trick.next_player && !@trick_over
           @my_turn = true
         end
       end
@@ -167,7 +170,7 @@ class GamesController < ApplicationController
       end
     end
     
-    @hand = current_user.hand
+    @hand = current_player.hand
     @round_over = @game.round_over
     @trick_over = @game.trick_over
     @my_turn = false
@@ -175,7 +178,7 @@ class GamesController < ApplicationController
       trick = round.last_trick 
       if trick
         @lead_suit = trick.lead_suit
-        if current_user.current_player == trick.next_player && !@trick_over
+        if current_player == trick.next_player && !@trick_over
           @my_turn = true
         end
       end
@@ -197,7 +200,7 @@ class GamesController < ApplicationController
     round = @game.last_round
     round.pass_cards
     
-    @hand = current_user.hand
+    @hand = current_player.hand
     @round_over = @game.round_over
     @trick_over = @game.trick_over
     @my_turn = false
@@ -205,7 +208,7 @@ class GamesController < ApplicationController
       trick = round.last_trick 
       if trick
         @lead_suit = trick.lead_suit
-        if current_user.current_player == trick.next_player && !@trick_over
+        if current_player == trick.next_player && !@trick_over
           @my_turn = true
         end
       end
@@ -223,11 +226,65 @@ class GamesController < ApplicationController
   
   def choose_card_to_pass
     player_choice = PlayerCard.find(params[:card].to_i)
-    current_user.card_passing_set.cards << player_choice
+    current_player.card_passing_set.player_cards << player_choice
+    
+    @hand = current_player.hand
+    @round_over = @game.round_over
+    @trick_over = @game.trick_over
+    @my_turn = false
+
+    round = @game.last_round
+    if round
+      trick = round.last_trick 
+      if trick
+        @lead_suit = trick.lead_suit
+        if current_player == trick.next_player && !@trick_over
+          @my_turn = true
+        end
+      else
+        @time_to_pass = true
+      end
+    end
+    
+    @cards_to_pass = current_player.card_passing_set.player_cards
+    
+    respond_to do |format|
+      format.html {
+        if request.xhr?
+          render :partial => 'my_hand'
+        else
+          redirect_to @game
+        end
+      }
+    end
   end
   
   def fill_passing_sets
+    round = @game.last_round
+    round.fill_passing_sets
     
+    @hand = current_player.hand
+    @round_over = @game.round_over
+    @trick_over = @game.trick_over
+    @my_turn = false
+    if round
+      trick = round.last_trick 
+      if trick
+        @lead_suit = trick.lead_suit
+        if current_player == trick.next_player && !@trick_over
+          @my_turn = true
+        end
+      end
+    end
+    respond_to do |format|
+      format.html {
+        if request.xhr?
+          render :partial => 'game_page'
+        else
+          redirect_to @game
+        end
+      }
+    end
   end
   
 
@@ -242,20 +299,5 @@ class GamesController < ApplicationController
     end
   end
   
-  def set_i_variables
-    @hand = current_user.hand
-    @round_over = @game.round_over
-    @trick_over = @game.trick_over
-    @my_turn = false
-    if round
-      trick = round.last_trick 
-      if trick
-        @lead_suit = trick.lead_suit
-        if current_user.current_player == trick.next_player && !@trick_over
-          @my_turn = true
-        end
-      end
-    end
-  end
 
 end

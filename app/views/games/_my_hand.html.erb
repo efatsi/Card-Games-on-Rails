@@ -8,9 +8,15 @@
             <tr>
               <td>
                 <% if @time_to_pass %>
-                  <%= button_to card.in_english, choose_card_to_pass_game_path(@game, :card => card), :remote => false, :form_class => "choose-to-pass", :class => "button"%>                  
+                  <% if card.is_not_chosen &&  @cards_to_pass.length != 3 %>
+                    <%= button_to card.in_english, choose_card_to_pass_game_path(@game, :card => card), :remote => true, :form_class => "choose-to-pass", :class => "button"%>     
+                  <% elsif !card.is_not_chosen %>
+                    <%= card.in_english + " has been chosen" %>
+                  <% else %>
+                    <%= card.in_english %>
+                  <% end %>
                 <% elsif @my_turn && card.is_valid?(@lead_suit) %>
-                  <%= button_to card.in_english, play_one_card_game_path(@game, :card => card), :remote => true, :form_class => "play-card", :class => "button"%>
+                    <%= button_to card.in_english, play_one_card_game_path(@game, :card => card), :remote => true, :form_class => "play-card", :class => "button"%>
                 <% else %>
                   <%= card.in_english %>
                 <% end %>
