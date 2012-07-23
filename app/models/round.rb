@@ -5,12 +5,13 @@ class Round < ActiveRecord::Base
   attr_accessible :game_id, :dealer_id, :position
   attr_accessor :hearts_broken
   
-  after_create :create_player_rounds_and_cards_to_pass
+  after_create :create_player_rounds_and_card_passing_sets
   
   belongs_to :game
   belongs_to :dealer, :class_name => "Player"
   has_many :tricks, :dependent => :destroy, :order => "position ASC"
   has_many :player_rounds
+  has_many :card_passing_sets, :through => :player_rounds
   
   validates_presence_of :game_id
   validates_presence_of :dealer_id
@@ -46,22 +47,9 @@ class Round < ActiveRecord::Base
   
   def pass_cards(direction = direction_for_round(position))
     return if direction == :none
-    cards_to_pass = collect_cards_to_pass
-    do_the_passing(cards_to_pass, direction)
-  end
-  
-  def collect_cards_to_pass
-    cards_to_pass = [ [] , [] , [] , [] ]
-    players.each do |player|
-      cards_to_pass[player.seat] = player.choose_cards_to_pass
-    end
-    cards_to_pass
-  end
-  
-  def do_the_passing(cards_to_pass, direction)
     giving_shift = PASS_SHIFT[direction]
-    cards_to_pass.each do |set|
-      set.each do |player_card|
+    card_passing_sets.each do |set|
+      set.player_cards.each do |player_card|
         new_seat = (player_card.player.seat + giving_shift) % 4
         player_card.update_attributes(:player_id => player_seated_at(new_seat).id)
       end
@@ -114,7 +102,7 @@ class Round < ActiveRecord::Base
     [:left, :across, :right, :none][position % 4]
   end
   
-  def create_player_rounds_and_cards_to_pass
+  def create_player_rounds_and_card_passing_sets
     players.each do |player|
       pr = PlayerRound.create(:player_id => player.id, :round_id => self.id)
       CardsToPass.create(:player_round_id => pr.id)

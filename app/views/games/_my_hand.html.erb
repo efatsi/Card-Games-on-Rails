@@ -7,7 +7,9 @@
           <% @hand.each do |card| %>
             <tr>
               <td>
-                <% if @my_turn && card.is_valid?(@lead_suit) %>
+                <% if @time_to_pass %>
+                  <%= button_to card.in_english, choose_card_to_pass_game_path(@game, :card => card), :remote => false, :form_class => "choose-to-pass", :class => "button"%>                  
+                <% elsif @my_turn && card.is_valid?(@lead_suit) %>
                   <%= button_to card.in_english, play_one_card_game_path(@game, :card => card), :remote => true, :form_class => "play-card", :class => "button"%>
                 <% else %>
                   <%= card.in_english %>

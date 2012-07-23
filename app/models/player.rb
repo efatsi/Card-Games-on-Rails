@@ -46,12 +46,13 @@ class Player < ActiveRecord::Base
   end
   
   def choose_cards_to_pass
-    selection = []
-    until(selection.length == 3)
+    passing_set = last_player_round.card_passing_set
+    until(passing_set.cards.length == 3)
       choice = select_random_card
-      selection << choice unless selection.include?(choice)
+      unless passing_set.cards.include?(choice)
+        choice.update_attributes(:card_passing_set_id => passing_set.id)
+      end      
     end
-    selection
   end
   
   def last_player_round

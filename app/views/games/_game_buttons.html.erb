@@ -9,6 +9,7 @@
         <% else %>
           <% if @trick_over %> 
             <%= button_to "New Trick", new_trick_game_path(@game), :remote => true, :form_class => "new-trick", :class => "button" %>
+            <%= button_to "Fill Passing Sets", fill_passing_sets_game_path(@game), :remote => false, :form_class => "pass-cards", :class => "button" %>            
             <%= button_to "Pass Cards", pass_cards_game_path(@game), :remote => true, :form_class => "pass-cards", :class => "button" %>
             <%= button_to "Play All But One Trick", play_rest_of_tricks_game_path(@game) %>
           <% else %>

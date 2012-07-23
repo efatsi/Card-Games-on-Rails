@@ -4,6 +4,7 @@ class PlayerRound < ActiveRecord::Base
   
   belongs_to :player
   belongs_to :round
+  has_one :card_passing_set
   
   validates_presence_of :player_id
   validates_presence_of :round_id

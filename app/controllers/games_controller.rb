@@ -221,7 +221,15 @@ class GamesController < ApplicationController
     end
   end
   
-
+  def choose_card_to_pass
+    player_choice = PlayerCard.find(params[:card].to_i)
+    current_user.card_passing_set.cards << player_choice
+  end
+  
+  def fill_passing_sets
+    
+  end
+  
 
   private
   def assign_game    

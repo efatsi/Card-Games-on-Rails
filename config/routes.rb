@@ -7,6 +7,8 @@ CardGames::Application.routes.draw do
     post :play_rest_of_tricks, :on => :member
     post :play_one_card, :on => :member
     post :pass_cards, :on => :member
+    post :choose_card_to_pass, :on => :member
+    post :fill_passing_sets, :on => :member
   end
   
   resources :users
