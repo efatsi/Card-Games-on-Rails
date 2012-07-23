@@ -192,6 +192,35 @@ class GamesController < ApplicationController
     end
   end
   
+  
+  def pass_cards
+    round = @game.last_round
+    round.pass_cards
+    
+    @hand = current_user.hand
+    @round_over = @game.round_over
+    @trick_over = @game.trick_over
+    @my_turn = false
+    if round
+      trick = round.last_trick 
+      if trick
+        @lead_suit = trick.lead_suit
+        if current_user.current_player == trick.next_player && !@trick_over
+          @my_turn = true
+        end
+      end
+    end
+    respond_to do |format|
+      format.html {
+        if request.xhr?
+          render :partial => 'game_page'
+        else
+          redirect_to @game
+        end
+      }
+    end
+  end
+  
 
 
   private

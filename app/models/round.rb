@@ -2,9 +2,10 @@ class Round < ActiveRecord::Base
   
   PASS_SHIFT = {:left => 1, :across => 2, :right => 3, :none => 0}
   
-  attr_accessible :game_id, :dealer_id, :hearts_broken, :position
+  attr_accessible :game_id, :dealer_id, :position
+  attr_accessor :hearts_broken
   
-  after_create :create_player_rounds
+  after_create :create_player_rounds_and_cards_to_pass
   
   belongs_to :game
   belongs_to :dealer, :class_name => "Player"
@@ -113,9 +114,10 @@ class Round < ActiveRecord::Base
     [:left, :across, :right, :none][position % 4]
   end
   
-  def create_player_rounds
+  def create_player_rounds_and_cards_to_pass
     players.each do |player|
-      PlayerRound.create(:player_id => player.id, :round_id => self.id)
+      pr = PlayerRound.create(:player_id => player.id, :round_id => self.id)
+      CardsToPass.create(:player_round_id => pr.id)
     end
   end
   

@@ -14,5 +14,9 @@ $(document).ready(function(){
   $('form.fill-game').live("ajax:success", function(event, data){
     $("#game-page").html(data);
   });
+
+  $('form.pass-cards').live("ajax:success", function(event, data){
+    $("#game-page").html(data);
+  });
   
 });

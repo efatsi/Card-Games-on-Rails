@@ -6,6 +6,7 @@ CardGames::Application.routes.draw do
     post :new_trick, :on => :member
     post :play_rest_of_tricks, :on => :member
     post :play_one_card, :on => :member
+    post :pass_cards, :on => :member
   end
   
   resources :users
