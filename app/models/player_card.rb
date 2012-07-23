@@ -10,10 +10,19 @@ class PlayerCard < ActiveRecord::Base
   validates_presence_of :card_id
   
   delegate :suit, :value, :in_english, :to => :card
+  delegate :hearts_broken, :to => :player
   
   
   def is_valid?(lead_suit)
     player.has_none_of?(lead_suit) || suit == lead_suit
+  end
+  
+  def is_valid_lead?
+    if suit == "heart"
+      hearts_broken || player.only_has?("heart")
+    else
+      true
+    end
   end
   
 end

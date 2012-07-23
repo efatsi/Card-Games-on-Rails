@@ -9,4 +9,7 @@ class PlayerRound < ActiveRecord::Base
   validates_presence_of :round_id
   validates_presence_of :round_score
   
+  delegate :hearts_broken, :to => :round
+  delegate :leader, :to => :round
+  
 end

@@ -2,7 +2,7 @@ class Round < ActiveRecord::Base
   
   PASS_SHIFT = {:left => 1, :across => 2, :right => 3, :none => 0}
   
-  attr_accessible :game_id, :dealer_id, :position
+  attr_accessible :game_id, :dealer_id, :hearts_broken, :position
   
   after_create :create_player_rounds
   
@@ -16,6 +16,7 @@ class Round < ActiveRecord::Base
   validates_presence_of :position
   
   delegate :players, :player_seated_at, :to => :game
+  delegate :leader, :to => :last_trick
   
   def play_round
     deal_cards

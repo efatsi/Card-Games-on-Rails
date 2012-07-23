@@ -16,17 +16,21 @@ class Player < ActiveRecord::Base
   
   delegate :username, :to => :user
   delegate :round_score, :to => :last_player_round
+  delegate :hearts_broken, :to => :last_player_round
+  delegate :leader, :to => :last_player_round
   
   def hand
     self.reload.player_cards(true).joins("LEFT JOIN played_cards ON played_cards.player_card_id = player_cards.id").where("played_cards.id IS NULL").readonly(false)
   end
   
   def choose_card(lead_suit)
-    if has_none_of?(lead_suit)
-      select_random_card
+    if is_leading?
+      hand.each {|c| return c if c.is_valid_lead?}
     else
-      hand.each do |card|
-        return card if card.suit == lead_suit
+      if has_none_of?(lead_suit)
+        select_random_card
+      else
+        hand.each {|c| return c if c.is_valid?(lead_suit) }
       end
     end
   end
@@ -34,6 +38,13 @@ class Player < ActiveRecord::Base
   def has_none_of?(suit)
     self.hand.each do |card|
       return false if card.suit == suit
+    end
+    true
+  end
+  
+  def only_has?(suit)
+    self.hand.each do |card|
+      return false if card.suit != suit
     end
     true
   end
@@ -60,6 +71,10 @@ class Player < ActiveRecord::Base
       return card if (card.value == "2" && card.suit == "club")
     end
     nil
+  end
+  
+  def is_leading?
+    self == leader
   end
   
   

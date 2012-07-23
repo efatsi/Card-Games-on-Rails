@@ -68,7 +68,7 @@ class Trick < ActiveRecord::Base
   end
   
   def start_with_two_of_clubs
-    if position == 0
+    if position == 100
       play_card_from(leader, leader.two_of_clubs)
     end
   end

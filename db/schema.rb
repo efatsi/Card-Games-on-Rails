@@ -62,9 +62,10 @@ ActiveRecord::Schema.define(:version => 20120717200112) do
   create_table "rounds", :force => true do |t|
     t.integer  "game_id"
     t.integer  "dealer_id"
-    t.integer  "position",   :default => 0
-    t.datetime "created_at",                :null => false
-    t.datetime "updated_at",                :null => false
+    t.boolean  "hearts_broken", :default => false
+    t.integer  "position",      :default => 0
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
   end
 
   create_table "tricks", :force => true do |t|

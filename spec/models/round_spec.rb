@@ -35,6 +35,11 @@ describe Round do
       it "should know who the dealer is" do
         @round.dealer.should == @player1
       end
+      
+      it "should know that hearts haven't been broken yet" do
+        @round.hearts_broken.should == false
+      end
+      
     end
 
   end

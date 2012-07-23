@@ -51,21 +51,21 @@ describe Trick do
     context "getting a card from a player" do
       
       it "should increment PlayedCard existence by 1" do
-        expect { @trick.get_card_from(@player1) }.to change{PlayedCard.count}.by(1)
+        expect { @trick.play_card_from(@player1) }.to change{PlayedCard.count}.by(1)
       end 
       
       it "should decrement the players hand count by 1" do
-        expect { @trick.get_card_from(@player2) }.to change{@player2.hand.length}.by(-1)
+        expect { @trick.play_card_from(@player2) }.to change{@player2.hand.length}.by(-1)
       end
       
       it "should be accessible from the trick" do
-        expect { @trick.get_card_from(@player3) }.to change{@trick.played_cards(true).length}.by(1)        
+        expect { @trick.play_card_from(@player3) }.to change{@trick.played_cards(true).length}.by(1)        
       end
       
       it "should increment the position of the played_cards" do
-        @trick.get_card_from(@player1)
+        @trick.play_card_from(@player1)
         @trick.reload
-        @trick.get_card_from(@player2)
+        @trick.play_card_from(@player2)
         [@player1.played_cards.first.position, @player2.played_cards.first.position].should == [0,1]
       end
     end
@@ -73,24 +73,25 @@ describe Trick do
     context "setting the lead suit" do
       
       it "should set the lead suit after the first card is played" do
-        expect { @trick.get_card_from(@player2) }.to change{@trick.lead_suit}.from(nil)   
+        @trick.update_attributes(:leader_id => @player2.id)
+        expect { @trick.play_card_from(@player2) }.to change{@trick.lead_suit}.from(nil)   
         %w(club heart spade diamond).should include(@trick.lead_suit)     
       end
       
       it "should not change the lead suit after the first card is played" do
-        @trick.get_card_from(@player2)
+        @trick.play_card_from(@player2)
         @trick.reload
-        expect { @trick.get_card_from(@player3) }.to_not change{@trick.lead_suit}
+        expect { @trick.play_card_from(@player3) }.to_not change{@trick.lead_suit}
       end
     end
     
     context "after all cards are played" do
       
       before do
-        @trick.get_card_from(@player1); @trick.reload
-        @trick.get_card_from(@player2); @trick.reload
-        @trick.get_card_from(@player3); @trick.reload
-        @trick.get_card_from(@player4); @trick.reload
+        @trick.play_card_from(@player1); @trick.reload
+        @trick.play_card_from(@player2); @trick.reload
+        @trick.play_card_from(@player3); @trick.reload
+        @trick.play_card_from(@player4); @trick.reload
       end
       
       it "should be able to determine a winning card" do
