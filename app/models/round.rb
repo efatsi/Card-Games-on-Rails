@@ -28,7 +28,7 @@ class Round < ActiveRecord::Base
     end
     calculate_round_scores
     update_total_scores
-    print players.map{|p| p.reload.total_score}.inspect
+    # print players.map{|p| p.reload.total_score}.inspect
   end
   
   def deal_cards

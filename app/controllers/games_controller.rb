@@ -49,9 +49,7 @@ class GamesController < ApplicationController
   # UNRESTFUL ACTIONS
 
   def fill
-    # raise @game.players.length.inspect
     (4 - @game.players.length).times do |i|
-      # raise "here".inspect
       u = User.create(:username => "cp#{User.all.length}")
       Player.create(:user_id => u.id, :game_id => @game.id, :seat => @game.reload.next_seat)
     end
@@ -87,7 +85,6 @@ class GamesController < ApplicationController
     round = @game.last_round
     trick = round.last_trick
     player = trick.next_player
-    # raise params[:card].inspect
     player_choice = PlayerCard.find(params[:card].to_i) if params[:card]
     trick.play_card_from(player, player_choice)
     if @game.trick_over

@@ -25,12 +25,12 @@ class Player < ActiveRecord::Base
   
   def choose_card(lead_suit)
     if is_leading?
-      hand.each {|c| return c if c.is_valid_lead?}
+      hand.shuffle.each {|c| return c if c.is_valid_lead?}
     else
       if has_none_of?(lead_suit)
         select_random_card
       else
-        hand.each {|c| return c if c.is_valid?(lead_suit) }
+        hand.shuffle.each {|c| return c if c.is_valid?(lead_suit) }
       end
     end
   end
