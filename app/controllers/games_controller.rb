@@ -81,7 +81,7 @@ class GamesController < ApplicationController
     redirect_to @game
   end
   
-  def play_one_card    
+  def play_one_card
     round = @game.last_round
     trick = round.last_trick
     player = trick.next_player
@@ -95,13 +95,11 @@ class GamesController < ApplicationController
         @game.check_for_and_set_winner
       end
     end
-
     @hand = current_user.hand
     @my_turn = false
     if current_user.current_player == trick.next_player && !@trick_over
       @my_turn = true
     end
-
     respond_to do |format|
       format.json
       format.html {
