@@ -6,8 +6,12 @@ $(document).ready(function(){
   $('form.new-trick').live("ajax:success", function(event, data){
     $("#game-page").html(data);
   });  
-  
+
   $('form.new-round').live("ajax:success", function(event, data){
+    $("#game-page").html(data);
+  });
+
+  $('form.fill-game').live("ajax:success", function(event, data){
     $("#game-page").html(data);
   });
   

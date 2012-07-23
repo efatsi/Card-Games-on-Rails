@@ -53,7 +53,31 @@ class GamesController < ApplicationController
       u = User.create(:username => "cp#{User.all.length}")
       Player.create(:user_id => u.id, :game_id => @game.id, :seat => @game.reload.next_seat)
     end
-    redirect_to @game
+    
+    @hand = current_user.hand
+    @round_over = @game.round_over
+    @trick_over = @game.trick_over
+    @my_turn = false
+    round = @game.reload.last_round
+    if round
+      trick = round.last_trick 
+      if trick
+        @lead_suit = trick.lead_suit
+        if current_user.current_player == trick.next_player && !@trick_over
+          @my_turn = true
+        end
+      end
+    end
+    
+    respond_to do |format|
+      format.html {
+        if request.xhr?
+          render :partial => 'game_page'
+        else
+          redirect_to @game
+        end
+      }
+    end
   end
 
   def new_round

@@ -2,7 +2,7 @@
   <div class="well">
     <center>
       <% unless @game.is_full? %>
-        <%= button_to "Fill The Game", fill_game_path(@game) %>
+        <%= button_to "Fill The Game", fill_game_path(@game), :remote => true, :form_class => "fill-game", :class => "button" %>
       <% else %>
         <% if @round_over %>
           <%= button_to "New Round", new_round_game_path(@game), :remote => true, :form_class => "new-round", :class => "button" %>
