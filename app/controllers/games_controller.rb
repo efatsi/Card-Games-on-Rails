@@ -32,30 +32,6 @@ class GamesController < ApplicationController
     redirect_to games_url
   end
 
-  # UNRESTFUL ACTIONS
-
-  def fill
-    (4 - @game.players.length).times do |i|
-      u = User.create(:username => "cp#{User.all.length}")
-      Player.create(:user_id => u.id, :game_id => @game.id, :seat => @game.reload.next_seat)
-    end
-    reload_game_page
-  end
-
-  def play_all_but_one_trick  
-    round = @game.last_round
-    (12 - round.tricks_played).times do
-      if round.tricks_played != 13
-        trick = Trick.create(:round_id => round.id, :leader_id => round.get_new_leader.id, :position => round.next_trick_position)
-        trick.play_trick
-      end  
-    end  
-    round.calculate_round_scores
-    round.update_total_scores if round.tricks_played == 13
-    
-    redirect_to @game
-  end
-
   private
   def join_game
     unless @game.already_has(current_user) or @game.is_full?

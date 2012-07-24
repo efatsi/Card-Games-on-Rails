@@ -2,7 +2,7 @@
   <div class="well">
     <center>
       <% unless @game.is_full? %>
-        <%= button_to "Fill", fill_game_path(@game), {:remote => true, :form_class => "game-button", :class => "button"} %>
+        <%= button_to "Fill Game", game_fill_path(@game), {:remote => true, :form_class => "game-button", :class => "button"} %>
       <% else %>
         <% if @game.new_round_time? %>
           <%= button_to "New Round", game_new_round_path(@game), {:remote => true, :form_class => "game-button", :class => "button"} %>
@@ -15,7 +15,7 @@
         <% end%>
         <% if @game.new_trick_time? %>
           <%= button_to "New Trick", game_new_trick_path(@game), {:remote => true, :form_class => "game-button", :class => "button"} %>
-          <%= button_to "Play All But One Trick", play_all_but_one_trick_game_path(@game) %>
+          <%= button_to "Play All But One Trick", game_play_all_but_one_trick_path(@game), {:remote => true, :form_class => "game-button", :class => "button"} %>
         <% end %>
         <% if @game.mid_trick_time? %>
           <%= button_to "Play One Card", game_play_one_card_path(@game), {:remote => true, :form_class => "game-button", :class => "button"} %>
