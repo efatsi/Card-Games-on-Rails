@@ -26,6 +26,10 @@ class Round < ActiveRecord::Base
       CardPassingSet.create(:player_round_id => pr.id)
     end
   end
+
+  def override_card_passing_on_none_rounds
+    self.update_attributes(:cards_have_been_passed => true) if pass_direction == :none
+  end
   
   def play_round
     deal_cards
@@ -170,10 +174,6 @@ class Round < ActiveRecord::Base
   
   def has_no_current_trick?
     tricks.empty? || last_trick.is_over?
-  end
-  
-  def override_card_passing_on_none_rounds
-    self.update_attributes(:cards_have_been_passed => true) if pass_direction == :none
   end
   
 end

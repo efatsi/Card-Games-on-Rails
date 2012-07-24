@@ -95,7 +95,7 @@ describe Trick do
       end
       
       it "should be able to determine a winning card" do
-        @trick.winning_card.should be_an_instance_of PlayedCard
+        @trick.send(:winning_card).should be_an_instance_of PlayedCard
       end
       
       it "should be able to determine the winner" do
@@ -125,12 +125,12 @@ describe Trick do
       end
     
       it "should determine the correct winning card" do
-        @trick.winning_card.should == @pc4
+        @trick.send(:winning_card).should == @pc4
       end
       
       it "should do it again" do
         @c4.update_attributes(:value => "3")
-        @trick.winning_card.should == @pc3
+        @trick.send(:winning_card).should == @pc3
       end
       
       it "should know the trick winning player" do
@@ -161,12 +161,12 @@ describe Trick do
       end
     
       it "should determine the correct winning card" do
-        @trick.winning_card.should == @pc1
+        @trick.send(:winning_card).should == @pc1
       end
       
       it "should do it again" do
         @c4.update_attributes(:suit => "club")
-        @trick.winning_card.should == @pc4
+        @trick.send(:winning_card).should == @pc4
       end
 
       it "should know the trick winning player" do
