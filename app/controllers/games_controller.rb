@@ -68,7 +68,7 @@ class GamesController < ApplicationController
     
   end
 
-  def play_rest_of_tricks    
+  def play_all_but_one_trick  
     round = @game.last_round
     (12 - round.tricks_played).times do
       if round.tricks_played != 13
@@ -176,22 +176,7 @@ class GamesController < ApplicationController
     end
   end
   
-
   private
-  def assign_variables    
-    @game = Game.find(params[:id])
-
-    #my_hand
-    @hand = current_player.try(:hand)
-    @lead_suit = @game.get_lead_suit
-    @my_turn = @game.is_current_player_next?(current_player)
-    
-    #game_progress
-    @last_trick = @game.last_trick
-    @played_cards = @game.played_cards
-    @trick_over = @game.trick_over?
-  end
-
   def join_game
     unless @game.already_has(current_user) or @game.is_full?
       Player.create(:user_id => current_user.id, :game_id => @game.id, :seat => @game.next_seat)

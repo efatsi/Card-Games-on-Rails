@@ -4,7 +4,7 @@ CardGames::Application.routes.draw do
     post :fill, :on => :member
     post :new_round, :on => :member
     post :new_trick, :on => :member
-    post :play_rest_of_tricks, :on => :member
+    post :play_all_but_one_trick, :on => :member
     post :play_one_card, :on => :member
     post :pass_cards, :on => :member
     post :choose_card_to_pass, :on => :member

@@ -15,7 +15,7 @@
         <% end%>
         <% if @game.new_trick_time? %>
           <%= game_button("New Trick",) %>
-          <%= button_to "Play All But One Trick", play_rest_of_tricks_game_path(@game) %>
+          <%= button_to "Play All But One Trick", play_all_but_one_trick_game_path(@game) %>
         <% end %>
         <% if @game.mid_trick_time? %>
           <%= game_button("Play One Card") %>

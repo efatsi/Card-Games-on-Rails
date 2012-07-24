@@ -6,10 +6,15 @@ PlayerCard.delete_all
 PlayedCard.delete_all
 PlayerRound.delete_all
 Card.delete_all
+CardPassingSet.delete_all
 
 # User.delete_all
 # User.create(:username => "efatsi", :password => "secret", :password_confirmation => "secret")
 # User.create(:username => "amelia")
+
+if User.all.empty?
+  User.create(:username => "efatsi", :password => "secret", :password_confirmation => "secret")
+end
 
 # Make all of the cards you need
 %w(club heart spade diamond).each do |suit|
@@ -23,16 +28,8 @@ Game.create(:name => "Hearts Baby2")
 Game.create(:name => "Hearts Baby3")
 Game.create(:name => "Hearts Baby4")
 Game.create(:name => "Hearts Baby5")
-
-
-
-# g = Game.create(:size => 4)
-# u1 = User.create(:username => "user1")
-# u2 = User.create(:username => "user2")
-# u3 = User.create(:username => "user3")
-# u4 = User.create(:username => "user4")
-# Player.create(:game_id => 1, :user_id => u1.id, :seat => 1)
-# Player.create(:game_id => 1, :user_id => u2.id, :seat => 2)
-# Player.create(:game_id => 1, :user_id => u3.id, :seat => 3)
-# Player.create(:game_id => 1, :user_id => u4.id, :seat => 4)
-# r = Round.create(:game_id => g.id, :dealer_id => u1.id)
+Game.create(:name => "Hearts Baby6")
+Game.create(:name => "Hearts Baby7")
+Game.create(:name => "Hearts Baby8")
+Game.create(:name => "Hearts Baby9")
+Game.create(:name => "Hearts Baby10")
