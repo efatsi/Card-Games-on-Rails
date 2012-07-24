@@ -10,7 +10,9 @@ class ApplicationController < ActionController::Base
   end
   
   def assign_variables    
-    @game = Game.find(params[:id])
+    id = params[:id] || params[:game_id]
+
+    @game = Game.find(id)
     #my_hand
     @hand = current_player.try(:hand)
     @lead_suit = @game.get_lead_suit
