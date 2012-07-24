@@ -42,6 +42,7 @@ class GamesController < ApplicationController
     respond_to do |format|
       format.html {
         if request.xhr?
+          assign_variables
           render :partial => 'game_page'
         else
           redirect_to @game
@@ -57,6 +58,7 @@ class GamesController < ApplicationController
     respond_to do |format|
       format.html {
         if request.xhr?
+          assign_variables
           render :partial => 'game_page'
         else
           redirect_to @game
@@ -84,9 +86,12 @@ class GamesController < ApplicationController
     round = @game.last_round
     trick = Trick.create(:round_id => round.id, :leader_id => round.get_new_leader.id, :position => round.next_trick_position)
     
+    
+    
     respond_to do |format|
       format.html {
         if request.xhr?
+          assign_variables
           render :partial => 'game_page'
         else
           redirect_to @game
@@ -113,6 +118,7 @@ class GamesController < ApplicationController
     respond_to do |format|
       format.html {
         if request.xhr?
+          assign_variables
           render :partial => 'game_page'
         else
           redirect_to @game
@@ -129,6 +135,7 @@ class GamesController < ApplicationController
     respond_to do |format|
       format.html {
         if request.xhr?
+          assign_variables
           render :partial => 'game_page'
         else
           redirect_to @game
@@ -144,6 +151,7 @@ class GamesController < ApplicationController
     respond_to do |format|
       format.html {
         if request.xhr?
+          assign_variables
           render :partial => 'my_hand'
         else
           redirect_to @game
@@ -159,6 +167,7 @@ class GamesController < ApplicationController
     respond_to do |format|
       format.html {
         if request.xhr?
+          assign_variables
           render :partial => 'game_page'
         else
           redirect_to @game
