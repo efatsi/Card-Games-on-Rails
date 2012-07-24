@@ -21,7 +21,8 @@ class Player < ActiveRecord::Base
   delegate :card_passing_set, :to => :last_player_round
   
   def hand
-    self.reload.player_cards(true).joins("LEFT JOIN played_cards ON played_cards.player_card_id = player_cards.id").where("played_cards.id IS NULL").readonly(false)
+    collection = self.reload.player_cards(true).joins("LEFT JOIN played_cards ON played_cards.player_card_id = player_cards.id").where("played_cards.id IS NULL").readonly(false)
+    collection.sort{|a,b| a.hand_order <=> b.hand_order }
   end
   
   def choose_card(lead_suit)
