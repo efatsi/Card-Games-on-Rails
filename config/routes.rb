@@ -7,9 +7,13 @@ CardGames::Application.routes.draw do
     # post :new_round, :on => :rounds
     
     post 'new_trick' => 'tricks#create'
-    post :new_trick, :on => :member
+    # post :new_trick, :on => :member
+    
     post :play_all_but_one_trick, :on => :member
-    post :play_one_card, :on => :member
+    
+    post 'play_one_card' => 'played_cards#create'
+    # post :play_one_card, :on => :member
+
     post :pass_cards, :on => :member
     post :choose_card_to_pass, :on => :member
     post :fill_passing_sets, :on => :member

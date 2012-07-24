@@ -16,7 +16,7 @@
                     <%= card.in_english %>
                   <% end %>
                 <% elsif @my_turn && card.is_valid?(@lead_suit) %>
-                    <%= button_to card.in_english, play_one_card_game_path(@game, :card => card), :remote => true, :form_class => "game-button", :class => "button"%>
+                <%= button_to card.in_english, game_play_one_card_path(@game, :card => card), {:remote => true, :form_class => "game-button", :class => "button"} %>
                 <% else %>
                   <%= card.in_english %>
                 <% end %>
