@@ -1,4 +1,5 @@
 <% if @hand.present? %>
+  <br />
   <div class="span4">
     <h3>Your Hand:</h3>
     <div class="mytable">
@@ -27,4 +28,7 @@
       </table>
     </div>
   </div>
+<% else %>
+  <br />
+  <h3>Your Hand Is Empty</h3>
 <% end %>

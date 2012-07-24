@@ -1,5 +1,0 @@
-<% if @game.rounds.empty? %>
-<%= "Players in Game: #{@game.players.map{|p| [p.username, p.total_score]}}"%><br /><br />
-<% else %>
-<%= "Players in Game: #{@game.players.map{|p| [p.username, p.round_score, p.total_score]}}"%><br /><br />
-<% end %>
