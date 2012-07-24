@@ -4,21 +4,23 @@
       <% unless @game.is_full? %>
         <%= button_to "Fill The Game", fill_game_path(@game), :remote => true, :form_class => "fill-game", :class => "button" %>
       <% else %>
-        <% if @round_over %>
+        <% if @game.new_round_time? %>
           <%= button_to "New Round", new_round_game_path(@game), :remote => true, :form_class => "new-round", :class => "button" %>
-        <% else %>
-          <% if @trick_over %> 
-            <%= button_to "New Trick", new_trick_game_path(@game), :remote => true, :form_class => "new-trick", :class => "button" %>
-            <%= button_to "Fill Passing Sets", fill_passing_sets_game_path(@game), :remote => false, :form_class => "fill-passing-sets", :class => "button" %>            
-            <%= button_to "Pass Cards", pass_cards_game_path(@game), :remote => true, :form_class => "pass-cards", :class => "button" %>
-            <%= button_to "Play All But One Trick", play_rest_of_tricks_game_path(@game) %>
-          <% else %>
-            <div class="play-one-card">
-              <%= button_to "Play One Card", play_one_card_game_path(@game), :remote => true, :form_class => "play-card", :class => "button" %> 
-            </div>
-          <% end %>
         <% end %>
-      <% end%>
+        <% if @game.passing_time? %>
+          <%= button_to "Fill Passing Sets", fill_passing_sets_game_path(@game), :remote => false, :form_class => "fill-passing-sets", :class => "button" %>            
+          <% if @game.ready_to_pass? %>
+            <%= button_to "Pass Cards", pass_cards_game_path(@game), :remote => true, :form_class => "pass-cards", :class => "button" %>
+          <% end %>
+        <% end%>
+        <% if @game.new_trick_time? %>
+          <%= button_to "New Trick", new_trick_game_path(@game), :remote => true, :form_class => "new-trick", :class => "button" %>
+          <%= button_to "Play All But One Trick", play_rest_of_tricks_game_path(@game) %>
+        <% end %>
+        <% if @game.mid_trick_time? %>
+          <%= button_to "Play One Card", play_one_card_game_path(@game), :remote => true, :form_class => "play-card", :class => "button" %> 
+        <% end %>
+      <% end %>
     </center>
   </div>
 </div>

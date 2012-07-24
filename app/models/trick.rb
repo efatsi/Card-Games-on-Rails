@@ -74,4 +74,17 @@ class Trick < ActiveRecord::Base
       play_card_from(leader, leader.two_of_clubs)
     end
   end
+  
+  def is_over?
+    cards_played == 4
+  end
+  
+  def is_not_over?
+    cards_played < 4
+  end
+  
+  def cards_played
+    self.played_cards.length
+  end
+  
 end

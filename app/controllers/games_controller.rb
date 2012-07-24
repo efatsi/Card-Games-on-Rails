@@ -1,7 +1,7 @@
 class GamesController < ApplicationController
 
 
-  before_filter :assign_game, :except => [:index, :new, :create]
+  before_filter :assign_variables, :except => [:index, :new, :create]
   before_filter :store_location, :only => :show
   before_filter :require_user, :only => :show
 
@@ -11,24 +11,6 @@ class GamesController < ApplicationController
 
   def show
     join_game
-    @hand = current_player.hand
-    @round_over = @game.round_over
-    @trick_over = @game.trick_over
-    @my_turn = false
-    
-    round = @game.last_round
-    if round
-      trick = round.last_trick 
-      if trick
-        @lead_suit = trick.lead_suit
-        if current_player == trick.next_player && !@trick_over
-          @my_turn = true
-        end
-      else
-        @time_to_pass = true
-        @cards_to_pass = current_player.card_passing_set.player_cards
-      end
-    end
   end
 
   def new
@@ -57,21 +39,6 @@ class GamesController < ApplicationController
       Player.create(:user_id => u.id, :game_id => @game.id, :seat => @game.reload.next_seat)
     end
     
-    @hand = current_player.hand
-    @round_over = @game.round_over
-    @trick_over = @game.trick_over
-    @my_turn = false
-    round = @game.reload.last_round
-    if round
-      trick = round.last_trick 
-      if trick
-        @lead_suit = trick.lead_suit
-        if current_player == trick.next_player && !@trick_over
-          @my_turn = true
-        end
-      end
-    end
-    
     respond_to do |format|
       format.html {
         if request.xhr?
@@ -86,20 +53,6 @@ class GamesController < ApplicationController
   def new_round
     round = Round.create(:game_id => @game.id, :dealer_id => @game.get_new_dealer.id, :position => @game.next_round_position)
     round.deal_cards
-    
-    @hand = current_player.hand
-    @round_over = @game.reload.round_over
-    @trick_over = @game.trick_over
-    @my_turn = false
-    if round
-      trick = round.last_trick 
-      if trick
-        @lead_suit = trick.lead_suit
-        if current_player == trick.next_player && !@trick_over
-          @my_turn = true
-        end
-      end
-    end
     
     respond_to do |format|
       format.html {
@@ -123,26 +76,13 @@ class GamesController < ApplicationController
     end  
     round.calculate_round_scores
     round.update_total_scores if round.tricks_played == 13
+    
     redirect_to @game
   end
 
   def new_trick
     round = @game.last_round
     trick = Trick.create(:round_id => round.id, :leader_id => round.get_new_leader.id, :position => round.next_trick_position)
-    
-    @hand = current_player.hand
-    @round_over = @game.round_over
-    @trick_over = @game.trick_over
-    @my_turn = false
-    if round
-      trick = round.last_trick 
-      if trick
-        @lead_suit = trick.lead_suit
-        if current_player == trick.next_player && !@trick_over
-          @my_turn = true
-        end
-      end
-    end
     
     respond_to do |format|
       format.html {
@@ -162,25 +102,11 @@ class GamesController < ApplicationController
     player_choice = PlayerCard.find(params[:card].to_i) if params[:card]
     trick.play_card_from(player, player_choice)
     
-    if @game.trick_over
+    if @game.trick_over?
       round.calculate_round_scores
-      if @game.round_over
+      if @game.round_over?
         round.update_total_scores
         @game.check_for_and_set_winner
-      end
-    end
-    
-    @hand = current_player.hand
-    @round_over = @game.round_over
-    @trick_over = @game.trick_over
-    @my_turn = false
-    if round
-      trick = round.last_trick 
-      if trick
-        @lead_suit = trick.lead_suit
-        if current_player == trick.next_player && !@trick_over
-          @my_turn = true
-        end
       end
     end
     
@@ -200,19 +126,6 @@ class GamesController < ApplicationController
     round = @game.last_round
     round.pass_cards
     
-    @hand = current_player.hand
-    @round_over = @game.round_over
-    @trick_over = @game.trick_over
-    @my_turn = false
-    if round
-      trick = round.last_trick 
-      if trick
-        @lead_suit = trick.lead_suit
-        if current_player == trick.next_player && !@trick_over
-          @my_turn = true
-        end
-      end
-    end
     respond_to do |format|
       format.html {
         if request.xhr?
@@ -227,27 +140,7 @@ class GamesController < ApplicationController
   def choose_card_to_pass
     player_choice = PlayerCard.find(params[:card].to_i)
     current_player.card_passing_set.player_cards << player_choice
-    
-    @hand = current_player.hand
-    @round_over = @game.round_over
-    @trick_over = @game.trick_over
-    @my_turn = false
-
-    round = @game.last_round
-    if round
-      trick = round.last_trick 
-      if trick
-        @lead_suit = trick.lead_suit
-        if current_player == trick.next_player && !@trick_over
-          @my_turn = true
-        end
-      else
-        @time_to_pass = true
-      end
-    end
-    
-    @cards_to_pass = current_player.card_passing_set.player_cards
-    
+  
     respond_to do |format|
       format.html {
         if request.xhr?
@@ -263,19 +156,6 @@ class GamesController < ApplicationController
     round = @game.last_round
     round.fill_passing_sets
     
-    @hand = current_player.hand
-    @round_over = @game.round_over
-    @trick_over = @game.trick_over
-    @my_turn = false
-    if round
-      trick = round.last_trick 
-      if trick
-        @lead_suit = trick.lead_suit
-        if current_player == trick.next_player && !@trick_over
-          @my_turn = true
-        end
-      end
-    end
     respond_to do |format|
       format.html {
         if request.xhr?
@@ -289,8 +169,18 @@ class GamesController < ApplicationController
   
 
   private
-  def assign_game    
+  def assign_variables    
     @game = Game.find(params[:id])
+
+    #my_hand
+    @hand = current_player.hand
+    @lead_suit = @game.get_lead_suit
+    @my_turn = @game.is_current_player_next?
+    
+    #game_progress
+    @last_trick = @game.last_trick
+    @played_cards = @game.played_cards
+    @trick_over = @game.trick_over?
   end
 
   def join_game

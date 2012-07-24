@@ -71,5 +71,9 @@ class Player < ActiveRecord::Base
     self == leader
   end
   
+  def cards_to_pass
+    card_passing_set.player_cards
+  end
+  
   
 end

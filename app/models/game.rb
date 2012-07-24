@@ -46,14 +46,6 @@ class Game < ActiveRecord::Base
     player_seated_at(new_seat)
   end
 
-  def rounds_played
-    rounds(true).length
-  end
-
-  def last_round
-    rounds.last
-  end
-
   def next_seat
     self.players(true).length
   end
@@ -82,24 +74,35 @@ class Game < ActiveRecord::Base
     players.map(&:username)
   end  
 
-  def round_over
-    if last_round.present? && last_trick.present?
-      last_round.tricks_played == 13 && trick_over
-    else
-      rounds.empty?
-    end
+  def rounds_played
+    rounds(true).length
   end
 
-  def trick_over
-    if last_round.present? && last_trick.present?
-      last_trick.played_cards.length == 4
-    else
-      true
-    end
+  def last_round
+    rounds.last
   end
 
+  def round_over?
+    last_round.is_over?
+  end
+
+  def get_lead_suit
+    last_trick.try(:lead_suit)
+  end
+  
+  def is_current_player_next?
+    last_trick.try(:is_not_over?) && current_player == trick.try(:next_player)
+  end
+  
   def last_trick
-    last_round.last_trick
+    last_round.try(:last_trick)
   end
-
+  
+  def played_cards
+    last_trick.try(:played_cards)
+  end
+  
+  def trick_over?
+    last_trick.try(:is_over)
+  end
 end

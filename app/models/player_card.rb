@@ -33,4 +33,12 @@ class PlayerCard < ActiveRecord::Base
     card_passing_set_id.nil?
   end
   
+  def has_been_chosen
+    !is_not_chosen
+  end
+  
+  def can_be_chosen?
+    is_not_chosen &&  player.cards_to_pass.length != 3
+  end
+  
 end

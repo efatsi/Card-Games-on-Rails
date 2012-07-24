@@ -20,6 +20,13 @@ class Round < ActiveRecord::Base
   delegate :players, :player_seated_at, :to => :game
   delegate :leader, :to => :last_trick
   
+  def create_player_rounds_and_card_passing_sets
+    players.each do |player|
+      pr = PlayerRound.create(:player_id => player.id, :round_id => self.id)
+      CardPassingSet.create(:player_round_id => pr.id)
+    end
+  end
+  
   def play_round
     deal_cards
     pass_cards
@@ -85,13 +92,13 @@ class Round < ActiveRecord::Base
   def get_new_leader
     tricks_played == 0 ? two_of_clubs_owner : last_trick.trick_winner
   end
-  
-  def tricks_played
-    tricks(true).length
-  end
-  
-  def last_trick
-    tricks(true).last
+
+  def fill_passing_sets
+    card_passing_sets.each do |set|
+      (3 - set.player_cards.length).times do |i|
+        set.player_cards << set.player.hand[i]
+      end
+    end
   end
   
   def player_round_of(player)
@@ -100,13 +107,6 @@ class Round < ActiveRecord::Base
   
   def direction_for_round(position)
     [:left, :across, :right, :none][position % 4]
-  end
-  
-  def create_player_rounds_and_card_passing_sets
-    players.each do |player|
-      pr = PlayerRound.create(:player_id => player.id, :round_id => self.id)
-      CardPassingSet.create(:player_round_id => pr.id)
-    end
   end
   
   def next_trick_position
@@ -123,13 +123,24 @@ class Round < ActiveRecord::Base
     end
     nil
   end
-      
-  def fill_passing_sets
+  
+  def ready_to_pass?
     card_passing_sets.each do |set|
-      (3 - set.player_cards.length).times do |i|
-        set.player_cards << set.player.hand[i]
-      end
+      return false if set.player_cards.length != 3
     end
+    true
+  end
+
+  def tricks_played
+    tricks(true).length
+  end
+
+  def last_trick
+    tricks(true).last
+  end
+  
+  def is_over?
+    tricks_played == 13 && last_trick.is_over?
   end
   
 end
