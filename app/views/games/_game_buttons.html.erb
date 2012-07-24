@@ -2,23 +2,23 @@
   <div class="well">
     <center>
       <% unless @game.is_full? %>
-        <%= button_to "Fill The Game", fill_game_path(@game), :remote => true, :form_class => "fill-game", :class => "button" %>
+        <%= game_button("Fill The Game", fill_game_path(@game), "fill-game") %>
       <% else %>
         <% if @game.new_round_time? %>
-          <%= button_to "New Round", new_round_game_path(@game), :remote => true, :form_class => "new-round", :class => "button" %>
+          <%= game_button("New Round", new_round_game_path(@game), "new-round") %>
         <% end %>
         <% if @game.passing_time? %>
-          <%= button_to "Fill Passing Sets", fill_passing_sets_game_path(@game), :remote => false, :form_class => "fill-passing-sets", :class => "button" %>            
+          <%= game_button("Fill Passing Sets", fill_passing_sets_game_path(@game), "fill-passing-sets") %>
           <% if @game.ready_to_pass? %>
-            <%= button_to "Pass Cards", pass_cards_game_path(@game), :remote => true, :form_class => "pass-cards", :class => "button" %>
+            <%= game_button("Pass Cards", pass_cards_game_path(@game), "pass-cards") %>
           <% end %>
         <% end%>
         <% if @game.new_trick_time? %>
-          <%= button_to "New Trick", new_trick_game_path(@game), :remote => true, :form_class => "new-trick", :class => "button" %>
+          <%= game_button("New Trick", new_trick_game_path(@game), "new-trick") %>
           <%= button_to "Play All But One Trick", play_rest_of_tricks_game_path(@game) %>
         <% end %>
         <% if @game.mid_trick_time? %>
-          <%= button_to "Play One Card", play_one_card_game_path(@game), :remote => true, :form_class => "play-card", :class => "button" %> 
+          <%= game_button("Play One Card", play_one_card_game_path(@game), "play-card") %>
         <% end %>
       <% end %>
     </center>

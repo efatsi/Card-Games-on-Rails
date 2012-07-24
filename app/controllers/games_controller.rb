@@ -1,9 +1,9 @@
 class GamesController < ApplicationController
 
 
-  before_filter :assign_variables, :except => [:index, :new, :create]
   before_filter :store_location, :only => :show
   before_filter :require_user, :only => :show
+  before_filter :assign_variables, :except => [:index, :new, :create]
 
   def index
     @games = Game.all

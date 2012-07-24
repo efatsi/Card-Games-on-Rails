@@ -4,7 +4,7 @@ module Authentication
 
   private      
   def require_user
-    unless current_user
+    unless logged_in?
       redirect_to login_path, alert: "Sorry, gotta login really quick"
       return false
     end
