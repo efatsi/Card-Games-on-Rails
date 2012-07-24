@@ -121,25 +121,6 @@ class Round < ActiveRecord::Base
     nil
   end
   
-  def passing_time?
-    has_not_started_yet? && !cards_have_been_passed && pass_direction != :none
-  end
-  
-  def has_an_active_trick?
-    is_not_over? && tricks.any? && last_trick.is_not_over?
-  end
-  
-  def is_ready_for_a_new_trick?
-    is_not_over? && cards_have_been_passed && (tricks.empty? || last_trick.is_over?)
-  end
-  
-  def ready_to_pass?
-    card_passing_sets.each do |set|
-      return false if set.player_cards.length != 3
-    end
-    true
-  end
-  
   def pass_direction(round_number = position)
     [:left, :across, :right, :none][round_number % 4]
   end
@@ -152,20 +133,43 @@ class Round < ActiveRecord::Base
     tricks(true).last
   end
   
+  def card_passing_sets
+    player_rounds.map(&:card_passing_set)
+  end
+  
+  def passing_time?
+    has_not_started_yet? && !cards_have_been_passed && pass_direction != :none
+  end
+  
+  def ready_to_pass?
+    card_passing_sets.each do |set|
+      return false if set.player_cards.length != 3
+    end
+    true
+  end
+
+  def has_an_active_trick?
+    last_trick.try(:is_not_over?)
+  end
+
+  def is_ready_for_a_new_trick?
+    has_started? && has_no_current_trick?
+  end
+  
   def has_not_started_yet?
     tricks.empty? && !cards_have_been_passed
+  end
+  
+  def has_started?
+    !has_not_started_yet?
   end
   
   def is_over?
     tricks_played == 13 && last_trick.is_over?
   end
   
-  def is_not_over?
-    !is_over?
-  end
-  
-  def card_passing_sets
-    player_rounds.map(&:card_passing_set)
+  def has_no_current_trick?
+    tricks.empty? || last_trick.is_over?
   end
   
   def override_card_passing_on_none_rounds
