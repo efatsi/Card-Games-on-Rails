@@ -90,8 +90,8 @@ class Game < ActiveRecord::Base
     last_trick.try(:lead_suit)
   end
   
-  def is_current_player_next?
-    last_trick.try(:is_not_over?) && current_player == trick.try(:next_player)
+  def is_current_player_next?(player)
+    last_trick.try(:is_not_over?) && player == last_trick.try(:next_player)
   end
   
   def last_trick
@@ -103,6 +103,26 @@ class Game < ActiveRecord::Base
   end
   
   def trick_over?
-    last_trick.try(:is_over)
+    last_trick.try(:is_over?)
+  end
+  
+  def new_round_time?
+    true
+  end
+  
+  def passing_time?
+    true
+  end
+  
+  def ready_to_pass?
+    true
+  end
+  
+  def new_trick_time?
+    true
+  end
+  
+  def mid_trick_time?
+    true
   end
 end

@@ -175,7 +175,7 @@ class GamesController < ApplicationController
     #my_hand
     @hand = current_player.hand
     @lead_suit = @game.get_lead_suit
-    @my_turn = @game.is_current_player_next?
+    @my_turn = @game.is_current_player_next?(current_player)
     
     #game_progress
     @last_trick = @game.last_trick
