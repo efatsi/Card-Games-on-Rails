@@ -47,16 +47,6 @@ class Player < ActiveRecord::Base
     hand[rand(hand.length)]
   end
   
-  def choose_cards_to_pass
-    passing_set = last_player_round.card_passing_set
-    until(passing_set.cards.length == 3)
-      choice = select_random_card
-      unless passing_set.cards.include?(choice)
-        choice.update_attributes(:card_passing_set_id => passing_set.id)
-      end      
-    end
-  end
-  
   def last_player_round
     player_rounds.last
   end

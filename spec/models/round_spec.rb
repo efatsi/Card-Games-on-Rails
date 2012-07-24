@@ -65,6 +65,7 @@ describe Round do
       before do
         create_cards
         @round.deal_cards
+        @round.fill_passing_sets
       end
       
       it "should not crash" do
@@ -158,30 +159,30 @@ describe Round do
       end
     end
     
-    context "direction_for_round(position)" do
+    context "pass_direction(position)" do
       
       it "should return :left for positions 0, 4, 8" do
-        @round.direction_for_round(0).should == :left
-        @round.direction_for_round(4).should == :left
-        @round.direction_for_round(8).should == :left
+        @round.pass_direction(0).should == :left
+        @round.pass_direction(4).should == :left
+        @round.pass_direction(8).should == :left
       end
       
       it "should return :across for positions 1, 5 ,9" do
-        @round.direction_for_round(1).should == :across
-        @round.direction_for_round(5).should == :across
-        @round.direction_for_round(9).should == :across
+        @round.pass_direction(1).should == :across
+        @round.pass_direction(5).should == :across
+        @round.pass_direction(9).should == :across
       end
       
       it "should return :right for positions 2, 6, 10" do
-        @round.direction_for_round(2).should == :right
-        @round.direction_for_round(6).should == :right
-        @round.direction_for_round(10).should == :right
+        @round.pass_direction(2).should == :right
+        @round.pass_direction(6).should == :right
+        @round.pass_direction(10).should == :right
       end
       
       it "should return :none for positions 3, 7, 11" do
-        @round.direction_for_round(3).should == :none
-        @round.direction_for_round(7).should == :none
-        @round.direction_for_round(11).should == :none
+        @round.pass_direction(3).should == :none
+        @round.pass_direction(7).should == :none
+        @round.pass_direction(11).should == :none
       end
     end
   

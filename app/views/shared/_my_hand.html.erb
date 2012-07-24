@@ -9,7 +9,7 @@
             <tr>
               <td>
                 <% if @game.passing_time? %>
-                  <% if card.has_been_chosen %>
+                  <% if card.has_been_chosen? %>
                     <%= card.in_english + " has been chosen" %>    
                   <% elsif card.can_be_chosen? %>
                     <%= button_to card.in_english, game_choose_card_to_pass_path(@game, :card => card), :remote => true, :form_class => "game-button", :class => "button"%>

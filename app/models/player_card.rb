@@ -32,16 +32,16 @@ class PlayerCard < ActiveRecord::Base
     end
   end
   
-  def is_not_chosen
+  def is_not_chosen?
     card_passing_set_id.nil?
   end
   
-  def has_been_chosen
-    !is_not_chosen
+  def has_been_chosen?
+    card_passing_set_id.present?
   end
   
   def can_be_chosen?
-    is_not_chosen &&  player.cards_to_pass.length != 3
+    is_not_chosen? &&  player.cards_to_pass.length != 3
   end
   
   def hand_order
