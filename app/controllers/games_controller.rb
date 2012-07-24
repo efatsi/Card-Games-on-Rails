@@ -107,7 +107,7 @@ class GamesController < ApplicationController
     player_choice = PlayerCard.find(params[:card].to_i) if params[:card]
     trick.play_card_from(player, player_choice)
     
-    if trick.is_over?
+    if trick.reload.is_over?
       round.calculate_round_scores
       if round.is_over?
         round.update_total_scores
@@ -152,7 +152,7 @@ class GamesController < ApplicationController
       format.html {
         if request.xhr?
           assign_variables
-          render :partial => 'my_hand'
+          render :partial => 'game_page'
         else
           redirect_to @game
         end
