@@ -39,17 +39,7 @@ class GamesController < ApplicationController
       u = User.create(:username => "cp#{User.all.length}")
       Player.create(:user_id => u.id, :game_id => @game.id, :seat => @game.reload.next_seat)
     end
-    
-    respond_to do |format|
-      format.html {
-        if request.xhr?
-          assign_variables
-          render :partial => 'shared/game_page'
-        else
-          redirect_to @game
-        end
-      }
-    end
+    reload_game_page
   end
 
   def play_all_but_one_trick  

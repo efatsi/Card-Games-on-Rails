@@ -8,7 +8,7 @@ class PlayedCardsController < ApplicationController
     player = trick.next_player
     player_choice = PlayerCard.find(params[:card].to_i) if params[:card]
     trick.play_card_from(player, player_choice)
-    
+
     if trick.reload.is_over?
       round.calculate_round_scores
       if round.is_over?
@@ -16,9 +16,8 @@ class PlayedCardsController < ApplicationController
         @game.check_for_and_set_winner
       end
     end
-    
+
     reload_game_page
-    
   end
 
 end
