@@ -13,6 +13,6 @@
       Trick is lead by <%= @last_trick.leader.username %>, it is <%= @last_trick.next_player.username %>'s turn.
     <% end %>     
   <% elsif @game.rounds.any? && !@game.last_round.cards_have_been_passed %>
-    <h3>Please Select Three Cards To Pass <%= @game.last_round.direction_for_round(@game.last_round.position).capitalize %></h3>
+    <h3>Please Select Three Cards To Pass <%= @game.last_round.pass_direction.capitalize %></h3>
   <% end %>
 <% end %>

@@ -5,6 +5,7 @@ class Round < ActiveRecord::Base
   attr_accessible :game_id, :dealer_id, :position, :hearts_broken, :cards_have_been_passed
   
   after_create :create_player_rounds_and_card_passing_sets
+  after_create :override_card_passing_on_none_rounds
   
   belongs_to :game
   belongs_to :dealer, :class_name => "Player"
@@ -51,7 +52,8 @@ class Round < ActiveRecord::Base
     end    
   end
   
-  def pass_cards(direction = direction_for_round(position))
+  def pass_cards(direction = pass_direction)
+    self.update_attributes(:cards_have_been_passed => true)
     return if direction == :none
     giving_shift = PASS_SHIFT[direction]
     card_passing_sets.each do |set|
@@ -60,7 +62,6 @@ class Round < ActiveRecord::Base
         player_card.update_attributes(:player_id => player_seated_at(new_seat).id)
       end
     end
-    self.update_attributes(:cards_have_been_passed => true)
   end
   
   def calculate_round_scores
@@ -105,10 +106,6 @@ class Round < ActiveRecord::Base
     player_rounds.where("player_id = ?", player.id).first
   end
   
-  def direction_for_round(position)
-    [:left, :across, :right, :none][position % 4]
-  end
-  
   def next_trick_position
     tricks_played
   end
@@ -124,11 +121,27 @@ class Round < ActiveRecord::Base
     nil
   end
   
+  def passing_time?
+    has_not_started_yet? && !cards_have_been_passed && pass_direction != :none
+  end
+  
+  def has_an_active_trick?
+    is_not_over? && tricks.any? && last_trick.is_not_over?
+  end
+  
+  def is_ready_for_a_new_trick?
+    is_not_over? && cards_have_been_passed && (tricks.empty? || last_trick.is_over?)
+  end
+  
   def ready_to_pass?
     card_passing_sets.each do |set|
       return false if set.player_cards.length != 3
     end
     true
+  end
+  
+  def pass_direction
+    [:left, :across, :right, :none][position % 4]
   end
 
   def tricks_played
@@ -153,6 +166,10 @@ class Round < ActiveRecord::Base
   
   def card_passing_sets
     player_rounds.map(&:card_passing_set)
+  end
+  
+  def override_card_passing_on_none_rounds
+    self.update_attributes(:cards_have_been_passed => true) if pass_direction == :none
   end
   
 end

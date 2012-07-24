@@ -14,9 +14,14 @@ CardGames::Application.routes.draw do
     post 'play_one_card' => 'played_cards#create'
     # post :play_one_card, :on => :member
 
-    post :pass_cards, :on => :member
-    post :choose_card_to_pass, :on => :member
-    post :fill_passing_sets, :on => :member
+    post 'pass_cards' => 'card_passings#pass_cards'
+    # post :pass_cards, :on => :member
+    
+    post 'choose_card_to_pass' => 'card_passings#choose_card_to_pass'
+    # post :choose_card_to_pass, :on => :member
+    
+    post 'fill_passing_sets' => 'card_passings#fill_passing_sets'
+    # post :fill_passing_sets, :on => :member
   end
   
   

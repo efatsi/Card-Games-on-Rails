@@ -114,7 +114,7 @@ class Game < ActiveRecord::Base
   end
   
   def passing_time?
-    rounds.any? && last_round.has_not_started_yet? && !last_round.cards_have_been_passed
+    rounds.any? && last_round.passing_time?
   end
   
   def ready_to_pass?
@@ -122,11 +122,11 @@ class Game < ActiveRecord::Base
   end
   
   def new_trick_time?
-    rounds.any? && last_round.is_not_over? && cards_have_been_passed && (last_round.tricks.empty? || last_trick.is_over?)
+    rounds.any? && last_round.is_ready_for_a_new_trick?
   end
   
   def mid_trick_time?
-    rounds.any? && last_round.is_not_over? && last_round.tricks.any? && last_trick.is_not_over?
+    rounds.any? && last_round.has_an_active_trick?
   end
   
   def passing_sets_are_full?

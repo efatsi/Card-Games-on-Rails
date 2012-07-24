@@ -17,17 +17,8 @@ class PlayedCardsController < ApplicationController
       end
     end
     
-    respond_to do |format|
-      format.html {
-        if request.xhr?
-          assign_variables
-          render :partial => 'shared/game_page'
-        else
-            assign_variables
-            render :partial => 'shared/game_page'
-        end
-      }
-    end
+    reload_game_page
+    
   end
 
 end

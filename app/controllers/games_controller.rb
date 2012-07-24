@@ -3,7 +3,7 @@ class GamesController < ApplicationController
 
   before_filter :store_location, :only => :show
   before_filter :require_user, :only => :show
-  before_filter :assign_variables, :except => [:index, :new, :create]
+  before_filter :assign_game, :only => [:show, :fill, :play_all_but_one_trick]
 
   def index
     @games = Game.all
@@ -11,6 +11,7 @@ class GamesController < ApplicationController
 
   def show
     join_game
+    assign_variables
   end
 
   def new
@@ -64,83 +65,7 @@ class GamesController < ApplicationController
     
     redirect_to @game
   end
-  
-  # def play_one_card
-  #   round = @game.last_round
-  #   trick = round.last_trick
-  #   player = trick.next_player
-  #   player_choice = PlayerCard.find(params[:card].to_i) if params[:card]
-  #   trick.play_card_from(player, player_choice)
-  #   
-  #   if trick.reload.is_over?
-  #     round.calculate_round_scores
-  #     if round.is_over?
-  #       round.update_total_scores
-  #       @game.check_for_and_set_winner
-  #     end
-  #   end
-  #   
-  #   respond_to do |format|
-  #     format.html {
-  #       if request.xhr?
-  #         assign_variables
-  #         render :partial => 'shared/game_page'
-  #       else
-  #         redirect_to @game
-  #       end
-  #     }
-  #   end
-  # end
-  
-  
-  def pass_cards
-    round = @game.last_round
-    round.pass_cards
-    
-    respond_to do |format|
-      format.html {
-        if request.xhr?
-          assign_variables
-          render :partial => 'shared/game_page'
-        else
-          redirect_to @game
-        end
-      }
-    end
-  end
-  
-  def choose_card_to_pass
-    player_choice = PlayerCard.find(params[:card].to_i)
-    current_player.card_passing_set.player_cards << player_choice
-  
-    respond_to do |format|
-      format.html {
-        if request.xhr?
-          assign_variables
-          render :partial => 'shared/game_page'
-        else
-          redirect_to @game
-        end
-      }
-    end
-  end
-  
-  def fill_passing_sets
-    round = @game.last_round
-    round.fill_passing_sets
-    
-    respond_to do |format|
-      format.html {
-        if request.xhr?
-          assign_variables
-          render :partial => 'shared/game_page'
-        else
-          redirect_to @game
-        end
-      }
-    end
-  end
-  
+
   private
   def join_game
     unless @game.already_has(current_user) or @game.is_full?
