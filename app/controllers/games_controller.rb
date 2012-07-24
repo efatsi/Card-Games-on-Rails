@@ -51,23 +51,6 @@ class GamesController < ApplicationController
     end
   end
 
-  # def new_round
-  #   round = Round.create(:game_id => @game.id, :dealer_id => @game.get_new_dealer.id, :position => @game.next_round_position)
-  #   round.deal_cards
-  #   
-  #   respond_to do |format|
-  #     format.html {
-  #       if request.xhr?
-  #         assign_variables
-  #         render :partial => 'shared/game_page'
-  #       else
-  #         redirect_to @game
-  #       end
-  #     }
-  #   end
-  #   
-  # end
-
   def play_all_but_one_trick  
     round = @game.last_round
     (12 - round.tricks_played).times do
@@ -82,21 +65,21 @@ class GamesController < ApplicationController
     redirect_to @game
   end
 
-  def new_trick
-    round = @game.last_round
-    trick = Trick.create(:round_id => round.id, :leader_id => round.get_new_leader.id, :position => round.next_trick_position)
-    
-    respond_to do |format|
-      format.html {
-        if request.xhr?
-          assign_variables
-          render :partial => 'shared/game_page'
-        else
-          redirect_to @game
-        end
-      }
-    end
-  end
+  # def new_trick
+  #   round = @game.last_round
+  #   trick = Trick.create(:round_id => round.id, :leader_id => round.get_new_leader.id, :position => round.next_trick_position)
+  #   
+  #   respond_to do |format|
+  #     format.html {
+  #       if request.xhr?
+  #         assign_variables
+  #         render :partial => 'shared/game_page'
+  #       else
+  #         redirect_to @game
+  #       end
+  #     }
+  #   end
+  # end
   
   def play_one_card
     round = @game.last_round

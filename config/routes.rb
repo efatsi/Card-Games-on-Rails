@@ -6,6 +6,7 @@ CardGames::Application.routes.draw do
     post 'new_round' => 'rounds#create'
     # post :new_round, :on => :rounds
     
+    post 'new_trick' => 'tricks#create'
     post :new_trick, :on => :member
     post :play_all_but_one_trick, :on => :member
     post :play_one_card, :on => :member

@@ -1,10 +1,10 @@
-class RoundsController < ApplicationController
-  
+class TricksController < ApplicationController
+
   before_filter :assign_game
-  
+
   def create
-    round = Round.create(:game_id => @game.id, :dealer_id => @game.get_new_dealer.id, :position => @game.next_round_position)
-    round.deal_cards
+    round = @game.last_round
+    trick = Trick.create(:round_id => round.id, :leader_id => round.get_new_leader.id, :position => round.next_trick_position)
     
     respond_to do |format|
       format.html {
@@ -15,7 +15,7 @@ class RoundsController < ApplicationController
           redirect_to @game
         end
       }
-    end  
+    end
   end
-  
+
 end
