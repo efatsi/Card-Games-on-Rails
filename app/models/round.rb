@@ -2,8 +2,7 @@ class Round < ActiveRecord::Base
   
   PASS_SHIFT = {:left => 1, :across => 2, :right => 3, :none => 0}
   
-  attr_accessible :game_id, :dealer_id, :position
-  attr_accessor :hearts_broken
+  attr_accessible :game_id, :dealer_id, :position, :hearts_broken, :cards_have_been_passed
   
   after_create :create_player_rounds_and_card_passing_sets
   
@@ -61,6 +60,7 @@ class Round < ActiveRecord::Base
         player_card.update_attributes(:player_id => player_seated_at(new_seat).id)
       end
     end
+    self.update_attributes(:cards_have_been_passed => true)
   end
   
   def calculate_round_scores
@@ -139,8 +139,20 @@ class Round < ActiveRecord::Base
     tricks(true).last
   end
   
+  def has_not_started_yet?
+    tricks.empty? && !cards_have_been_passed
+  end
+  
   def is_over?
     tricks_played == 13 && last_trick.is_over?
+  end
+  
+  def is_not_over?
+    !is_over?
+  end
+  
+  def card_passing_sets
+    player_rounds.map(&:card_passing_set)
   end
   
 end

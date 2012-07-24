@@ -2,23 +2,23 @@
   <div class="well">
     <center>
       <% unless @game.is_full? %>
-        <%= game_button("Fill The Game", fill_game_path(@game), "fill-game") %>
+        <%= game_button("Fill") %>
       <% else %>
         <% if @game.new_round_time? %>
-          <%= game_button("New Round", new_round_game_path(@game), "new-round") %>
+          <%= game_button("New Round") %>
         <% end %>
         <% if @game.passing_time? %>
-          <%= game_button("Fill Passing Sets", fill_passing_sets_game_path(@game), "fill-passing-sets") %>
+          <%= game_button("Fill Passing Sets") %>
           <% if @game.ready_to_pass? %>
-            <%= game_button("Pass Cards", pass_cards_game_path(@game), "pass-cards") %>
+            <%= game_button("Pass Cards") %>
           <% end %>
         <% end%>
         <% if @game.new_trick_time? %>
-          <%= game_button("New Trick", new_trick_game_path(@game), "new-trick") %>
+          <%= game_button("New Trick",) %>
           <%= button_to "Play All But One Trick", play_rest_of_tricks_game_path(@game) %>
         <% end %>
         <% if @game.mid_trick_time? %>
-          <%= game_button("Play One Card", play_one_card_game_path(@game), "play-card") %>
+          <%= game_button("Play One Card", "play-card") %>
         <% end %>
       <% end %>
     </center>

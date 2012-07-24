@@ -6,6 +6,9 @@ class Game < ActiveRecord::Base
   has_many :rounds, :dependent => :destroy, :order => "position ASC"
   belongs_to :winner, :class_name => "Player"
   
+  delegate :card_passing_sets, :to => :last_round
+  delegate :cards_have_been_passed, :to => :last_round
+  
   def play_game
     until(game_over?)
       new_dealer = get_new_dealer
@@ -107,22 +110,30 @@ class Game < ActiveRecord::Base
   end
   
   def new_round_time?
-    true
+    rounds.empty? || last_round.is_over?
   end
   
   def passing_time?
-    true
+    rounds.any? && last_round.has_not_started_yet? && !last_round.cards_have_been_passed
   end
   
   def ready_to_pass?
-    true
+    passing_time? && passing_sets_are_full?
   end
   
   def new_trick_time?
-    true
+    rounds.any? && last_round.is_not_over? && cards_have_been_passed && (last_round.tricks.empty? || last_trick.is_over?)
   end
   
   def mid_trick_time?
+    rounds.any? && last_round.is_not_over? && last_round.tricks.any? && last_trick.is_not_over?
+  end
+  
+  def passing_sets_are_full?
+    card_passing_sets.each do |set|
+      return false if set.player_cards.length != 3
+    end
     true
   end
+  
 end

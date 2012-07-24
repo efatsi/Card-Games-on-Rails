@@ -102,9 +102,9 @@ class GamesController < ApplicationController
     player_choice = PlayerCard.find(params[:card].to_i) if params[:card]
     trick.play_card_from(player, player_choice)
     
-    if @game.trick_over?
+    if trick.is_over?
       round.calculate_round_scores
-      if @game.round_over?
+      if round.is_over?
         round.update_total_scores
         @game.check_for_and_set_winner
       end
@@ -173,7 +173,7 @@ class GamesController < ApplicationController
     @game = Game.find(params[:id])
 
     #my_hand
-    @hand = current_player.hand
+    @hand = current_player.try(:hand)
     @lead_suit = @game.get_lead_suit
     @my_turn = @game.is_current_player_next?(current_player)
     
