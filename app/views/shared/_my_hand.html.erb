@@ -1,4 +1,4 @@
-<% if current_user.is_already_in(@game) %>
+<% if current_user.is_playing_in?(@game) %>
   <% if @hand.present? %>
     <br />
     <div class="span4">

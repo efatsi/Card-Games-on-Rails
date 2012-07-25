@@ -43,10 +43,6 @@ class Player < ActiveRecord::Base
     true
   end
   
-  def select_random_card
-    hand[rand(hand.length)]
-  end
-  
   def last_player_round
     player_rounds.last
   end

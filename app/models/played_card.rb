@@ -11,16 +11,7 @@ class PlayedCard < ActiveRecord::Base
   validates_presence_of :trick_id 
   validates_presence_of :position 
   
-  delegate :suit, :value, :to => :player_card
-  delegate :beats?, :value_weight, :in_english, :to => :card
-  
-  
-  def is_a_heart
-    suit == "heart"
-  end
-  
-  def is_queen_of_spades
-    value == "Q" && suit == "spade"
-  end
+  delegate :suit, :value, :is_a_heart, :is_queen_of_spades, :beats?, :value_weight, :in_english, :to => :card
+
   
 end

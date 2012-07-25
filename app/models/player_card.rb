@@ -12,28 +12,16 @@ class PlayerCard < ActiveRecord::Base
   validates_presence_of :player_id
   validates_presence_of :card_id
   
-  delegate :suit, :value, :in_english, :to => :card
+  delegate :suit, :value, :in_english, :suit_weight, :value_weight, :to => :card
   delegate :hearts_broken, :to => :player
   
   
   def is_valid?(lead_suit)
     if player.is_leading?
-      self.is_valid_lead?
+      is_valid_lead?
     else
       suit == lead_suit || player.has_none_of?(lead_suit)
     end
-  end
-  
-  def is_valid_lead?
-    if suit == "heart"
-      hearts_broken || player.only_has?("heart")
-    else
-      true
-    end
-  end
-  
-  def is_not_chosen?
-    card_passing_set_id.nil?
   end
   
   def has_been_chosen?
@@ -45,8 +33,20 @@ class PlayerCard < ActiveRecord::Base
   end
   
   def hand_order
-    suit_order = SUIT_WEIGHT[suit]
-    value_order = VALUE_WEIGHT[value]
-    suit_order*13 + value_order    
+    suit_weight*13 + value_weight   
   end
+  
+  private
+  def is_not_chosen?
+    card_passing_set_id.nil?
+  end
+
+  def is_valid_lead?
+    if suit == "heart"
+      hearts_broken || player.only_has?("heart")
+    else
+      true
+    end
+  end
+
 end

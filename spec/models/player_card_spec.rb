@@ -28,16 +28,16 @@ describe PlayerCard do
     context "unbroken hearts" do
       
       it "should allow a club to be played" do
-        @p_c1.is_valid_lead?.should == true
+        @p_c1.send(:is_valid_lead?).should == true
       end
       
       it "should not allow a heart to be played if other options exist" do
-        @p_c3.is_valid_lead?.should == false
+        @p_c3.send(:is_valid_lead?).should == false
       end
       
       it "should allow a heart to be played if it is the only option" do
         @p_c1.destroy; @p_c2.destroy;
-        @p_c3.is_valid_lead?.should == true
+        @p_c3.send(:is_valid_lead?).should == true
       end
     end
     
@@ -48,11 +48,11 @@ describe PlayerCard do
       end
       
       it "should allow a club to be played" do
-        @p_c1.is_valid_lead?.should == true
+        @p_c1.send(:is_valid_lead?).should == true
       end
       
       it "should allow a heart to be played" do
-        @p_c3.is_valid_lead?.should == true
+        @p_c3.send(:is_valid_lead?).should == true
       end
     end
     

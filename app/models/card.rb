@@ -14,12 +14,24 @@ class Card < ActiveRecord::Base
     suit == current_winner.suit && value_weight > current_winner.value_weight
   end
   
+  def suit_weight
+    SUIT_WEIGHT[suit]
+  end
+  
   def value_weight
     VALUE_WEIGHT[value]
   end
   
   def in_english
     value.to_s + " of " + suit.to_s.pluralize
+  end
+  
+  def is_a_heart
+    suit == "heart"
+  end
+  
+  def is_queen_of_spades
+    value == "Q" && suit == "spade"
   end
   
 end

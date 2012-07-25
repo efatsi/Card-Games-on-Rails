@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
     players.last
   end
   
-  def is_already_in(game)
+  def is_playing_in?(game)
     current_player.present? && current_player.game_id == game.id
   end
   
