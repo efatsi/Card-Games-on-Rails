@@ -9,7 +9,7 @@ module ApplicationHelper
   # 
   def game_button(command)
     path = self.send("game_" + command.gsub(" ","_") + "_path", @game)
-    button_to command, path, {:remote => true, :form_class => "game-button", :class => "button"}
+    button_to command, path, {:remote => false, :form_class => "game-button", :class => "button"}
   end
   
   def card_button(card, action)
@@ -19,7 +19,7 @@ module ApplicationHelper
     when :play
       "game_play_one_card_path"
     end
-    button_to card.in_english, self.send(path, @game, :card => card), {:remote => true, :form_class => "game-button", :class => "button"}
+    button_to card.in_english, self.send(path, @game, :card => card), {:remote => false, :form_class => "game-button", :class => "button"}
   end
   
 end
