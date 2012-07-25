@@ -22,7 +22,6 @@ class ApplicationController < ActionController::Base
     @my_turn = @game.is_current_player_next?(current_player)
 
     @played_cards = @game.played_cards
-    @trick_over = @game.trick_over?
   end
   
   def reload_game_page

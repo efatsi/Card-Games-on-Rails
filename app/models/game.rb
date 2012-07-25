@@ -18,36 +18,8 @@ class Game < ActiveRecord::Base
     end    
   end
 
-  def check_for_and_set_winner
-    players.each do |player|
-      losing_score = (Rails.env == "test" ? 40 : 100)
-      if player.reload.total_score >= losing_score
-        self.update_attributes(:winner_id => find_lowest_player.id)
-        return
-      end
-    end
-  end
-
-  def find_lowest_player
-    min = 101
-    winner = nil
-    players.each do |player|
-      if player.total_score <= min
-        winner = player
-        min = player.total_score
-      end
-    end  
-    winner
-  end
-
   def get_new_dealer
     rounds_played == 0 ? player_seated_at(0) : next_dealer
-  end
-  
-  def next_dealer
-    old_seat = last_round.dealer.seat
-    new_seat = (old_seat + 1) % 4
-    player_seated_at(new_seat)
   end
 
   def next_seat
@@ -70,24 +42,12 @@ class Game < ActiveRecord::Base
     self.players.where("seat = ?", seat).first
   end
   
-  def already_has(player)
+  def already_has?(player)
     present_usernames.include?(player.username)
-  end
-  
-  def present_usernames
-    players.map(&:username)
-  end  
-
-  def rounds_played
-    rounds(true).length
   end
 
   def last_round
     rounds.last
-  end
-
-  def round_over?
-    last_round.is_over?
   end
 
   def get_lead_suit
@@ -104,10 +64,6 @@ class Game < ActiveRecord::Base
   
   def played_cards
     last_trick.try(:played_cards)
-  end
-  
-  def trick_over?
-    last_trick.try(:is_over?)
   end
   
   def new_round_time?
@@ -130,6 +86,17 @@ class Game < ActiveRecord::Base
     last_round.try(:has_an_active_trick?)
   end
   
+  def udpate_scores_if_necessary
+    if last_rick.is_over?
+      last_round.calculate_round_scores
+      if last_round.is_over?
+        last_round.update_total_scores
+        check_for_and_set_winner
+      end
+    end
+  end
+  
+  def private
   def passing_sets_are_full?
     card_passing_sets.each do |set|
       return false if set.player_cards.length != 3
@@ -137,16 +104,41 @@ class Game < ActiveRecord::Base
     true
   end
   
-  def udpate_scores_if_necessary
-    round = @game.last_round.reload
-    trick = round.last_trick.reload
-    if trick.is_over?
-      round.calculate_round_scores
-      if round.is_over?
-        round.update_total_scores
-        @game.check_for_and_set_winner
+  def check_for_and_set_winner
+    players.each do |player|
+      losing_score = (Rails.env == "test" ? 40 : 100)
+      if player.reload.total_score >= losing_score
+        self.update_attributes(:winner_id => find_lowest_player.id)
+        return
       end
     end
   end
+
+  def find_lowest_player
+    min = 101
+    winner = nil
+    players.each do |player|
+      if player.total_score <= min
+        winner = player
+        min = player.total_score
+      end
+    end  
+    winner
+  end
+
+  def next_dealer
+    old_seat = last_round.dealer.seat
+    new_seat = (old_seat + 1) % 4
+    player_seated_at(new_seat)
+  end
+  
+  def rounds_played
+    rounds(true).length
+  end
+  
+  def present_usernames
+    players.map(&:username)
+  end
+  
   
 end
