@@ -5,10 +5,10 @@ class Game < ActiveRecord::Base
   has_many :players, :dependent => :destroy, :order => "seat ASC"
   has_many :rounds, :dependent => :destroy, :order => "position ASC"
   belongs_to :winner, :class_name => "Player"
-  
+
   delegate :card_passing_sets, :to => :last_round
   delegate :cards_have_been_passed, :to => :last_round
-  
+
   def play_game
     until(game_over?)
       new_dealer = get_new_dealer
@@ -25,7 +25,7 @@ class Game < ActiveRecord::Base
   def next_seat
     self.players(true).length
   end
-  
+
   def next_round_position
     rounds_played
   end
@@ -41,7 +41,7 @@ class Game < ActiveRecord::Base
   def player_seated_at(seat)
     self.players.where("seat = ?", seat).first
   end
-  
+
   def already_has?(player)
     present_usernames.include?(player.username)
   end
@@ -53,39 +53,39 @@ class Game < ActiveRecord::Base
   def get_lead_suit
     last_trick.try(:lead_suit)
   end
-  
+
   def is_current_player_next?(player)
     last_trick.try(:is_not_over?) && player == last_trick.try(:next_player)
   end
-  
+
   def last_trick
     last_round.try(:last_trick)
   end
-  
+
   def played_cards
     last_trick.try(:played_cards)
   end
-  
+
   def new_round_time?
     rounds.empty? || last_round.is_over?
   end
-  
+
   def passing_time?
     last_round.try(:passing_time?)
   end
-  
+
   def ready_to_pass?
     passing_time? && passing_sets_are_full?
   end
-  
+
   def new_trick_time?
     last_round.try(:is_ready_for_a_new_trick?)
   end
-  
+
   def mid_trick_time?
     last_round.try(:has_an_active_trick?)
   end
-  
+
   def udpate_scores_if_necessary
     if last_rick.is_over?
       last_round.calculate_round_scores
@@ -95,15 +95,15 @@ class Game < ActiveRecord::Base
       end
     end
   end
-  
-  def private
+
+  private
   def passing_sets_are_full?
     card_passing_sets.each do |set|
       return false if set.player_cards.length != 3
     end
     true
   end
-  
+
   def check_for_and_set_winner
     players.each do |player|
       losing_score = (Rails.env == "test" ? 40 : 100)
@@ -131,14 +131,14 @@ class Game < ActiveRecord::Base
     new_seat = (old_seat + 1) % 4
     player_seated_at(new_seat)
   end
-  
+
   def rounds_played
     rounds(true).length
   end
-  
+
   def present_usernames
     players.map(&:username)
   end
-  
-  
+
+
 end
