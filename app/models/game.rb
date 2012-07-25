@@ -136,4 +136,16 @@ class Game < ActiveRecord::Base
     true
   end
   
+  def udpate_scores_if_necessary
+    round = @game.last_round.reload
+    trick = round.last_trick.reload
+    if trick.is_over?
+      round.calculate_round_scores
+      if round.is_over?
+        round.update_total_scores
+        @game.check_for_and_set_winner
+      end
+    end
+  end
+  
 end

@@ -20,17 +20,6 @@ class Round < ActiveRecord::Base
   delegate :players, :player_seated_at, :to => :game
   delegate :leader, :to => :last_trick
   
-  def create_player_rounds_and_card_passing_sets
-    players.each do |player|
-      pr = PlayerRound.create(:player_id => player.id, :round_id => self.id)
-      CardPassingSet.create(:player_round_id => pr.id)
-    end
-  end
-
-  def override_card_passing_on_none_rounds
-    self.update_attributes(:cards_have_been_passed => true) if pass_direction == :none
-  end
-  
   def play_round
     deal_cards
     pass_cards
@@ -41,7 +30,6 @@ class Round < ActiveRecord::Base
     end
     calculate_round_scores
     update_total_scores
-    # print players.map{|p| p.reload.total_score}.inspect
   end
   
   def deal_cards
@@ -106,23 +94,8 @@ class Round < ActiveRecord::Base
     end
   end
   
-  def player_round_of(player)
-    player_rounds.where("player_id = ?", player.id).first
-  end
-  
   def next_trick_position
     tricks_played
-  end
-
-  def two_of_clubs_owner
-    players.each do |player|
-      player.hand.each do |card|
-        if card.value == "2" && card.suit == "club"
-          return player
-        end
-      end
-    end
-    nil
   end
   
   def pass_direction(round_number = position)
@@ -144,13 +117,6 @@ class Round < ActiveRecord::Base
   def passing_time?
     has_not_started_yet? && !cards_have_been_passed && pass_direction != :none
   end
-  
-  def ready_to_pass?
-    card_passing_sets.each do |set|
-      return false if set.player_cards.length != 3
-    end
-    true
-  end
 
   def has_an_active_trick?
     last_trick.try(:is_not_over?)
@@ -160,20 +126,47 @@ class Round < ActiveRecord::Base
     has_started? && has_no_current_trick?
   end
   
-  def has_not_started_yet?
-    tricks.empty? && !cards_have_been_passed
-  end
-  
-  def has_started?
-    !has_not_started_yet?
-  end
-  
   def is_over?
     tricks_played == 13 && last_trick.is_over?
   end
   
+  private
+  def create_player_rounds_and_card_passing_sets
+    players.each do |player|
+      pr = PlayerRound.create(:player_id => player.id, :round_id => self.id)
+      CardPassingSet.create(:player_round_id => pr.id)
+    end
+  end
+
+  def override_card_passing_on_none_rounds
+    self.update_attributes(:cards_have_been_passed => true) if pass_direction == :none
+  end
+  
+  def player_round_of(player)
+    player_rounds.where("player_id = ?", player.id).first
+  end
+  
+  def two_of_clubs_owner
+    players.each do |player|
+      player.hand.each do |card|
+        if card.value == "2" && card.suit == "club"
+          return player
+        end
+      end
+    end
+    nil
+  end
+
   def has_no_current_trick?
     tricks.empty? || last_trick.is_over?
+  end
+
+  def has_started?
+    !has_not_started_yet?
+  end
+
+  def has_not_started_yet?
+    tricks.empty? && !cards_have_been_passed
   end
   
 end

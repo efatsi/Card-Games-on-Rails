@@ -21,7 +21,6 @@ class ApplicationController < ActionController::Base
     @lead_suit = @game.get_lead_suit
     @my_turn = @game.is_current_player_next?(current_player)
 
-    @last_trick = @game.last_trick
     @played_cards = @game.played_cards
     @trick_over = @game.trick_over?
   end

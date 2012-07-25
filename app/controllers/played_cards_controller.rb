@@ -3,19 +3,11 @@ class PlayedCardsController < ApplicationController
   before_filter :assign_game
 
   def create
-    round = @game.last_round
-    trick = round.last_trick
-    player = trick.next_player
+    player = @game.last_trick.next_player
     player_choice = PlayerCard.find(params[:card].to_i) if params[:card]
     trick.play_card_from(player, player_choice)
 
-    if trick.reload.is_over?
-      round.calculate_round_scores
-      if round.is_over?
-        round.update_total_scores
-        @game.check_for_and_set_winner
-      end
-    end
+    @game.update_scores_if_necessary
 
     reload_game_page
   end
@@ -30,7 +22,6 @@ class PlayedCardsController < ApplicationController
       end  
     end  
     round.calculate_round_scores
-    round.update_total_scores if round.tricks_played == 13
     
     reload_game_page
   end
