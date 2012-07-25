@@ -3,7 +3,7 @@ class GamesController < ApplicationController
 
   before_filter :store_location, :only => :show
   before_filter :require_user, :only => :show
-  before_filter :assign_game, :only => [:show, :fill, :play_all_but_one_trick]
+  before_filter :assign_game, :only => [:show, :destroy]
 
   def index
     @games = Game.all
