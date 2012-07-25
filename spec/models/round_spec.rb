@@ -130,15 +130,15 @@ describe Round do
       it "should correctly find a Player" do
         create_cards
         @round.deal_cards
-        @round.two_of_clubs_owner.should be_an_instance_of Player
+        @round.send(:two_of_clubs_owner).should be_an_instance_of Player
       end
       
       it "should find the correct Player" do
         two_club = Card.create(:value => "2", :suit => "club")
         pc = PlayerCard.create(:player_id => @player1.id, :card_id => two_club.id)
-        @round.two_of_clubs_owner.should == @player1
+        @round.send(:two_of_clubs_owner).should == @player1
         pc.update_attributes(:player_id => @player2.id)
-        @round.two_of_clubs_owner.should == @player2
+        @round.send(:two_of_clubs_owner).should == @player2
       end      
     end
     
