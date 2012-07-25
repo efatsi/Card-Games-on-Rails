@@ -5,7 +5,7 @@ class PlayedCardsController < ApplicationController
   def create
     player = @game.last_trick.next_player
     player_choice = PlayerCard.find(params[:card].to_i) if params[:card]
-    trick.play_card_from(player, player_choice)
+    @game.last_trick.play_card_from(player, player_choice)
 
     @game.update_scores_if_necessary
 
