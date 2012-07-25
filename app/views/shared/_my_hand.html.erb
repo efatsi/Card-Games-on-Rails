@@ -13,12 +13,12 @@
                     <% if card.has_been_chosen? %>
                       <%= card.in_english + " has been chosen" %>    
                     <% elsif card.can_be_chosen? %>
-                      <%= button_to card.in_english, game_choose_card_to_pass_path(@game, :card => card), :remote => true, :form_class => "game-button", :class => "button"%>
+                      <%= card_button(card, :choose)%>
                     <% else %>
                       <%= card.in_english %>
                     <% end %>
                   <% elsif @my_turn && card.is_valid?(@lead_suit) %>
-                  <%= button_to card.in_english, game_play_one_card_path(@game, :card => card), {:remote => true, :form_class => "game-button", :class => "button"} %>
+                    <%= card_button(card, :play) %>
                   <% else %>
                     <%= card.in_english %>
                   <% end %>
