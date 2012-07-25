@@ -1,34 +1,36 @@
-<% if @hand.present? %>
-  <br />
-  <div class="span4">
-    <h3>Your Hand:</h3>
-    <div class="mytable">
-      <table class="table table-striped">
-        <tbody>
-          <% @hand.each do |card| %>
-            <tr>
-              <td>
-                <% if @game.passing_time? %>
-                  <% if card.has_been_chosen? %>
-                    <%= card.in_english + " has been chosen" %>    
-                  <% elsif card.can_be_chosen? %>
-                    <%= button_to card.in_english, game_choose_card_to_pass_path(@game, :card => card), :remote => true, :form_class => "game-button", :class => "button"%>
+<% if current_user.is_already_in(@game) %>
+  <% if @hand.present? %>
+    <br />
+    <div class="span4">
+      <h3>Your Hand:</h3>
+      <div class="mytable">
+        <table class="table table-striped">
+          <tbody>
+            <% @hand.each do |card| %>
+              <tr>
+                <td>
+                  <% if @game.passing_time? %>
+                    <% if card.has_been_chosen? %>
+                      <%= card.in_english + " has been chosen" %>    
+                    <% elsif card.can_be_chosen? %>
+                      <%= button_to card.in_english, game_choose_card_to_pass_path(@game, :card => card), :remote => true, :form_class => "game-button", :class => "button"%>
+                    <% else %>
+                      <%= card.in_english %>
+                    <% end %>
+                  <% elsif @my_turn && card.is_valid?(@lead_suit) %>
+                  <%= button_to card.in_english, game_play_one_card_path(@game, :card => card), {:remote => true, :form_class => "game-button", :class => "button"} %>
                   <% else %>
                     <%= card.in_english %>
                   <% end %>
-                <% elsif @my_turn && card.is_valid?(@lead_suit) %>
-                <%= button_to card.in_english, game_play_one_card_path(@game, :card => card), {:remote => true, :form_class => "game-button", :class => "button"} %>
-                <% else %>
-                  <%= card.in_english %>
-                <% end %>
-              </td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
     </div>
-  </div>
-<% else %>
-  <br />
-  <h3>Your Hand Is Empty</h3>
+  <% else %>
+    <br />
+    <h3>Your Hand Is Empty</h3>
+  <% end %>
 <% end %>
