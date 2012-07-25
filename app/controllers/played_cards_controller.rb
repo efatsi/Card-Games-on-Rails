@@ -8,7 +8,7 @@ class PlayedCardsController < ApplicationController
     @game.last_trick.play_card_from(player, player_choice)
     @game.update_scores_if_necessary
     if @game.last_trick.next_player.username.include?("cp") && @game.last_trick.is_not_over?
-      redirect_to game_play_one_card_path(@game)
+      create
     else
       reload_game_page
     end

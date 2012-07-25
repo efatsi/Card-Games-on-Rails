@@ -6,18 +6,15 @@
       <% else %>
         <% if @game.new_round_time? %>
           <%= game_button("new round") %>
-        <% end %>
-        <% if @game.passing_time? %>
+        <% elsif @game.passing_time? %>
           <%= game_button("fill passing sets") %>
           <% if @game.ready_to_pass? %>
             <%= game_button("pass cards") %>
           <% end %>
-        <% end%>
-        <% if @game.new_trick_time? %>        
+        <% elsif @game.new_trick_time? %>        
           <%= game_button("new trick") %>
           <%= game_button("play all but one trick") %>
-        <% end %>
-        <% if @game.mid_trick_time? %>
+        <% elsif @game.mid_trick_time? %>
           <%= game_button("play one card") %>
         <% end %>
       <% end %>
