@@ -23,6 +23,55 @@ describe PlayerCard do
     end
   end
   
+  describe "#choosing_abilities" do
+    
+    before do
+      @p_r = @player.player_rounds.last
+      @set = @p_r.card_passing_set
+    end
+    
+    context "has_been_chosen?" do
+      
+      it "should return false for an unchosen card" do
+        @p_c1.has_been_chosen?.should == false
+      end
+      
+      it "should return true if card has been chosen" do
+        @p_c1.update_attributes(:card_passing_set_id => @set.id)
+        @p_c1.has_been_chosen?.should == true
+      end
+    end
+    
+    context "can_be_chosen?" do
+      
+      it "should return true for an unchosen card with no choices yet" do
+        @p_c1.can_be_chosen?.should == true
+      end
+      
+      it "should return true for an unchosen card with 2 choices so far" do
+        @p_c1.update_attributes(:card_passing_set_id => @set.id)
+        @p_c2.update_attributes(:card_passing_set_id => @set.id)
+        @p_c3.can_be_chosen?.should == true
+      end
+      
+      it "should return false for a chosen card" do        
+        @p_c1.update_attributes(:card_passing_set_id => @set.id)
+        @p_c1.can_be_chosen?.should == false
+      end
+      
+      it "should return false for an unchosen card with 3 existing choices" do
+        @c4 = FactoryGirl.create(:card, :suit => "diamond", :value => "A")
+        @p_c4 = FactoryGirl.create(:player_card, :player_id => @player.id, :card_id => @c4.id)
+        @p_c1.update_attributes(:card_passing_set_id => @set.id)
+        @p_c2.update_attributes(:card_passing_set_id => @set.id)
+        @p_c3.update_attributes(:card_passing_set_id => @set.id)
+        @p_c4.can_be_chosen?.should == false
+      end
+    end
+    
+    
+  end
+  
   describe "#is_valid_lead?" do
     
     context "unbroken hearts" do

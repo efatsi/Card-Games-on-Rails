@@ -48,6 +48,20 @@ describe Trick do
       @round.deal_cards
     end
     
+    context "starting with the two of clubs" do
+      
+      before do
+        @trick.update_attributes(:leader_id => @round.send(:two_of_clubs_owner).id)
+      end
+      
+      it "should work when called for" do
+        @trick.send(:start_with_two_of_clubs)
+        @trick.played_cards(true).length.should == 1
+        card = @trick.played_cards.first
+        card.value.should == "2"; card.suit.should == "club"
+      end
+    end
+    
     context "getting a card from a player" do
       
       it "should increment PlayedCard existence by 1" do
@@ -85,6 +99,45 @@ describe Trick do
       end
     end
     
+    context "getting the next player" do
+      
+      before do
+        @trick.stub(:next_position).and_return(1)
+      end
+      
+      it "should return player who's seat is one greater (mod 4)" do
+        @trick.update_attributes(:leader_id => @player1.id)
+        @trick.next_player.should == @player2
+      end
+      it "should return player who's seat is one greater (mod 4)" do
+        @trick.update_attributes(:leader_id => @player4.id)
+        @trick.next_player.should == @player1
+      end
+    end
+    
+    context "cards being played" do
+      
+      before do
+        @trick.play_card_from(@player1); @trick.reload
+        @trick.play_card_from(@player2); @trick.reload
+      end
+      
+      it "should know how many cards have been played" do
+        @trick.cards_played.should == 2
+      end
+      
+      it "should know that the game is not over with < 4 cards played" do
+        @trick.play_card_from(@player3); @trick.reload
+        @trick.is_not_over?.should == true
+        @trick.is_over?.should == false
+      end
+      
+      it "should display trick info correctly" do
+        display = @trick.display_trick_info
+        display.should include("Trick is lead by trick_user1, it is trick_user3's turn")
+      end
+    end
+    
     context "after all cards are played" do
       
       before do
@@ -100,6 +153,17 @@ describe Trick do
       
       it "should be able to determine the winner" do
         @trick.trick_winner.should be_an_instance_of Player
+      end
+      
+      it "should know it is over" do
+        @trick.is_not_over?.should == false
+        @trick.is_over?.should == true
+      end
+      
+      it "should display trick info correctly" do
+        display = @trick.display_trick_info
+        display.should include("Trick was lead by trick_user1 and won by trick_user")
+        display.should include("The lead suit was ")
       end
     end
     

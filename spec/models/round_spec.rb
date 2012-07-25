@@ -188,6 +188,97 @@ describe Round do
   
   end
   
+  describe "#situations" do
+    
+    context "passing_time?" do
+      
+      it "should be passing_time? since trick has just started" do
+        @round.passing_time?.should == true
+      end
+      
+      it "should not be passing_time? after cards are passed" do
+        @round.pass_cards
+        @round.passing_time?.should == false
+      end
+      
+      it "should not be passing_time? if direction == :none" do
+        @round.update_attributes(:position => 3)
+        @round.passing_time?.should == false
+      end
+    end
+    
+    context "has_an_active_trick?" do
+      
+      it "should be false as a new round" do
+        @round.has_an_active_trick?.should == false
+      end
+      
+      it "should be true if it has a trick that isn't over" do
+        FactoryGirl.create(:trick, :round_id => @round.id)
+        @round.has_an_active_trick?.should == true
+      end
+      
+      it "should be false if it has a trick that is over" do
+        fake_last_trick = double("my last trick")
+        @round.stub(:last_trick).and_return(fake_last_trick)
+        fake_last_trick.stub(:is_not_over?).and_return(false)
+        @round.has_an_active_trick?.should == false
+      end
+    end
+    
+    context "is_ready_for_a_new_trick?" do
+      
+      it "should return false for a new round (round has_not_started)" do
+        @round.is_ready_for_a_new_trick?.should == false
+      end
+      
+      it "should return true if cards are passed and no tricks exist" do
+        @round.pass_cards
+        @round.is_ready_for_a_new_trick?.should == true
+      end
+      
+      it "should return true if tricks exist and last trick is over" do
+        2.times { FactoryGirl.create(:trick, :round_id => @round.id) }
+        fake_last_trick = double("my last trick")
+        @round.stub(:last_trick).and_return(fake_last_trick)
+        fake_last_trick.stub(:is_over?).and_return(true)
+        @round.is_ready_for_a_new_trick?.should == true
+      end
+      
+      it "should return false if tricks exist and last trick is not over" do
+        2.times { FactoryGirl.create(:trick, :round_id => @round.id) }
+        fake_last_trick = double("my last trick")
+        @round.stub(:last_trick).and_return(fake_last_trick)
+        fake_last_trick.stub(:is_over?).and_return(false)
+        @round.is_ready_for_a_new_trick?.should == false        
+      end
+    end
+    
+    context "is_over?" do
+      
+      it "should return false for a new round" do
+        @round.is_over?.should == false
+      end
+      
+      it "should return false if 13 tricks exist, but last one isn't over" do
+        13.times { FactoryGirl.create(:trick, :round_id => @round.id) }
+        fake_last_trick = double("my last trick")
+        @round.stub(:last_trick).and_return(fake_last_trick)
+        fake_last_trick.stub(:is_over?).and_return(false)
+        @round.is_over?.should == false
+      end
+      
+      it "should return true if 13 tricks exist, and last one is over" do
+        13.times { FactoryGirl.create(:trick, :round_id => @round.id) }
+        fake_last_trick = double("my last trick")
+        @round.stub(:last_trick).and_return(fake_last_trick)
+        fake_last_trick.stub(:is_over?).and_return(true)        
+        @round.is_over?.should == true
+      end
+    end
+    
+  end
+  
   describe "#round_play" do
       
     context "making new tricks" do

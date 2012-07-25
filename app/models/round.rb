@@ -119,7 +119,7 @@ class Round < ActiveRecord::Base
   end
 
   def has_an_active_trick?
-    last_trick.try(:is_not_over?)
+    last_trick.try(:is_not_over?) || false
   end
 
   def is_ready_for_a_new_trick?

@@ -71,7 +71,7 @@ class Game < ActiveRecord::Base
   end
 
   def passing_time?
-    last_round.try(:passing_time?)
+    last_round.try(:passing_time?) || false
   end
 
   def ready_to_pass?
@@ -79,15 +79,15 @@ class Game < ActiveRecord::Base
   end
 
   def new_trick_time?
-    last_round.try(:is_ready_for_a_new_trick?)
+    last_round.try(:is_ready_for_a_new_trick?) || false
   end
 
   def mid_trick_time?
-    last_round.try(:has_an_active_trick?)
+    last_round.try(:has_an_active_trick?) || false
   end
 
-  def udpate_scores_if_necessary
-    if last_rick.is_over?
+  def update_scores_if_necessary
+    if last_trick.is_over?
       last_round.calculate_round_scores
       if last_round.is_over?
         last_round.update_total_scores

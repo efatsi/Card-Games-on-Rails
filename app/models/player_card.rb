@@ -3,7 +3,7 @@ class PlayerCard < ActiveRecord::Base
   SUIT_WEIGHT = Card::SUIT_WEIGHT
   VALUE_WEIGHT = Card::VALUE_WEIGHT
   
-  attr_accessible :player_id, :card_id
+  attr_accessible :player_id, :card_id, :card_passing_set_id
   
   belongs_to :player
   belongs_to :card
