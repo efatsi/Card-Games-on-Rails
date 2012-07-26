@@ -5,7 +5,7 @@
   <% if !@game.last_round.cards_have_been_passed %>
     <h3>Please Select Three Cards To Pass <%= @game.last_round.pass_direction.capitalize %></h3>
   <% elsif @game.last_round.tricks.any? %>
-    <h3>Last Trick</h3>
+    <h3>Current Trick</h3>
     <% @played_cards.each do |card| %>
       <%= card.in_english + " from " + card.player.username %><br />
     <% end %><br />
