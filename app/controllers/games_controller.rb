@@ -3,7 +3,7 @@ class GamesController < ApplicationController
 
   before_filter :store_location, :only => :show
   before_filter :require_user, :only => :show
-  before_filter :assign_game, :only => [:show, :destroy, :next_player]
+  before_filter :assign_game, :only => [:show, :destroy, :get_game_info]
 
   def index
     @games = Game.all
@@ -34,9 +34,9 @@ class GamesController < ApplicationController
   
   def get_game_info
     render :json => {
-      :nextPlayerIsComputer => @game.next_player.is_computer?,
-      :hasActiveTrick => @game.mid_trick_time?
-      :shouldStartNewRound => @game.is_ready_for_a_new_round?
+      :nextPlayerIsComputer => @game.next_player.try(:is_computer?),
+      :hasActiveTrick => @game.mid_trick_time?,
+      :shouldStartNewRound => @game.is_ready_for_a_new_round?,
       :shouldStartNewTrick => @game.last_round.is_ready_for_a_new_trick?
     }
   end

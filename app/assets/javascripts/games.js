@@ -16,10 +16,10 @@ CardGames = {
         CardGames.playAsComputer();
       }
       else if (game.shouldStartNewRound){
-        CardGames.startNewRound
+        CardGames.startNewRound();
       }
       else if (game.shouldStartNewTrick){
-        CardGames.startNewTrick
+        CardGames.startNewTrick();
       }
     });
   },
@@ -34,12 +34,14 @@ CardGames = {
   startNewRound: function(){
     $.post(window.location.pathname + "/new_round", function(html){
       $("#game-page").html(html);
+      CardGames.autoplay();
     });
   },
 
   startNewTrick: function(){
     $.post(window.location.pathname + "/new_trick", function(html){
       $("#game-page").html(html);
+      CardGames.autoplay();
     });
   }
 }
