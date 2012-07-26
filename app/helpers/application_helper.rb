@@ -3,7 +3,7 @@ module ApplicationHelper
   def progress_button(command, form = "immediate-reload")
     view = case command
     when "fill"
-      "Fill Game With Computer Players"
+      "Start The Game"
     end
     path = self.send("game_" + command.gsub(" ","_") + "_path", @game)
     game_button(view, path, form)
