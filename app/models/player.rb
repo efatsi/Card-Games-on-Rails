@@ -1,6 +1,6 @@
 class Player < ActiveRecord::Base
   
-  attr_accessible :game_id, :user_id, :seat, :total_score
+  attr_accessible :game_id, :user_id, :seat, :total_score, :is_human?
   
   belongs_to :game
   belongs_to :user

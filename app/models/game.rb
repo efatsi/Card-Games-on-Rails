@@ -57,6 +57,10 @@ class Game < ActiveRecord::Base
   def is_current_player_next?(player)
     last_trick.try(:is_not_over?) && player == last_trick.try(:next_player)
   end
+  
+  def next_player
+    last_trick.try(:next_player)
+  end
 
   def last_trick
     last_round.try(:last_trick)

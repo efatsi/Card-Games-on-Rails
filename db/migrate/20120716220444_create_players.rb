@@ -5,6 +5,7 @@ class CreatePlayers < ActiveRecord::Migration
       t.integer :game_id
       t.integer :seat
       t.integer :total_score, :default => 0
+      t.boolean :is_human
 
       t.timestamps
     end
