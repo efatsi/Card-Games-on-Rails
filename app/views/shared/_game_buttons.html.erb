@@ -14,6 +14,8 @@
         <% elsif @game.new_trick_time? %>        
           <%= progress_button("new trick", "play-card-button") %>
           <%= progress_button("play all but one trick") %>
+        <% elsif @game.mid_trick_time? %>
+          <%= progress_button("play one card", "play-card-button") %>
         <% end %>
       <% end %>
     </center>

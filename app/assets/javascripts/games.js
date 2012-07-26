@@ -16,7 +16,7 @@ CardGames = {
         CardGames.playAsComputer();
       }
     });
-  }
+  },
   
   playAsComputer: function(){
     $.post(window.location.pathname + "/play_one_card", function(html){
