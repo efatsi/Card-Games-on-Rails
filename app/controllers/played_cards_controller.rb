@@ -7,7 +7,7 @@ class PlayedCardsController < ApplicationController
     player_choice = PlayerCard.find(params[:card].to_i) if (card_was_selected_by?(player))
     @game.last_trick.play_card_from(player, player_choice)
     @game.update_scores_if_necessary
-    sleep 2
+    sleep 2 if player.is_computer?
     reload_game_page
   end
   
@@ -27,7 +27,7 @@ class PlayedCardsController < ApplicationController
   
   private
   def card_was_selected_by?(player)
-    params[:card] && player.is_human
+    params[:card] && player.is_human?
   end
   
 end
