@@ -16,11 +16,4 @@ class CardPassingsController < ApplicationController
     reload_game_page
   end
 
-  def fill_passing_sets
-    round = @game.last_round
-    round.fill_passing_sets
-
-    reload_game_page
-  end
-
 end

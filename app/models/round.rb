@@ -86,10 +86,12 @@ class Round < ActiveRecord::Base
     tricks_played == 0 ? two_of_clubs_owner : last_trick.trick_winner
   end
 
-  def fill_passing_sets
+  def fill_computer_passing_sets
     card_passing_sets.each do |set|
-      (3 - set.player_cards.length).times do |i|
-        set.player_cards << set.player.hand[i]
+      if set.player.is_computer?
+        (3 - set.player_cards.length).times do |i|
+          set.player_cards << set.player.hand[i]
+        end
       end
     end
   end

@@ -37,7 +37,7 @@ class GamesController < ApplicationController
       :nextPlayerIsComputer => @game.next_player.try(:is_computer?),
       :hasActiveTrick => @game.mid_trick_time?,
       :shouldStartNewRound => @game.is_ready_for_a_new_round?,
-      :shouldStartNewTrick => @game.last_round.is_ready_for_a_new_trick?
+      :shouldStartNewTrick => @game.is_ready_for_a_new_trick?
     }
   end
 

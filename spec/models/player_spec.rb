@@ -42,7 +42,7 @@ describe Player do
     context "cards_to_pass" do
       
       it "should return all of the cards the player has chosen to pass" do
-        @round.fill_passing_sets
+        @round.fill_computer_passing_sets
         @player1.cards_to_pass.length.should == 3
         @player1.cards_to_pass.each do |card|
           card.should be_an_instance_of PlayerCard

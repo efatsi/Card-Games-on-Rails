@@ -65,7 +65,7 @@ describe Round do
       before do
         create_cards
         @round.deal_cards
-        @round.fill_passing_sets
+        @round.fill_computer_passing_sets
       end
       
       it "should not crash" do

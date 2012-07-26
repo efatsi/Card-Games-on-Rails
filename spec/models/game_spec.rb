@@ -392,7 +392,7 @@ describe Game do
       end
       
       it "should return true if sets have been filled" do
-        @round.fill_passing_sets
+        @round.fill_computer_passing_sets
         @game.send(:passing_sets_are_full?).should == true
       end
     end

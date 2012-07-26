@@ -9,7 +9,6 @@ CardGames::Application.routes.draw do
     post 'play_one_card' => 'played_cards#create'
     post 'pass_cards' => 'card_passings#pass_cards'
     post 'choose_card_to_pass' => 'card_passings#choose_card_to_pass'
-    post 'fill_passing_sets' => 'card_passings#fill_passing_sets'
   end
     
   resources :users

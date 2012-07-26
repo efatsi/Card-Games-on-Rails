@@ -73,6 +73,14 @@ class Game < ActiveRecord::Base
   def played_cards
     last_trick.try(:played_cards)
   end
+  
+  def is_ready_for_a_new_trick?
+    last_round.try(:is_ready_for_a_new_trick?)
+  end
+
+  def is_ready_for_a_new_round?
+    new_round_time? && is_not_over?
+  end
 
   def new_round_time?
     rounds.empty? || last_round.is_over?
@@ -92,10 +100,6 @@ class Game < ActiveRecord::Base
 
   def mid_trick_time?
     last_round.try(:has_an_active_trick?) || false
-  end
-
-  def is_ready_for_a_new_round?
-    last_round.is_over? && is_not_over?
   end
 
   def update_scores_if_necessary
