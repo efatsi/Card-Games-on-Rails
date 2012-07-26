@@ -123,7 +123,7 @@ class Round < ActiveRecord::Base
   end
 
   def is_ready_for_a_new_trick?
-    has_started? && has_no_current_trick?
+    has_started? && has_no_current_trick? && is_not_over?
   end
   
   def is_over?

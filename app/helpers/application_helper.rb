@@ -1,12 +1,5 @@
 module ApplicationHelper
   
-  # def progress_button(command)
-  #   text = command
-  #   path = command.downcase.gsub(" ", "_")
-  #   action = self.send(path + "_game_path", @game)
-  #   button_to text, action, {:remote => true, :form_class => "game-button", :class => "button"}
-  # end
-  # 
   def progress_button(command, form = "game-button")
     path = self.send("game_" + command.gsub(" ","_") + "_path", @game)
     game_button(command, path, form)

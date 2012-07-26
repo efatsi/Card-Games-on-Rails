@@ -32,7 +32,7 @@ class GamesController < ApplicationController
     redirect_to games_url
   end
   
-  def next_player
+  def get_game_info
     render :json => {
       :nextPlayerIsComputer => @game.next_player.is_computer?,
       :hasActiveTrick => @game.mid_trick_time?

@@ -94,6 +94,10 @@ class Game < ActiveRecord::Base
     last_round.try(:has_an_active_trick?) || false
   end
 
+  def is_ready_for_a_new_round?
+    last_round.is_over? && is_not_over?
+  end
+
   def update_scores_if_necessary
     if last_trick.is_over?
       last_round.calculate_round_scores

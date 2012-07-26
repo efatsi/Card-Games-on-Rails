@@ -37,10 +37,10 @@ class PlayedCardsController < ApplicationController
   
   def update_and_create_if_necessary
     @game.update_scores_if_necessary
-    if @game.last_trick.is_over? && @game.last_round.is_not_over?
+    if @game.last_round.is_ready_for_a_new_trick?
       round = @game.last_round
       trick = Trick.create(:round_id => round.id, :leader_id => round.get_new_leader.id, :position => round.next_trick_position)
-    elsif @game.last_round.is_over? && @game.is_not_over?
+    elsif @game.is_ready_for_a_new_round?
       round = Round.create(:game_id => @game.id, :dealer_id => @game.get_new_dealer.id, :position => @game.next_round_position)
       round.deal_cards
     end
