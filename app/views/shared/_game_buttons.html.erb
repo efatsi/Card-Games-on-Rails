@@ -1,7 +1,9 @@
+<% unless @game.is_full? %>
 <div style="float: left; width: auto;">
   <div class="well">
     <center>
-      <%= progress_button("fill", "skip-reload") unless @game.is_full? %>
+      <%= progress_button("fill", "skip-reload") %>
     </center>
   </div>
-</div>
+</div>                     
+<% end %>
