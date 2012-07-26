@@ -7,23 +7,19 @@ module ApplicationHelper
   #   button_to text, action, {:remote => true, :form_class => "game-button", :class => "button"}
   # end
   # 
-  def progress_button(command)
+  def progress_button(command, form = "game-button")
     path = self.send("game_" + command.gsub(" ","_") + "_path", @game)
-    game_button(command, path)
+    game_button(command, path, form)
   end
   
-  def card_button(card, action)
-    path = case action
-    when :choose
-      "game_choose_card_to_pass_path"
-    when :play
-      "game_play_one_card_path"
-    end
-    game_button(card.in_english, self.send(path, @game, :card => card))
+  def card_button(card, action, form = "play-card-button")
+    path = self.send("game_#{action}_path", @game, :card => card)
+    game_button(card.in_english, path, form)
   end
   
-  def game_button(view, path)
-    button_to view, path, {:remote => true, :form_class => "game-button", :class => "button"}
+  def game_button(view, path, form)
+    # raise form.inspect
+    button_to view, path, {:remote => true, :form_class => form, :class => "button"}
   end
   
 end

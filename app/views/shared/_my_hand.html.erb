@@ -13,12 +13,12 @@
                     <% if card.has_been_chosen? %>
                       <%= card.in_english + " has been chosen" %>    
                     <% elsif card.can_be_chosen? %>
-                      <%= card_button(card, :choose)%>
+                      <%= card_button(card, "choose_card_to_pass", "game-button")%>
                     <% else %>
                       <%= card.in_english %>
                     <% end %>
                   <% elsif @my_turn && card.is_valid?(@lead_suit) %>
-                    <%= card_button(card, :play) %>
+                    <%= card_button(card, "play_one_card") %>
                   <% else %>
                     <%= card.in_english %>
                   <% end %>

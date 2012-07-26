@@ -62,5 +62,13 @@ class Player < ActiveRecord::Base
     card_passing_set.player_cards
   end
   
+  def is_human?
+    is_human
+  end
+  
+  def is_computer?
+    !is_human
+  end
+  
   
 end

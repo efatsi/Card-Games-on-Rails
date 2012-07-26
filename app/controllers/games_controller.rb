@@ -3,7 +3,7 @@ class GamesController < ApplicationController
 
   before_filter :store_location, :only => :show
   before_filter :require_user, :only => :show
-  before_filter :assign_game, :only => [:show, :destroy]
+  before_filter :assign_game, :only => [:show, :destroy, :next_player]
 
   def index
     @games = Game.all
@@ -30,6 +30,10 @@ class GamesController < ApplicationController
   def destroy
     @game.destroy
     redirect_to games_url
+  end
+  
+  def next_player
+    render :json => @game
   end
 
   private

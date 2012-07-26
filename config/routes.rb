@@ -1,6 +1,7 @@
 CardGames::Application.routes.draw do
   
   resources :games do
+    get 'next_player', :on => :member
     post 'fill' => 'fill_games#fill'
     post 'new_round' => 'rounds#create'
     post 'new_trick' => 'tricks#create'

@@ -7,11 +7,12 @@ class PlayedCardsController < ApplicationController
     player_choice = PlayerCard.find(params[:card].to_i) if (card_was_selected_by?(player))
     @game.last_trick.play_card_from(player, player_choice)
     @game.update_scores_if_necessary    
-    if @game.last_trick.next_player.username.include?("cp") && @game.last_trick.is_not_over?
-      create
-    else
-      reload_game_page
-    end
+    # if @game.last_trick.next_player.username.include?("cp") && @game.last_trick.is_not_over?
+    #   create
+    # else
+    #   reload_game_page
+    # end
+    reload_game_page
   end
   
   
