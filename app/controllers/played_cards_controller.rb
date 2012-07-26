@@ -8,6 +8,10 @@ class PlayedCardsController < ApplicationController
     @game.last_trick.play_card_from(player, player_choice)
     @game.update_scores_if_necessary
     sleep 1 if player.is_computer?
+    if @game.last_trick.is_over?
+      round = @game.last_round
+      trick = Trick.create(:round_id => round.id, :leader_id => round.get_new_leader.id, :position => round.next_trick_position)
+    end
     reload_game_page
   end
   
