@@ -1,9 +1,9 @@
 $(document).ready(function(){
-  $('form.game-button').live("ajax:success", function(event, html){
-    $("#game-page").html(html);
+  $('form.skip-reload').live("ajax:success", function(event, html){
+    CardGames.autoplay();
   });
    
-  $('form.play-card-button').live("ajax:success", function(event, html){
+  $('form.immediate-reload').live("ajax:success", function(event, html){
     $("#game-page").html(html);
     CardGames.autoplay();
   });
@@ -20,6 +20,9 @@ CardGames = {
       }
       else if (game.shouldStartNewTrick){
         CardGames.startNewTrick();
+      }
+      else if (game.shouldPassCards){
+        CardGames.passCards();
       }
     });
   },
@@ -41,6 +44,12 @@ CardGames = {
   startNewTrick: function(){
     $.post(window.location.pathname + "/new_trick", function(html){
       $("#game-page").html(html);
+      CardGames.autoplay();
+    });
+  },
+  
+  passCards: function(){
+    $.post(window.location.pathname + "/pass_cards", function(html){
       CardGames.autoplay();
     });
   }

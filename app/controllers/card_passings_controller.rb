@@ -3,6 +3,7 @@ class CardPassingsController < ApplicationController
   before_filter :assign_game
 
   def pass_cards
+    sleep 1
     round = @game.last_round
     round.pass_cards
 

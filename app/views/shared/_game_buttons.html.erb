@@ -1,20 +1,7 @@
 <div style="float: left; width: auto;">
   <div class="well">
     <center>
-      <% unless @game.is_full? %>
-        <%= progress_button("fill", "play-card-button") %>
-      <% else %>
-        <% if @game.new_round_time? %>
-          <%= progress_button("new round") %>
-        <% elsif @game.ready_to_pass? %>
-          <%= progress_button("pass cards") %>
-        <% elsif @game.new_trick_time? %>        
-          <%= progress_button("new trick", "play-card-button") %>
-          <%= progress_button("play all but one trick") %>
-        <% elsif @game.mid_trick_time? %>
-          <%= progress_button("play one card", "play-card-button") %>
-        <% end %>
-      <% end %>
+      <%= progress_button("fill", "skip-reload") unless @game.is_full? %>
     </center>
   </div>
 </div>

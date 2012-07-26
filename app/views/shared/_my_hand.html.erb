@@ -13,7 +13,7 @@
                     <% if card.has_been_chosen? %>
                       <%= card.in_english + " has been chosen" %>    
                     <% elsif card.can_be_chosen? %>
-                      <%= card_button(card, "choose_card_to_pass", "game-button")%>
+                      <%= card_button(card, "choose_card_to_pass")%>
                     <% else %>
                       <%= card.in_english %>
                     <% end %>
