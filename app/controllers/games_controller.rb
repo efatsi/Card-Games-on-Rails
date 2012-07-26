@@ -36,6 +36,8 @@ class GamesController < ApplicationController
     render :json => {
       :nextPlayerIsComputer => @game.next_player.is_computer?,
       :hasActiveTrick => @game.mid_trick_time?
+      :shouldStartNewRound => @game.is_ready_for_a_new_round?
+      :shouldStartNewTrick => @game.last_round.is_ready_for_a_new_trick?
     }
   end
 
