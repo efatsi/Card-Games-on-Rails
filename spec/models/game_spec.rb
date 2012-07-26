@@ -19,7 +19,7 @@ describe Game do
       end
 
       it "should not be over already" do
-        @game.game_over?.should == false
+        @game.is_over?.should == false
       end
     end
 
@@ -124,7 +124,7 @@ describe Game do
         @player3.update_attributes(:total_score => 24)
         @player4.update_attributes(:total_score => 24)        
         @game.send(:check_for_and_set_winner)
-        @game.game_over?.should == false
+        @game.is_over?.should == false
       end
 
       it "should work if some on does win" do
@@ -133,7 +133,7 @@ describe Game do
         @player3.update_attributes(:total_score => 12)
         @player4.update_attributes(:total_score => 120)
         @game.send(:check_for_and_set_winner)
-        @game.game_over?.should == true
+        @game.is_over?.should == true
         @game.winner.should == @player3
       end
     end

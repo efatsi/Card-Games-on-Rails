@@ -1,4 +1,4 @@
-<% if @game.game_over? %>
+<% if @game.is_over? %>
   <h3>GAME'S OVER!!! The winner is <%= @game.winner.username %></h3><br />
 <% elsif @game.rounds.any? %>
 

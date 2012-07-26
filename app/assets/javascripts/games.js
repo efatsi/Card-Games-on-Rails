@@ -12,7 +12,7 @@ $(document).ready(function(){
 CardGames = {
   autoplay: function(){
     $.getJSON(window.location.pathname + "/next_player", function(game){
-      if (game.nextPlayerIsComputer && game.trickIsNotOver){
+      if (game.hasActiveTrick && game.nextPlayerIsComputer ){
         CardGames.playAsComputer();
       }
     });

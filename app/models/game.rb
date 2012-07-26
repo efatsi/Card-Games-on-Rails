@@ -10,7 +10,7 @@ class Game < ActiveRecord::Base
   delegate :cards_have_been_passed, :to => :last_round
 
   def play_game
-    until(game_over?)
+    until(is_over?)
       new_dealer = get_new_dealer
       new_round = Round.create(:game_id => self.id, :dealer_id => new_dealer.id, :position => next_round_position)
       new_round.play_round
@@ -34,8 +34,12 @@ class Game < ActiveRecord::Base
     players(true).length >= 4
   end
 
-  def game_over?
+  def is_over?
     winner_id.present?
+  end
+  
+  def is_not_over?
+    !is_over?
   end
 
   def player_seated_at(seat)
