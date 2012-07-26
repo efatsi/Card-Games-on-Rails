@@ -18,7 +18,6 @@ module ApplicationHelper
   end
   
   def game_button(view, path, form)
-    # raise form.inspect
     button_to view, path, {:remote => true, :form_class => form, :class => "button"}
   end
   

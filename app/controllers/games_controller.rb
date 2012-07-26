@@ -33,7 +33,7 @@ class GamesController < ApplicationController
   end
   
   def next_player
-    render :json => @game
+    render :json => [@game.next_player.is_computer?, @game.last_trick.is_not_over?]
   end
 
   private
