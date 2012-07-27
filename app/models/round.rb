@@ -102,7 +102,7 @@ class Round < ActiveRecord::Base
   end
   
   def pass_direction(round_number = position)
-    [:left, :across, :right, :none][round_number % 4]
+    [:left, :right, :across, :none][round_number % 4]
   end
 
   def tricks_played

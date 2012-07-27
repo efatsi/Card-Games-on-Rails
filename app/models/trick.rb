@@ -70,6 +70,10 @@ class Trick < ActiveRecord::Base
     end
   end
 
+  def trick_is_first?
+    position == 0 && Rails.env != "test"
+  end
+
   private
   def players_in_order
     in_order = []
@@ -93,10 +97,6 @@ class Trick < ActiveRecord::Base
   
   def start_with_two_of_clubs
     play_card_from(leader, leader.two_of_clubs)
-  end
-
-  def trick_is_first?
-    position == 0 && Rails.env != "test"
   end
 
 end
