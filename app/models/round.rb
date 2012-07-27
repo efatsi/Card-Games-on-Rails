@@ -92,6 +92,7 @@ class Round < ActiveRecord::Base
         (3 - set.player_cards.length).times do |i|
           set.player_cards << set.player.hand[i]
         end
+        set.update_attributes(:is_ready => true)
       end
     end
   end

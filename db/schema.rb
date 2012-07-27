@@ -11,12 +11,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120726224630) do
+ActiveRecord::Schema.define(:version => 20120727151707) do
 
   create_table "card_passing_sets", :force => true do |t|
     t.integer  "player_round_id"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
+    t.boolean  "is_ready"
   end
 
   create_table "cards", :force => true do |t|

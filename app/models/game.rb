@@ -91,7 +91,7 @@ class Game < ActiveRecord::Base
   end
 
   def ready_to_pass?
-    passing_time? && passing_sets_are_full?
+    passing_time? && passing_sets_are_ready?
   end
 
   def new_trick_time?
@@ -113,9 +113,9 @@ class Game < ActiveRecord::Base
   end
 
   private
-  def passing_sets_are_full?
+  def passing_sets_are_ready?
     card_passing_sets.each do |set|
-      return false if set.player_cards.length != 3
+      return false if set.is_not_ready?
     end
     true
   end

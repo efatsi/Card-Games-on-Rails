@@ -6,14 +6,15 @@
       <div class="mytable">
         <table class="table table-striped">
           <tbody>
+            <%= progress_button("passing_set_ready", "skip-reload") if @game.passing_time? %>
             <% @hand.each do |card| %>
               <tr>
                 <td>
                   <% if @game.passing_time? %>
                     <% if card.has_been_chosen? %>
-                      <%= card.in_english + " has been chosen" %>    
+                      <%= card_button(card, "unchoose_card_to_pass") %>
                     <% elsif card.can_be_chosen? %>
-                      <%= card_button(card, "choose_card_to_pass")%>
+                      <%= card_button(card, "choose_card_to_pass") %>
                     <% else %>
                       <%= card.in_english %>
                     <% end %>
