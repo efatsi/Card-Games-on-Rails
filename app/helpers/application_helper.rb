@@ -1,6 +1,6 @@
 module ApplicationHelper
   
-  def progress_button(command, form = "immediate-reload")
+  def progress_button(command, form, the_class = "button")
     view = case command
     when "fill"
       "Start The Game"
@@ -8,16 +8,17 @@ module ApplicationHelper
       "Pass Your Cards"
     end
     path = self.send("game_" + command + "_path", @game)
-    game_button(view, path, form)
+    game_button(view, path, form, the_class)
   end
   
-  def card_button(card, action, form = "immediate-reload")
+  def card_button(card, action, form, the_class = "button")
     path = self.send("game_#{action}_path", @game, :card => card)
-    game_button(card.in_english + " " + action, path, form)
+    view = card.in_english
+    game_button(view, path, form, the_class)
   end
   
-  def game_button(view, path, form )
-    button_to view, path, {:remote => true, :form_class => form, :class => "button"}
+  def game_button(view, path, form, the_class)
+    button_to view, path, {:remote => true, :form_class => form, :class => the_class}
   end
   
   def player_can_pass?

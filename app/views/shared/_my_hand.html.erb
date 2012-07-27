@@ -6,20 +6,22 @@
       <div class="mytable">
         <table class="table table-striped">
           <tbody>
-            <%= progress_button("passing_set_ready", "skip-reload") if player_can_pass? %>
+            <div id="pass-button">
+              <%= progress_button("passing_set_ready", "remove-pass-button", "button btn-info") if player_can_pass? %>
+            </div>
             <% @hand.each do |card| %>
               <tr>
                 <td>
                   <% if @game.passing_time? %>
                     <% if card.has_been_chosen? %>
-                      <%= card_button(card, "unchoose_card_to_pass") %>
+                      <%= card_button(card, "unchoose_card_to_pass", "immediate-reload", "button btn-warning") %>
                     <% elsif card.can_be_chosen? %>
-                      <%= card_button(card, "choose_card_to_pass") %>
+                      <%= card_button(card, "choose_card_to_pass", "immediate-reload") %>
                     <% else %>
                       <%= card.in_english %>
                     <% end %>
                   <% elsif @my_turn && card.is_valid?(@lead_suit, @game.trick_is_first?) %>
-                    <%= card_button(card, "play_one_card") %>
+                    <%= card_button(card, "play_one_card", "immediate-reload") %>
                   <% else %>
                     <%= card.in_english %>
                   <% end %>

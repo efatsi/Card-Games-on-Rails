@@ -7,6 +7,11 @@ $(document).ready(function(){
     $("#game-page").html(html);
     CardGames.autoplay();
   });
+  
+  $('form.remove-pass-button').live("ajax:success", function(event){
+    $("#pass-button").remove();
+    CardGames.autoplay();
+  });
 });
 
 CardGames = {

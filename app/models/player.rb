@@ -26,7 +26,8 @@ class Player < ActiveRecord::Base
   end
   
   def choose_card(lead_suit, is_the_first_trick)
-    hand.each {|c| return c if c.is_valid?(lead_suit, is_the_first_trick) }
+    selection = lead_suit.nil? ? hand.shuffle : hand
+    selection.each {|c| return c if c.is_valid?(lead_suit, is_the_first_trick) }
   end
 
   def has_none_of?(suit)
