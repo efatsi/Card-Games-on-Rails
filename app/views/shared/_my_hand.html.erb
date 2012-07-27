@@ -13,6 +13,7 @@
               <tr>
                 <td>
                   <% if @game.passing_time? %>
+                  
                     <% if card.has_been_chosen? %>
                       <%= card_button(card, "unchoose_card_to_pass", "immediate-reload", "button btn-warning") %>
                     <% elsif card.can_be_chosen? %>
@@ -20,9 +21,20 @@
                     <% else %>
                       <%= card.in_english %>
                     <% end %>
-                  <% elsif @my_turn && card.is_valid?(@lead_suit, @game.trick_is_first?) %>
-                    <%= card_button(card, "play_one_card", "immediate-reload") %>
-                  <% else %>
+                    
+                  <% elsif @my_turn %>
+                  
+                    <% if card.is_valid?(@lead_suit, @game.trick_is_first?) %>
+                      <% if card.is_selected_for_play? %>
+                        <%= card_button(card, "play_one_card", "immediate-reload", "button btn-warning") %>
+                      <% else %>
+                        <%= card_button(card, "select_for_play", "immediate-reload") %>
+                      <% end %>
+                    <% else %>
+                      <%= card.in_english %>
+                    <% end %>
+                    
+                  <% else %>  
                     <%= card.in_english %>
                   <% end %>
                 </td>

@@ -8,7 +8,6 @@ class PlayedCardsController < ApplicationController
     reload_game_page
   end
   
-  
   def play_all_but_one_trick  
     round = @game.last_round
     (12 - round.tricks_played).times do
