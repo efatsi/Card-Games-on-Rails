@@ -6,7 +6,7 @@
       <div class="mytable">
         <table class="table table-striped">
           <tbody>
-            <%= progress_button("passing_set_ready", "skip-reload") if @game.passing_time? %>
+            <%= progress_button("passing_set_ready", "skip-reload") if player_can_pass? %>
             <% @hand.each do |card| %>
               <tr>
                 <td>

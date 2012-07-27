@@ -70,5 +70,8 @@ class Player < ActiveRecord::Base
     !is_human
   end
   
+  def ready_to_pass?
+    cards_to_pass.length == 3
+  end
   
 end

@@ -20,4 +20,12 @@ module ApplicationHelper
     button_to view, path, {:remote => true, :form_class => form, :class => "button"}
   end
   
+  def player_can_pass?
+    @game.passing_time? && current_player.ready_to_pass?
+  end
+  
+  def current_player
+    current_user.try(:current_player)
+  end
+  
 end
