@@ -123,6 +123,13 @@ class Game < ActiveRecord::Base
       end
     end
   end
+  
+  def fill_empty_seats
+    empty_seats.times do
+      u = User.create(:username => "cp#{User.all.length}")
+      Player.create(:user_id => u.id, :game_id => @game.id, :seat => @game.reload.next_seat, :is_human => false)
+    end
+  end
 
   private
   def passing_sets_are_ready?
@@ -154,6 +161,10 @@ class Game < ActiveRecord::Base
     winner
   end
 
+  def empty_seats
+    4-@game.players.length
+  end
+  
   def next_dealer
     old_seat = last_round.dealer.seat
     new_seat = (old_seat + 1) % 4
