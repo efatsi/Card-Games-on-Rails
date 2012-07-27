@@ -101,6 +101,10 @@ class Game < ActiveRecord::Base
   def mid_trick_time?
     last_round.try(:has_an_active_trick?) || false
   end
+  
+  def trick_is_first?
+    last_trick.trick_is_first?
+  end
 
   def update_scores_if_necessary
     if last_trick.is_over?

@@ -25,8 +25,8 @@ class Player < ActiveRecord::Base
     collection.sort{|a,b| a.hand_order <=> b.hand_order }
   end
   
-  def choose_card(lead_suit)
-    hand.shuffle.each {|c| return c if c.is_valid?(lead_suit) }
+  def choose_card(lead_suit, is_the_first_trick)
+    hand.each {|c| return c if c.is_valid?(lead_suit, is_the_first_trick) }
   end
 
   def has_none_of?(suit)

@@ -112,34 +112,52 @@ describe PlayerCard do
     context "club_is_lead_suit" do
 
       it "should know that a club is valid" do
-        @p_c1.is_valid?("club").should == true
+        @p_c1.is_valid?("club", false).should == true
       end
 
       it "should know that a heart is not valid" do
-        @p_c3.is_valid?("club").should == false
+        @p_c3.is_valid?("club", false).should == false
       end
     end
 
     context "heart_is_lead_suit" do
 
       it "should know that a club is not valid" do
-        @p_c1.is_valid?("heart").should == false
+        @p_c1.is_valid?("heart", false).should == false
       end
 
       it "should know that a heart is valid" do
-        @p_c3.is_valid?("heart").should == true
+        @p_c3.is_valid?("heart", false).should == true
       end
     end
 
     context "diamond_is_lead_suit" do
 
       it "should know that a club is valid" do
-        @p_c1.is_valid?("diamond").should == true
+        @p_c1.is_valid?("diamond", false).should == true
       end
 
       it "should know that a heart is valid" do
-        @p_c3.is_valid?("diamond").should == true
+        @p_c3.is_valid?("diamond", false).should == true
       end
+    end
+    
+    context "first trick" do
+      
+      before do
+        @c1.update_attributes(:suit => "spade", :value => "5")
+        @c2.update_attributes(:suit => "diamond", :value => "3")
+        @c4 = FactoryGirl.create(:card, :suit => "spade", :value => "Q")
+        @p_c4 = FactoryGirl.create(:player_card, :player_id => @player.id, :card_id => @c4.id)
+      end
+      
+      it "should not let you play a scoring card if you have no clubs" do
+        @p_c1.is_valid?("club", true).should == true
+        @p_c2.is_valid?("club", true).should == true
+        @p_c3.is_valid?("club", true).should == false
+        @p_c4.is_valid?("club", true).should == false
+      end
+      
     end
     
   end

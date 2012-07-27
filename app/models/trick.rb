@@ -21,7 +21,7 @@ class Trick < ActiveRecord::Base
   end
 
   def play_card_from(player, card = nil)
-    card ||= player.choose_card(lead_suit)
+    card ||= player.choose_card(lead_suit, trick_is_first?)
     card_position = next_position
     PlayedCard.create(:player_card_id => card.id, :trick_id => self.id, :position => card_position)
     self.update_attributes(:lead_suit => card.suit) if player == leader
