@@ -1,12 +1,11 @@
 <h3>
   <button class="btn" id="toggle-last-trick" type="submit">Previous Trick</button>
 </h3>
-
-
 <div class="last-trick">
   <br />
   <% @previous_trick_cards.each do |card| %>
     <%= card.in_english + " from " + card.player.username %><br />
-  <% end %><br />
+  <% end %>
+  <br />
   <%= @game.previous_trick.try(:display_trick_info) %>
 </div>
