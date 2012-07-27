@@ -113,6 +113,10 @@ class Round < ActiveRecord::Base
     tricks(true).last
   end
   
+  def previous_trick
+    tricks(true)[tricks_played-2]
+  end
+  
   def card_passing_sets
     player_rounds.map(&:card_passing_set)
   end

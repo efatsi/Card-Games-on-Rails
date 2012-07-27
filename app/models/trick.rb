@@ -64,7 +64,7 @@ class Trick < ActiveRecord::Base
   def display_trick_info
     if is_over?
       "Trick was lead by #{leader.username} and won by #{trick_winner.username}.
-      The lead suit was #{lead_suit.pluralize}"
+      The lead suit was #{lead_suit.pluralize}."
     else
       "Trick is lead by #{leader.username}, it is #{next_player.username}'s turn."
     end

@@ -74,6 +74,10 @@ class Game < ActiveRecord::Base
     last_trick.try(:played_cards)
   end
   
+  def previous_trick
+    last_round.try(:previous_trick)
+  end
+  
   def is_ready_for_a_new_trick?
     last_round.try(:is_ready_for_a_new_trick?)
   end

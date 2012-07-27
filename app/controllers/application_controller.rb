@@ -22,6 +22,7 @@ class ApplicationController < ActionController::Base
     @my_turn = @game.is_current_player_next?(current_player)
 
     @played_cards = @game.played_cards
+    @previous_trick_cards = @game.previous_trick.try(:played_cards)
   end
   
   def reload_game_page(partial = "shared/game_page")

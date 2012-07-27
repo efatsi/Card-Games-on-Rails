@@ -16,6 +16,11 @@ $(document).ready(function(){
   $('form.reload-hand').live("ajax:success", function(event, html){
     $("#my-hand").html(html);
   });
+  
+  $("#toggle-last-trick").live("click", function() {
+    $(".last-trick").slideToggle("fast");
+  });
+  
 });
 
 CardGames = {
