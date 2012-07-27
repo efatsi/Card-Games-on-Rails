@@ -10,15 +10,17 @@ class Player < ActiveRecord::Base
   has_many :player_rounds, :order => "created_at ASC"
   
   validates_presence_of :game_id
-  validates_presence_of :user_id
   validates_presence_of :seat
   validates_presence_of :total_score
   
-  delegate :username, :to => :user
   delegate :round_score, :to => :last_player_round
   delegate :hearts_broken, :to => :last_player_round
   delegate :leader, :to => :last_player_round
   delegate :card_passing_set, :to => :last_player_round
+  
+  def username
+    user.try(:username) || "Computer #{seat}"
+  end
   
   def hand
     collection = self.reload.player_cards(true).joins("LEFT JOIN played_cards ON played_cards.player_card_id = player_cards.id").where("played_cards.id IS NULL").readonly(false)
