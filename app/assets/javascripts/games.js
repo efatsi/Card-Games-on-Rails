@@ -7,9 +7,14 @@ $(document).ready(function(){
     $("#game-page").html(html);
     CardGames.autoplay();
   });
-  
+
   $('form.remove-pass-button').live("ajax:success", function(event){
     $("#pass-button").remove();
+    CardGames.autoplay();
+  });
+
+  $('form.reload-hand').live("ajax:success", function(event, html){
+    $("#my-hand").html(html);
     CardGames.autoplay();
   });
 });

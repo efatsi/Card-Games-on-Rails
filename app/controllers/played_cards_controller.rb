@@ -24,7 +24,7 @@ class PlayedCardsController < ApplicationController
   private
   def play_a_card
     player = @game.next_player
-    sleep 1 if player.is_computer?
+    # sleep 1 if player.is_computer?
     player_choice = PlayerCard.find(params[:card].to_i) if (card_was_selected_by?(player))
     @game.last_trick.play_card_from(player, player_choice)
   end

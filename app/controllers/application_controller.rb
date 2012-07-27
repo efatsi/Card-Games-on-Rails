@@ -24,12 +24,12 @@ class ApplicationController < ActionController::Base
     @played_cards = @game.played_cards
   end
   
-  def reload_game_page
+  def reload_game_page(partial = "shared/game_page")
     respond_to do |format|
       format.html {
         if request.xhr?
           assign_variables
-          render :partial => 'shared/game_page'
+          render :partial => partial
         else
           redirect_to @game
         end

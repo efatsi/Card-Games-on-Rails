@@ -28,7 +28,7 @@
                       <% if card.is_selected_for_play? %>
                         <%= card_button(card, "play_one_card", "immediate-reload", "button btn-success") %>
                       <% else %>
-                        <%= card_button(card, "select_for_play", "immediate-reload") %>
+                        <%= card_button(card, "select_for_play", "reload-hand") %>
                       <% end %>
                     <% else %>
                       <%= card.in_english %>
