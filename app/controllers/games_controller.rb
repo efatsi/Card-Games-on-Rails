@@ -45,7 +45,7 @@ class GamesController < ApplicationController
   private
   def join_game
     unless @game.already_has?(current_user) or @game.is_full?
-      Player.create(:user_id => current_user.id, :game_id => @game.id, :seat => @game.next_seat, :is_human => true)
+      Player.create(:user_id => current_user.id, :game_id => @game.id, :seat => @game.next_seat)
     end
   end
   

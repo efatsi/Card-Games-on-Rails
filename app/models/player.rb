@@ -1,6 +1,6 @@
 class Player < ActiveRecord::Base
   
-  attr_accessible :game_id, :user_id, :seat, :total_score, :is_human
+  attr_accessible :game_id, :user_id, :seat, :total_score
   
   belongs_to :game
   belongs_to :user
@@ -75,11 +75,11 @@ class Player < ActiveRecord::Base
   end
   
   def is_human?
-    is_human
+    user.present?
   end
   
   def is_computer?
-    !is_human
+    !is_human?
   end
   
   def ready_to_pass?

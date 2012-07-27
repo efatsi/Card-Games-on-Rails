@@ -126,8 +126,7 @@ class Game < ActiveRecord::Base
   
   def fill_empty_seats
     empty_seats.times do
-      u = User.create(:username => "cp#{User.all.length}")
-      Player.create(:user_id => u.id, :game_id => @game.id, :seat => @game.reload.next_seat, :is_human => false)
+      players.create(:seat => next_seat)
     end
   end
 
@@ -162,7 +161,7 @@ class Game < ActiveRecord::Base
   end
 
   def empty_seats
-    4-@game.players.length
+    4 - players.length
   end
   
   def next_dealer
