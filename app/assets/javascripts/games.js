@@ -15,7 +15,6 @@ $(document).ready(function(){
 
   $('form.reload-hand').live("ajax:success", function(event, html){
     $("#my-hand").html(html);
-    CardGames.autoplay();
   });
 });
 
