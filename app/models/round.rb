@@ -35,6 +35,10 @@ class Round < ActiveRecord::Base
     update_total_scores
   end
   
+  def create_trick
+    trick = Trick.create({:round => self, :leader_id => get_new_leader.id, :position => next_trick_position}, :without_protection => true)
+  end
+  
   def deal_cards
     new_deck = Card.all
     13.times do

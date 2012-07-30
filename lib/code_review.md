@@ -16,12 +16,12 @@
 
 ## CardPassingsController
 * Remove choose_card_to_pass / unchoose_card_to_pass -- client-side concern
-* Move `pass_cards` into `create` action
+- Move `pass_cards` into `create` action
 
 ## TricksController
 * Consider creating a `current_round` helper method
-* Create a Round#create_trick method and refactor Trick.create into it
+- Create a Round#create_trick method and refactor Trick.create into it
 
 ## FillGamesController
-* Move `fill` logic into Game#fill
-* Consider not requiring Player#user and define is_human? to be whether or not the player has an associated user.  Delegate username to User or generate cp<seat_position>
+- Move `fill` logic into Game#fill
+- Consider not requiring Player#user and define is_human? to be whether or not the player has an associated user.  Delegate username to User or generate cp<seat_position>

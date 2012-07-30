@@ -5,7 +5,7 @@ class TricksController < ApplicationController
   def create
     sleep 2 unless @game.last_round.tricks.empty?
     round = @game.last_round
-    trick = Trick.create(:round_id => round.id, :leader_id => round.get_new_leader.id, :position => round.next_trick_position)
+    round.create_trick
     
     reload_game_page
   end
