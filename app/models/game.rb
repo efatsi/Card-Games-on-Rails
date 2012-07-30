@@ -17,6 +17,10 @@ class Game < ActiveRecord::Base
       check_for_and_set_winner
     end    
   end
+  
+  def play_card(card)
+    last_trick.play_card_from(next_player, card)
+  end
 
   def get_new_dealer
     rounds_played == 0 ? player_seated_at(0) : next_dealer
