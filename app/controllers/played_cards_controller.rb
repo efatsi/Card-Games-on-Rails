@@ -9,18 +9,4 @@ class PlayedCardsController < ApplicationController
     reload_game_page
   end
   
-  def play_all_but_one_trick  
-    round = @game.last_round
-    (12 - round.tricks_played).times do
-      if round.tricks_played != 13
-        trick = Trick.create(:round_id => round.id, :leader_id => round.get_new_leader.id, :position => round.next_trick_position)
-        trick.play_trick
-      end  
-    end  
-    round.calculate_round_scores
-    
-    reload_game_page
-  end
-
-  
 end
