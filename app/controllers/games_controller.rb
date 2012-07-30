@@ -12,6 +12,18 @@ class GamesController < ApplicationController
   def show
     @game.add_player_from_user(current_user)
     assign_variables
+    respond_to do |format|
+      format.html
+      format.json do
+        render :json => {
+          :nextPlayerIsComputer => @game.next_player.try(:is_computer?),
+          :hasActiveTrick => @game.mid_trick_time?,
+          :shouldStartNewRound => @game.is_ready_for_a_new_round?,
+          :shouldStartNewTrick => @game.is_ready_for_a_new_trick?,
+          :shouldPassCards => @game.ready_to_pass?
+        }
+      end
+    end
   end
 
   def new
@@ -31,15 +43,5 @@ class GamesController < ApplicationController
     @game.destroy
     redirect_to games_url
   end
-  
-  def get_game_info
-    render :json => {
-      :nextPlayerIsComputer => @game.next_player.try(:is_computer?),
-      :hasActiveTrick => @game.mid_trick_time?,
-      :shouldStartNewRound => @game.is_ready_for_a_new_round?,
-      :shouldStartNewTrick => @game.is_ready_for_a_new_trick?,
-      :shouldPassCards => @game.ready_to_pass?
-    }
-  end  
 
 end

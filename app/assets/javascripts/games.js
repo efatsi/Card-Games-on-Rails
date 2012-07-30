@@ -25,7 +25,7 @@ $(document).ready(function(){
 
 CardGames = {
   autoplay: function(){
-    $.getJSON(window.location.pathname + "/get_game_info", function(game){
+    $.getJSON(window.location.pathname, function(game){
       if (game.hasActiveTrick && game.nextPlayerIsComputer){
         CardGames.playAsComputer();
       }

@@ -1,6 +1,6 @@
 ## GamesController
 - Make Game#add_player instead of Player.create in join_game -- consider User#join_game(game)
-* Remove get_game_info and merge into show with `respond_to`
+- Remove get_game_info and merge into show with `respond_to`
 
 ## ApplicationController
 * Consider creating a `current_game` helper method
