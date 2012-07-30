@@ -15,9 +15,9 @@
                   <% if @game.passing_time? %>
                   
                     <% if card.has_been_chosen? %>
-                      <%= card_button(card, "unchoose_card_to_pass", "reload-hand", "button btn-warning") %>
+                      <%= card_button(card, "flip_passing_status", "reload-hand", "button btn-warning") %>
                     <% elsif card.can_be_chosen? %>
-                      <%= card_button(card, "choose_card_to_pass", "reload-hand") %>
+                      <%= card_button(card, "flip_passing_status", "reload-hand") %>
                     <% else %>
                       <%= card.in_english %>
                     <% end %>

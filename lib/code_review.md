@@ -15,7 +15,7 @@
 - In create, add Game#play_card(card) method
 
 ## CardPassingsController
-* Remove choose_card_to_pass / unchoose_card_to_pass -- client-side concern
+- * Remove choose_card_to_pass / unchoose_card_to_pass -- client-side concern
 - Move `pass_cards` into `create` action
 
 ## TricksController

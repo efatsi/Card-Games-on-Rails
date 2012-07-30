@@ -38,6 +38,11 @@ class PlayerCard < ActiveRecord::Base
     suit_weight*13 + value_weight   
   end
   
+  def flip_passing_status
+    new_value = (card_passing_set_id.present? ? nil : player.card_passing_set.id)
+    self.update_attributes(:card_passing_set_id => new_value)
+  end
+  
   private
   def is_not_chosen?
     card_passing_set_id.nil?
