@@ -16,11 +16,12 @@ class GamesController < ApplicationController
       format.html
       format.json do
         render :json => {
-          :nextPlayerIsComputer => @game.next_player.try(:is_computer?),
-          :hasActiveTrick => @game.mid_trick_time?,
+          :computerShouldPlay => @game.next_player.try(:is_computer?) && @game.mid_trick_time?,
           :shouldStartNewRound => @game.is_ready_for_a_new_round?,
           :shouldStartNewTrick => @game.is_ready_for_a_new_trick?,
-          :shouldPassCards => @game.ready_to_pass?
+          :shouldPassCards => @game.ready_to_pass?,
+          :isFirstRound => @game.rounds.empty?,
+          :isFirstTrick => current_round.try(:tricks).try(:empty?)
         }
       end
     end

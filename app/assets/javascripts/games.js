@@ -26,14 +26,28 @@ $(document).ready(function(){
 CardGames = {
   autoplay: function(){
     $.getJSON(window.location.pathname, function(game){
-      if (game.hasActiveTrick && game.nextPlayerIsComputer){
+      if (game.computerShouldPlay){
         CardGames.playAsComputer();
       }
       else if (game.shouldStartNewRound){
-        CardGames.startNewRound();
+        var $newRoundDelay
+        if (game.isFirstRound) {
+          $newRoundDelay = 0;
+        }
+        else {
+          $newRoundDelay = 3000;
+        }
+        setTimeout(CardGames.startNewRound, $newRoundDelay);
       }
       else if (game.shouldStartNewTrick){
-        CardGames.startNewTrick();
+        var $newTrickDelay
+        if (game.isFirstTrick) {
+          $newTrickDelay = 0;
+        }
+        else {
+          $newTrickDelay = 2000;
+        }
+        setTimeout(CardGames.startNewTrick, $newTrickDelay);
       }
       else if (game.shouldPassCards){
         CardGames.passCards();

@@ -4,7 +4,7 @@
 
 ## ApplicationController
 - Consider creating a `current_game` helper method
-* Redefine `current_player` as the intersection between the current_user and current_game
+- Redefine `current_player` as the intersection between the current_user and current_game
 - Remove `assign_variables` and use those methods in the view (off of `current_game` / `current_player`)
 
 ## RoundsController
