@@ -22,6 +22,10 @@ class Game < ActiveRecord::Base
     last_trick.play_card_from(next_player, card)
   end
 
+  def create_round
+    round = Round.create({:game => self, :dealer_id => get_new_dealer.id, :position => next_round_position}, :without_protection => true)
+  end
+  
   def get_new_dealer
     rounds_played == 0 ? player_seated_at(0) : next_dealer
   end

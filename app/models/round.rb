@@ -7,6 +7,9 @@ class Round < ActiveRecord::Base
   after_create :create_player_rounds_and_card_passing_sets
   after_create :override_card_passing_on_none_rounds
   
+  after_create :deal_cards
+  after_create :fill_computer_passing_sets
+  
   belongs_to :game
   belongs_to :dealer, :class_name => "Player"
   has_many :tricks, :dependent => :destroy, :order => "position ASC"

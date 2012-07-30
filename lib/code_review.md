@@ -8,11 +8,11 @@
 * Remove `assign_variables` and use those methods in the view (off of `current_game` / `current_player`)
 
 ## RoundsController
-* Remove `sleep` calls -- this should be a client concern (setTimeout in JS)
-* Create Game#create_round method and add lifecycle hooks
+- Remove `sleep` calls -- this should be a client concern (setTimeout in JS)
+- Create Game#create_round method and add lifecycle hooks
 
 ## PlayedCardsController
-* In create, add Game#play_card(card) method
+- In create, add Game#play_card(card) method
 
 ## CardPassingsController
 * Remove choose_card_to_pass / unchoose_card_to_pass -- client-side concern
