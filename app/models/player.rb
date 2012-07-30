@@ -57,15 +57,6 @@ class Player < ActiveRecord::Base
     nil
   end
   
-  def select_card(card_to_select)
-    unselect_all_cards
-    card_to_select.update_attributes(:selected_for_play => true)
-  end
-  
-  def unselect_all_cards
-    hand.each {|c| c.update_attributes(:selected_for_play => false) if c.selected_for_play }
-  end
-  
   def is_leading?
     self == leader
   end

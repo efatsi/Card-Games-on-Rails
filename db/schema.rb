@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120727225246) do
+ActiveRecord::Schema.define(:version => 20120730154150) do
 
   create_table "card_passing_sets", :force => true do |t|
     t.integer  "player_round_id"
@@ -46,9 +46,8 @@ ActiveRecord::Schema.define(:version => 20120727225246) do
     t.integer  "player_id"
     t.integer  "card_id"
     t.integer  "card_passing_set_id"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
-    t.boolean  "selected_for_play",   :default => false
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
   end
 
   create_table "player_rounds", :force => true do |t|

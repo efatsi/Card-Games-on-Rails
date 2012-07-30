@@ -3,7 +3,7 @@ class PlayerCard < ActiveRecord::Base
   SUIT_WEIGHT = Card::SUIT_WEIGHT
   VALUE_WEIGHT = Card::VALUE_WEIGHT
 
-  attr_accessible :player_id, :card_id, :card_passing_set_id, :selected_for_play
+  attr_accessible :player_id, :card_id, :card_passing_set_id
 
   belongs_to :player
   belongs_to :card
@@ -36,10 +36,6 @@ class PlayerCard < ActiveRecord::Base
 
   def hand_order
     suit_weight*13 + value_weight   
-  end
-  
-  def is_selected_for_play?
-    selected_for_play
   end
   
   private
