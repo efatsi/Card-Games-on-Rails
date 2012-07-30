@@ -3,9 +3,9 @@
 - Remove get_game_info and merge into show with `respond_to`
 
 ## ApplicationController
-* Consider creating a `current_game` helper method
+- Consider creating a `current_game` helper method
 * Redefine `current_player` as the intersection between the current_user and current_game
-* Remove `assign_variables` and use those methods in the view (off of `current_game` / `current_player`)
+- Remove `assign_variables` and use those methods in the view (off of `current_game` / `current_player`)
 
 ## RoundsController
 - Remove `sleep` calls -- this should be a client concern (setTimeout in JS)
@@ -19,7 +19,7 @@
 - Move `pass_cards` into `create` action
 
 ## TricksController
-* Consider creating a `current_round` helper method
+- Consider creating a `current_round` helper method
 - Create a Round#create_trick method and refactor Trick.create into it
 
 ## FillGamesController

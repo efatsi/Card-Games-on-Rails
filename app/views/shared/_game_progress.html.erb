@@ -6,7 +6,7 @@
     <h3>Please Select Three Cards To Pass <%= @game.last_round.pass_direction.capitalize %></h3>
   <% elsif @game.last_round.tricks.any? %>
     <h3>Current Trick</h3>
-    <% @played_cards.each do |card| %>
+    <% @game.played_cards.each do |card| %>
       <%= card.in_english + " from " + card.player.username %><br />
     <% end %><br />
     <%= @game.last_trick.display_trick_info %>

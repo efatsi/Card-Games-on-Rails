@@ -11,7 +11,7 @@ class GamesController < ApplicationController
 
   def show
     @game.add_player_from_user(current_user)
-    assign_variables
+    
     respond_to do |format|
       format.html
       format.json do

@@ -3,7 +3,7 @@
 </h3>
 <div class="last-trick">
   <br />
-  <% @previous_trick_cards.each do |card| %>
+  <% @game.previous_trick.try(:played_cards).each do |card| %>
     <%= card.in_english + " from " + card.player.username %><br />
   <% end %>
   <br />

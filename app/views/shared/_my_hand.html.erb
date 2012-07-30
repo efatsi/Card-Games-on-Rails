@@ -1,5 +1,5 @@
 <% if current_user.is_playing_in?(@game) %>
-  <% if @hand.present? %>
+  <% if current_player.try(:hand).present? %>
     <br />
     <div class="span4">
       <h3>Your Hand:</h3>
@@ -9,7 +9,7 @@
             <div id="pass-button">
               <%= progress_button("passing_set_ready", "remove-pass-button", "button btn-info") if player_can_pass? %>
             </div>
-            <% @hand.each do |card| %>
+            <% current_player.try(:hand).each do |card| %>
               <tr>
                 <td>
                   <% if @game.passing_time? %>
@@ -22,9 +22,9 @@
                       <%= card.in_english %>
                     <% end %>
                     
-                  <% elsif @my_turn %>
+                  <% elsif @game.is_current_player_next?(current_player) %>
                   
-                    <% if card.is_valid?(@lead_suit, @game.trick_is_first?) %>
+                    <% if card.is_valid?(@game.get_lead_suit, @game.trick_is_first?) %>
                       <%= card_button(card, "play_one_card", "immediate-reload") %>
                     <% else %>
                       <%= card.in_english %>
