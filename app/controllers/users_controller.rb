@@ -38,8 +38,8 @@ class UsersController < ApplicationController
   
   def destroy
     @user = User.find(params[:id])
-    deleting_yourself = true if current_user == @user
+    session[:user_id] = nil if current_user == @user
     @user.destroy
-    redirect_to (deleting_yourself ? logout_url : root_url)
+    redirect_to root_url
   end
 end
