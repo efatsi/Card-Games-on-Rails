@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   include CardGames::Authentication
   
   def current_player
-    current_user.try(:current_player)
+    current_user.try(:current_player_in_game, current_game)
   end
   
   def assign_game

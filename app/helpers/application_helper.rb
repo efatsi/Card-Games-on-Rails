@@ -24,11 +24,15 @@ module ApplicationHelper
   
   
   def player_can_pass?
-    @game.passing_time? && current_player.ready_to_pass?
+    current_game.passing_time? && current_player.ready_to_pass?
   end
   
   def current_player
-    current_user.try(:current_player)
+    current_user.try(:current_player_in_game, current_game)
+  end
+  
+  def current_game
+    Game.find(params[:id] || params[:game_id])  
   end
   
 end
