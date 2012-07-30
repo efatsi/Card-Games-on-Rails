@@ -3,7 +3,8 @@ class PlayedCardsController < ApplicationController
   before_filter :assign_game
 
   def create
-    play_a_card
+    card = PlayerCard.find(params[:card].to_i) if params[:card]
+    play_a_card(card)
     @game.update_scores_if_necessary
     reload_game_page
   end
@@ -22,16 +23,15 @@ class PlayedCardsController < ApplicationController
   end
   
   private
-  def play_a_card
-    player = @game.next_player
-    # sleep 1 if player.is_computer?
-    player_choice = PlayerCard.find(params[:card].to_i) if (card_was_selected_by?(player))
-    @game.last_trick.play_card_from(player, player_choice)
+  def play_a_card(card)
+    player_choice = card if @game.next_player.is_human?
+    @game.last_trick.play_card_from(@game.next_player, player_choice)
   end
   
   
-  def card_was_selected_by?(player)
-    params[:card] && player.is_human?
-  end
+  # def card_was_selected_by?(player)
+  #   player = @game.next_player
+  #   params[:card] && player.is_human?
+  # end
   
 end
