@@ -3,7 +3,7 @@ class GamesController < ApplicationController
 
   before_filter :store_location, :only => :show
   before_filter :require_user, :only => :show
-  before_filter :assign_game, :only => [:show, :destroy, :get_game_info]
+  before_filter :assign_game, :only => [:show, :destroy]
 
   def index
     @games = Game.all

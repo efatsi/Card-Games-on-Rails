@@ -4,8 +4,7 @@ class TricksController < ApplicationController
 
   def create
     sleep 2 unless @game.last_round.tricks.empty?
-    round = @game.last_round
-    round.create_trick
+    current_round.create_trick
     
     reload_game_page
   end

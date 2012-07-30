@@ -3,8 +3,7 @@ class CardPassingsController < ApplicationController
   before_filter :assign_game
 
   def create
-    round = @game.last_round
-    round.pass_cards
+    current_round.pass_cards
 
     reload_game_page
   end

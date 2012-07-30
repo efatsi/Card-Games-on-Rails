@@ -10,8 +10,15 @@ class ApplicationController < ActionController::Base
   end
   
   def assign_game
-    id = params[:id] || params[:game_id]
-    @game = Game.find(id)
+    @game = current_game
+  end
+  
+  def current_game
+    Game.find(params[:game_id] || params[:id])
+  end
+  
+  def current_round
+    current_game.last_round
   end
   
   def assign_variables 
