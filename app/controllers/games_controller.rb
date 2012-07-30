@@ -10,7 +10,7 @@ class GamesController < ApplicationController
   end
 
   def show
-    join_game
+    @game.add_player_from_user(current_user)
     assign_variables
   end
 
@@ -40,14 +40,6 @@ class GamesController < ApplicationController
       :shouldStartNewTrick => @game.is_ready_for_a_new_trick?,
       :shouldPassCards => @game.ready_to_pass?
     }
-  end
-
-  private
-  def join_game
-    unless @game.already_has?(current_user) or @game.is_full?
-      Player.create(:user_id => current_user.id, :game_id => @game.id, :seat => @game.next_seat)
-    end
-  end
-  
+  end  
 
 end

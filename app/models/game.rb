@@ -18,6 +18,12 @@ class Game < ActiveRecord::Base
     end    
   end
   
+  def add_player_from_user(user)
+    if can_accomodate(user)
+      Player.create({:user => user, :game => self, :seat => next_seat}, :without_protection => true)
+    end
+  end
+  
   def play_card(card)
     last_trick.play_card_from(next_player, card)
   end
@@ -186,5 +192,8 @@ class Game < ActiveRecord::Base
     players.map(&:username)
   end
 
+  def can_accomodate(user)
+    !(already_has?(user) || is_full?)
+  end
 
 end
