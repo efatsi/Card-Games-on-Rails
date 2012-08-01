@@ -127,6 +127,10 @@ class Game < ActiveRecord::Base
   def has_more_than_one_trick?
     last_trick.present? && last_trick.position >= 1
   end
+  
+  def should_reload
+    is_someone_elses_turn
+  end
 
   def update_scores_if_necessary
     if last_trick.is_over?

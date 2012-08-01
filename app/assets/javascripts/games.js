@@ -1,4 +1,5 @@
-$(document).ready(function(){
+$(document).ready(function(){gi
+  
   $('form.skip-reload').live("ajax:success", function(event, html){
     CardGames.autoplay();
   });
@@ -20,10 +21,16 @@ $(document).ready(function(){
   $("#toggle-last-trick").live("click", function() {
     $(".last-trick").slideToggle("fast");
   });
-  
 });
 
 CardGames = {
+  reload: function(){
+    $.post(window.location.pathname + "/reload", function(html){
+      $("#game-page").html(html);
+      CardGames.autoplay();
+    });
+  },
+  
   autoplay: function(){
     $.getJSON(window.location.pathname, function(game){
       if (game.computerShouldPlay){
@@ -51,6 +58,9 @@ CardGames = {
       }
       else if (game.shouldPassCards){
         CardGames.passCards();
+      }
+      else if (game.shouldReload){
+        CardGames.waitThenReload
       }
     });
   },
@@ -80,5 +90,9 @@ CardGames = {
     $.post(window.location.pathname + "/pass_cards", function(html){
       CardGames.autoplay();
     });
+  },
+  
+  waitThenReload: function(){
+    setTimeout(CardGames.autoplay, 2000);
   }
 }
