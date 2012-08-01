@@ -21,7 +21,7 @@ $(document).ready(function(){
   });
   
   $("#toggle-last-trick").live("click", function(){
-    $(".trick-info").slideToggle("fast");
+    $(".previous-trick-info").slideToggle("fast");
   });
 });
 

@@ -1,11 +1,15 @@
-<h3>
-  <button class="btn" id="toggle-last-trick" type="submit">Previous Trick</button>
-</h3>
-<div class="trick-info">
-  <br />
-  <% @game.previous_trick.try(:played_cards).each do |card| %>
-    <%= card.in_english + " from " + card.player.username %><br />
-  <% end %>
-  <br />
-  <%= @game.previous_trick.try(:display_trick_info) %>
-</div>
+<% if @game.has_more_than_one_trick? %>
+  <div class="span3 well">
+    <h3>
+      <button class="btn" id="toggle-last-trick" type="submit">Previous Trick</button>
+    </h3>
+    <div class="previous-trick-info">
+      <br />
+      <% @game.previous_trick.try(:played_cards).each do |card| %>
+        <%= card.in_english + " from " + card.player.username %><br />
+      <% end %>
+      <br />
+      <%= @game.previous_trick.try(:display_trick_info) %>
+    </div>
+  </div>
+<% end %>

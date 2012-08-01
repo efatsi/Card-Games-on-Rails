@@ -165,7 +165,7 @@ describe Game do
       end
     end
 
-    context "is_current_player_next?(player)" do
+    context "is_current_players_turn?(player)" do
 
       before do
         @round = FactoryGirl.create(:round, :game_id => @game.id, :dealer_id => @player1.id)
@@ -173,14 +173,14 @@ describe Game do
       end
 
       it "should know the leader is next at the start" do
-        @game.is_current_player_next?(@player1).should == true
+        @game.is_current_players_turn?(@player1).should == true
       end
 
       it "should know player 2 is next after player1" do
         create_cards
         @round.deal_cards
         @trick.play_card_from(@player1); @trick.reload
-        @game.is_current_player_next?(@player2).should == true
+        @game.is_current_players_turn?(@player2).should == true
       end
     end
 

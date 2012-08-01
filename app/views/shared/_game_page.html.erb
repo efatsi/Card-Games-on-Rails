@@ -6,16 +6,12 @@
   <%= render :partial => 'shared/game_buttons' %>
 </div>
 
-<div style="float: left; width: auto;">
-  <div class="span6 well">
+<div class="main-dashboard span6 well">
+  <div class="game-progress">
+    <%= render :partial => 'shared/game_progress' %>
+  </div>
 
-    <div class="game-progress">
-      <%= render :partial => 'shared/game_progress' %>
-    </div>
-
-    <div id="my-hand">
-      <%= render :partial => 'shared/my_hand' %>
-    </div>
-    
+  <div id="my-hand">
+    <%= render :partial => 'shared/my_hand' %>
   </div>
 </div>

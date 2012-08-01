@@ -1,22 +1,12 @@
 <h1><%= @game.name.to_s %></h1>
 
-
-<% if @game.has_more_than_one_trick? %>
-  <div style="float: left; width: auto;">
-    <div class="span3 well">
-    
-      <div id="previous-trick">
-        <%= render :partial => 'shared/previous_trick' %>
-      </div>
-    
-    </div>
-  </div>
-<% end %>
+<div id="previous-trick">
+  <%= render :partial => 'shared/previous_trick' %>
+</div>
 
 <div id="game-page">
   <%= render :partial => 'shared/game_page' %>
 <div>
-
 
 <%= link_to 'Back', games_path %> | 
 <%= link_to 'Delete', @game, method: :delete, data: { confirm: 'Are you sure?' } %>
