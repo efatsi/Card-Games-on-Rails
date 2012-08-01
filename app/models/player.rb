@@ -73,6 +73,14 @@ class Player < ActiveRecord::Base
     !is_human?
   end
   
+  def is_game_master?
+    seat == 0
+  end
+  
+  def is_a_bystander?
+    !is_game_master
+  end
+  
   def ready_to_pass?
     cards_to_pass.length == 3
   end

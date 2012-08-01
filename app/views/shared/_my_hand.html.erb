@@ -22,7 +22,7 @@
                       <%= card.in_english %>
                     <% end %>
                     
-                  <% elsif @game.is_current_player_next?(current_player) %>
+                  <% elsif @game.is_current_players_turn?(current_player) %>
                   
                     <% if card.is_valid?(@game.get_lead_suit, @game.trick_is_first?) %>
                       <%= card_button(card, "play_one_card", "immediate-reload") %>

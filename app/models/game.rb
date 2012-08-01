@@ -72,8 +72,8 @@ class Game < ActiveRecord::Base
     last_trick.try(:lead_suit)
   end
 
-  def is_current_player_next?(player)
-    last_trick.try(:is_not_over?) && player == last_trick.try(:next_player)
+  def is_current_players_turn?(current_player)
+    last_trick.try(:is_not_over?) && current_player == next_player
   end
   
   def next_player
@@ -128,10 +128,10 @@ class Game < ActiveRecord::Base
     last_trick.present? && last_trick.position >= 1
   end
   
-  def should_reload
-    is_someone_elses_turn
+  def should_reload?(current_player)
+    current_player.is_a_bystander?
   end
-
+  
   def update_scores_if_necessary
     if last_trick.is_over?
       last_round.calculate_round_scores
