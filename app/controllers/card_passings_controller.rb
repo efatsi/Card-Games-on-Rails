@@ -4,18 +4,18 @@ class CardPassingsController < ApplicationController
 
   def create
     current_round.pass_cards
-    reload_game_page
+    reload_partial
   end
 
   def flip_passing_status
     player_choice = PlayerCard.find(params[:card].to_i)
     player_choice.flip_passing_status
-    reload_game_page("shared/my_hand")
+    reload_partial("shared/my_hand")
   end
   
   def passing_set_ready
     current_player.card_passing_set.update_attributes(:is_ready => true)
-    reload_game_page("shared/nothing")
+    reload_partial("shared/nothing")
   end
 
 end

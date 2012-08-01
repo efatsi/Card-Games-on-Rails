@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
     current_game.last_round
   end
   
-  def reload_game_page(partial = "shared/game_page")
+  def reload_partial(partial = "shared/game_page")
     assign_game #don't know why I need this here, but if it's not here card passing isn't requested when it should be
     respond_to do |format|
       format.html {

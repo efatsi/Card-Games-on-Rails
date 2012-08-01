@@ -47,7 +47,7 @@ class GamesController < ApplicationController
   end
   
   def reload
-    reload_game_page
+    reload_partial
   end
 
 end

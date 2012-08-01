@@ -6,6 +6,8 @@ module ApplicationHelper
       "Start The Game"
     when "passing_set_ready"
       "Pass Your Cards"
+    when "reload_trick"
+      "Previous Trick"
     end
     path = self.send("game_" + command + "_path", @game)
     game_button(view, path, form, the_class)

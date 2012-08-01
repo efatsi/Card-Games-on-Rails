@@ -20,8 +20,8 @@ $(document).ready(function(){
     $("#my-hand").html(html);
   });
   
-  $("#toggle-last-trick").live("click", function() {
-    $(".last-trick").slideToggle("fast");
+  $("#toggle-last-trick").live("click", function(){
+    $(".trick-info").slideToggle("fast");
   });
 });
 
@@ -93,9 +93,10 @@ CardGames = {
     });  
   },
 
-  startNewTrick: function(){
+  startNewTrick: function(){    
     $.post(window.location.pathname + "/new_trick", function(html){
       $("#game-page").html(html);
+      CardGames.reloadPreviousTrick();
       CardGames.autoplay();
     });  
   },
@@ -104,6 +105,12 @@ CardGames = {
     $.post(window.location.pathname + "/pass_cards", function(html){
       CardGames.autoplay();
     });  
+  },
+  
+  reloadPreviousTrick: function(){
+    $.post(window.location.pathname + "/reload_trick", function(html){
+      $("#previous-trick").html(html);      
+    });
   }
   
 }

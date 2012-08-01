@@ -1,7 +1,8 @@
 CardGames::Application.routes.draw do
   
   resources :games do
-    post 'reload' => 'games#reload'
+    post 'reload' => 'reloads#reload_all'
+    post 'reload_trick' => 'reloads#reload_trick'
     post 'fill' => 'fill_games#fill'
     post 'new_round' => 'rounds#create'
     post 'new_trick' => 'tricks#create'

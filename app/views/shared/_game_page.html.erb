@@ -19,15 +19,3 @@
     
   </div>
 </div>
-
-<% if @game.has_more_than_one_trick? %>
-  <div style="float: left; width: auto;">
-    <div class="span3 well">
-    
-      <div id="previous-trick">
-        <%= render :partial => 'shared/previous_trick' %>
-      </div>
-    
-    </div>
-  </div>
-<% end %>

@@ -4,7 +4,7 @@ class FillGamesController < ApplicationController
 
   def fill
     @game.fill_empty_seats
-    reload_game_page
+    reload_partial
   end
   
 end

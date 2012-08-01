@@ -6,7 +6,7 @@ class PlayedCardsController < ApplicationController
     card = PlayerCard.find(params[:card].to_i) if params[:card]
     @game.play_card(card)
     @game.update_scores_if_necessary
-    reload_game_page
+    reload_partial
   end
   
 end

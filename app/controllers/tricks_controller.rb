@@ -5,7 +5,7 @@ class TricksController < ApplicationController
   def create
     current_round.create_trick
     
-    reload_game_page
+    reload_partial
   end
 
 end

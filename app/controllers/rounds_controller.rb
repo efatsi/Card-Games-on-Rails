@@ -6,7 +6,7 @@ class RoundsController < ApplicationController
   def create    
     @game.create_round
 
-    reload_game_page  
+    reload_partial  
   end
   
 end
