@@ -82,7 +82,7 @@ class Player < ActiveRecord::Base
   end
   
   def ready_to_pass?
-    cards_to_pass.length == 3
+    cards_to_pass.length == 3 && !card_passing_set.is_ready?
   end
   
 end

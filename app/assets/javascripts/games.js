@@ -30,7 +30,7 @@ CardGames = {
   autoplay: function(){
     $.getJSON(window.location.pathname, function(game){
       if (game.isCurrentPlayersTurn){
-        CardGames.waitForUserInput();
+        CardGames.reloadAndJustWait();
       }
       else if (game.shouldReloadWaitAutoplay){
         CardGames.reloadWaitAutoplay();
@@ -61,12 +61,16 @@ CardGames = {
       else if (game.shouldPassCards){
         CardGames.passCards();
       }
+      else{
+        // DO NOTHING
+      }
     });
   },
   
-  waitForUserInput: function(){
+  reloadAndJustWait: function(){
     $.post(window.location.pathname + "/reload", function(html){
       $("#game-page").html(html);
+      // DO NOTHING
     });
   },
   
