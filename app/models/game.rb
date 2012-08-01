@@ -128,16 +128,28 @@ class Game < ActiveRecord::Base
     last_trick.present? && last_trick.position >= 1
   end
   
-  def should_reload?(current_player)
-    current_player.is_a_bystander?
-  end
-  
   def computer_should_play?
     next_player.try(:is_computer?) && mid_trick_time?
   end
   
-  def should_reload(current_player)
-    current_player.is_a_bystander? || (next_player.try(:is_human?) && is_not_current_players_turn(current_player))
+  def should_reload?(current_player)
+    current_player.is_a_bystander? || master_should_reload(current_player)
+  end
+  
+  def master_should_reload(master)
+    if is_ready_for_a_new_round?
+      false
+    else
+      rounds.empty? || waiting_for_others_to_pass?(master) || another_human_is_next(master)
+    end
+  end
+  
+  def waiting_for_others_to_pass?(master)
+    master.card_passing_set.is_ready && !passing_sets_are_ready?
+  end
+  
+  def another_human_is_next(current_player)
+    next_player.try(:is_human?) && is_not_current_players_turn(current_player)
   end
   
   def is_not_current_players_turn(current_player)

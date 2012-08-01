@@ -1,4 +1,4 @@
-<% unless @game.is_full? %>
+<% if !@game.is_full? && current_player.is_game_master? %>
 <div style="float: left; width: auto;">
   <div class="well">
     <center>

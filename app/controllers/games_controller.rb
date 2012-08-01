@@ -21,7 +21,7 @@ class GamesController < ApplicationController
           :shouldPassCards => @game.ready_to_pass?,
           :isStartingFirstRound => @game.rounds.empty?,
           :isStartingFirstTrick => current_round.try(:tricks).try(:empty?),
-          :shouldReloadWaitAutoplay => @game.should_reload(current_player),
+          :shouldReloadWaitAutoplay => @game.should_reload?(current_player),
           :isCurrentPlayersTurn => @game.is_current_players_turn?(current_player)
         }
       end
