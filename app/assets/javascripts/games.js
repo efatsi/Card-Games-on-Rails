@@ -46,6 +46,7 @@ CardGames = {
         else {
           $newRoundDelay = 3000;
         }
+        CardGames.reloadAndJustWait();
         setTimeout(CardGames.startNewRound, $newRoundDelay);
       }
       else if (game.shouldStartNewTrick){
@@ -56,6 +57,7 @@ CardGames = {
         else {
           $newTrickDelay = 2000;
         }
+        CardGames.reloadAndJustWait();
         setTimeout(CardGames.startNewTrick, $newTrickDelay);
       }
       else if (game.shouldPassCards){
@@ -73,7 +75,7 @@ CardGames = {
   reloadWaitAutoplay: function(){
     $.post(window.location.pathname + "/reload", function(html){
       $("#game-page").html(html);
-      setTimeout(CardGames.autoplay, 2000);
+      setTimeout(CardGames.autoplay, 1000);
     });  
   },
 
