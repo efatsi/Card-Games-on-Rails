@@ -25,7 +25,7 @@ class Trick < ActiveRecord::Base
     card_position = next_position
     PlayedCard.create(:player_card_id => card.id, :trick_id => self.id, :position => card_position) unless card.has_been_played?
     self.update_attributes(:lead_suit => card.suit) if player == leader
-    round.hearts_broken = true if card.suit == "heart"
+    round.hearts_broken = true if card.is_a_scoring_card?
     round.save
   end
 

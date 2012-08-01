@@ -47,6 +47,10 @@ class PlayerCard < ActiveRecord::Base
     self.update_attributes(:card_passing_set_id => new_value)
   end
   
+  def is_a_scoring_card?
+    is_a_heart || is_queen_of_spades
+  end
+  
   private
   def is_not_chosen?
     card_passing_set_id.nil?
@@ -65,7 +69,7 @@ class PlayerCard < ActiveRecord::Base
   end
 
   def is_not_a_scoring_card?
-    !is_a_heart && !is_queen_of_spades
+    !is_a_scoring_card?
   end
 
 end
