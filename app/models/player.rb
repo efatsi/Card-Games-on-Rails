@@ -78,7 +78,7 @@ class Player < ActiveRecord::Base
   end
   
   def is_a_bystander?
-    !is_game_master
+    !is_game_master?
   end
   
   def ready_to_pass?

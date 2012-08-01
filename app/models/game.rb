@@ -97,7 +97,7 @@ class Game < ActiveRecord::Base
   end
 
   def is_ready_for_a_new_round?
-    new_round_time? && is_not_over?
+    is_full? && new_round_time? && is_not_over?
   end
 
   def new_round_time?
@@ -130,6 +130,18 @@ class Game < ActiveRecord::Base
   
   def should_reload?(current_player)
     current_player.is_a_bystander?
+  end
+  
+  def computer_should_play?
+    next_player.try(:is_computer?) && mid_trick_time?
+  end
+  
+  def should_reload(current_player)
+    current_player.is_a_bystander? || (next_player.try(:is_human?) && is_not_current_players_turn(current_player))
+  end
+  
+  def is_not_current_players_turn(current_player)
+    mid_trick_time? && next_player != current_player
   end
   
   def update_scores_if_necessary

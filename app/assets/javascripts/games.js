@@ -1,4 +1,6 @@
-$(document).ready(function(){gi
+$(document).ready(function(){
+  
+  setTimeout(CardGames.autoplay, 2000);
   
   $('form.skip-reload').live("ajax:success", function(event, html){
     CardGames.autoplay();
@@ -24,84 +26,82 @@ $(document).ready(function(){gi
 });
 
 CardGames = {
-  reload: function(){
-    $.post(window.location.pathname + "/reload", function(html){
-      $("#game-page").html(html);
-      CardGames.autoplay();
-    });
-  },
   
   autoplay: function(){
     $.getJSON(window.location.pathname, function(game){
       if (game.isCurrentPlayersTurn){
         CardGames.waitForUserInput();
       }
-      else if (game.currentPlayerIsBystander){
-        CardGames.waitThenReload
+      else if (game.shouldReloadWaitAutoplay){
+        CardGames.reloadWaitAutoplay();
       }
-      // if (game.computerShouldPlay){
-      //   CardGames.playAsComputer();
-      // }
-      // else if (game.shouldStartNewRound){
-      //   var $newRoundDelay
-      //   if (game.isFirstRound) {
-      //     $newRoundDelay = 0;
-      //   }
-      //   else {
-      //     $newRoundDelay = 3000;
-      //   }
-      //   setTimeout(CardGames.startNewRound, $newRoundDelay);
-      // }
-      // else if (game.shouldStartNewTrick){
-      //   var $newTrickDelay
-      //   if (game.isFirstTrick) {
-      //     $newTrickDelay = 0;
-      //   }
-      //   else {
-      //     $newTrickDelay = 2000;
-      //   }
-      //   setTimeout(CardGames.startNewTrick, $newTrickDelay);
-      // }
-      // else if (game.shouldPassCards){
-      //   CardGames.passCards();
-      // }
+      else if (game.computerShouldPlay){
+        CardGames.playAsComputer();
+      }
+      else if (game.shouldStartNewRound){
+        var $newRoundDelay
+        if (game.isStartingFirstRound) {
+          $newRoundDelay = 0;
+        }
+        else {
+          $newRoundDelay = 3000;
+        }
+        setTimeout(CardGames.startNewRound, $newRoundDelay);
+      }
+      else if (game.shouldStartNewTrick){
+        var $newTrickDelay
+        if (game.isStartingFirstTrick) {
+          $newTrickDelay = 0;
+        }
+        else {
+          $newTrickDelay = 2000;
+        }
+        setTimeout(CardGames.startNewTrick, $newTrickDelay);
+      }
+      else if (game.shouldPassCards){
+        CardGames.passCards();
+      }
     });
   },
   
   waitForUserInput: function(){
-    $.post(window.location.pathname, function(html){
+    $.post(window.location.pathname + "/reload", function(html){
       $("#game-page").html(html);
     });
   },
   
+  reloadWaitAutoplay: function(){
+    $.post(window.location.pathname + "/reload", function(html){
+      $("#game-page").html(html);
+      setTimeout(CardGames.autoplay, 2000);
+    });  
+  },
+
   playAsComputer: function(){
     $.post(window.location.pathname + "/play_one_card", function(html){
       $("#game-page").html(html);
       CardGames.autoplay();
-    });
+    });  
   },
 
   startNewRound: function(){
     $.post(window.location.pathname + "/new_round", function(html){
       $("#game-page").html(html);
       CardGames.autoplay();
-    });
+    });  
   },
 
   startNewTrick: function(){
     $.post(window.location.pathname + "/new_trick", function(html){
       $("#game-page").html(html);
       CardGames.autoplay();
-    });
+    });  
   },
-  
+
   passCards: function(){
     $.post(window.location.pathname + "/pass_cards", function(html){
       CardGames.autoplay();
-    });
-  },
-  
-  waitThenReload: function(){
-    setTimeout(CardGames.autoplay, 2000);
+    });  
   }
+  
 }

@@ -11,18 +11,17 @@ class GamesController < ApplicationController
 
   def show
     @game.add_player_from_user(current_user)
-    
     respond_to do |format|
       format.html
       format.json do
         render :json => {
-          :computerShouldPlay => @game.next_player.try(:is_computer?) && @game.mid_trick_time?,
+          :computerShouldPlay => @game.computer_should_play?,
           :shouldStartNewRound => @game.is_ready_for_a_new_round?,
           :shouldStartNewTrick => @game.is_ready_for_a_new_trick?,
           :shouldPassCards => @game.ready_to_pass?,
-          :isFirstRound => @game.rounds.empty?,
-          :isFirstTrick => current_round.try(:tricks).try(:empty?)
-          :currentPlayerIsBystander => current_player.is_a_bystander?
+          :isStartingFirstRound => @game.rounds.empty?,
+          :isStartingFirstTrick => current_round.try(:tricks).try(:empty?),
+          :shouldReloadWaitAutoplay => @game.should_reload(current_player),
           :isCurrentPlayersTurn => @game.is_current_players_turn?(current_player)
         }
       end
@@ -45,6 +44,10 @@ class GamesController < ApplicationController
   def destroy
     @game.destroy
     redirect_to games_url
+  end
+  
+  def reload
+    reload_game_page
   end
 
 end

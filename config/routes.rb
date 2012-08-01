@@ -1,7 +1,8 @@
 CardGames::Application.routes.draw do
   
   resources :games do
-    get 'show', :on => :member
+    # get 'show', :on => :member
+    post 'reload' => 'games#reload'
     post 'fill' => 'fill_games#fill'
     post 'new_round' => 'rounds#create'
     post 'new_trick' => 'tricks#create'
