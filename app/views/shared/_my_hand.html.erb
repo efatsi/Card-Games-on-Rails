@@ -18,7 +18,7 @@
                       <% if !player_has_passed? %>
                         <%= card_button(card, "flip_passing_status", "reload-hand", "button btn-warning") %>
                       <% else %>
-                        <%= card.in_english + " is being passed" %>
+                        <button class="btn btn-danger"><%= card.in_english %></button>
                       <% end %>
                     <% elsif card.can_be_chosen? %>
                       <%= card_button(card, "flip_passing_status", "reload-hand") %>
