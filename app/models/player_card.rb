@@ -33,6 +33,10 @@ class PlayerCard < ActiveRecord::Base
   def can_be_chosen?
     is_not_chosen? &&  player.cards_to_pass.length != 3
   end
+  
+  def has_been_played?
+    played_card.present?
+  end
 
   def hand_order
     suit_weight*13 + value_weight   
