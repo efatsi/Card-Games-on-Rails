@@ -85,4 +85,8 @@ class Player < ActiveRecord::Base
     cards_to_pass.length == 3 && !card_passing_set.is_ready?
   end
   
+  def has_passed?
+    card_passing_set.is_ready
+  end
+  
 end

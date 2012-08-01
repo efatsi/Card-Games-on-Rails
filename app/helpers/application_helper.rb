@@ -27,6 +27,10 @@ module ApplicationHelper
     current_game.passing_time? && current_player.ready_to_pass?
   end
   
+  def player_has_passed?
+    current_player.has_passed?
+  end
+  
   def current_player
     current_user.try(:current_player_in_game, current_game)
   end
