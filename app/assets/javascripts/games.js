@@ -61,16 +61,12 @@ CardGames = {
       else if (game.shouldPassCards){
         CardGames.passCards();
       }
-      else{
-        // DO NOTHING
-      }
     });
   },
   
   reloadAndJustWait: function(){
     $.post(window.location.pathname + "/reload", function(html){
       $("#game-page").html(html);
-      // DO NOTHING
     });
   },
   
