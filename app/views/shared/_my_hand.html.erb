@@ -29,6 +29,13 @@
                   <% elsif @game.is_current_players_turn?(current_player) %>
                   
                     <% if card.is_valid?(@game.get_lead_suit, @game.trick_is_first?) %>
+                    <% @path = game_play_one_card_path(@game, :card => card) %>
+                    <form action="<%= game_play_one_card_path(@game, :card => card) %>" class="immediate-reload" data-remote="true" method="post">
+                      <div><input class="special-button" type="image" src="/assets/cards/s2.gif">
+                                                
+                        
+                      </div>
+                    </form>
                       <%= card_button(card, "play_one_card", "immediate-reload") %>
                     <% else %>
                       <%= card.in_english %>
