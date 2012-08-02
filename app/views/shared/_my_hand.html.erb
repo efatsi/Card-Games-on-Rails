@@ -11,31 +11,32 @@
                   <% if @game.passing_time? %>
                     <% if card.has_been_chosen? %>
                       <% if !player_has_passed? %>
-                        <%= card_button(card, "flip_passing_status", "reload-hand", "button btn-warning") %>
+                        <form action="<%= game_flip_passing_status_path(@game, :card => card) %>" class="reload-hand" data-remote="true" method="post">
+                          <%= image_submit_tag(card.image_path, :class => "elevated-card") %>
+                        </form>
                       <% else %>
-                        <button class="btn btn-danger"><%= card.in_english %></button>
+                        <%= image_tag(card.image_path, :class => "elevated-card") %>
                       <% end %>
                     <% elsif card.can_be_chosen? %>
-                      <%= card_button(card, "flip_passing_status", "reload-hand") %>
+                      <form action="<%= game_flip_passing_status_path(@game, :card => card) %>" class="reload-hand" data-remote="true" method="post">
+                        <%= image_submit_tag(card.image_path) %>
+                      </form>
                     <% else %>
-                      <%= card.in_english %>
+                      <%= image_tag(card.image_path) %>
                     <% end %>
                     
                   <% elsif @game.is_current_players_turn?(current_player) %>
                     
                     <% if card.is_valid?(@game.get_lead_suit, @game.trick_is_first?) %>
-                    <% @path = game_play_one_card_path(@game, :card => card) %>
                     <form action="<%= game_play_one_card_path(@game, :card => card) %>" class="immediate-reload" data-remote="true" method="post">
-                      <div><%= image_submit_tag(card.image_path) %>
-                        
-                      </div>
+                      <%= image_submit_tag(card.image_path, :class => "elevated-card") %>
                     </form>
                     <% else %>
                       <%= image_tag(card.image_path) %>
                     <% end %>
                     
                   <% else %>  
-                    <%= card.in_english %>
+                    <%= image_tag(card.image_path) %>
                   <% end %>
                 </li>
               <% end %>
