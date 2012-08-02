@@ -51,6 +51,11 @@ class PlayerCard < ActiveRecord::Base
     is_a_heart || is_queen_of_spades
   end
   
+  def image_path
+    suit_letter = suit[0]
+    "/assets/cards/#{suit_letter}#{value}.gif"
+  end
+  
   private
   def is_not_chosen?
     card_passing_set_id.nil?

@@ -30,20 +30,31 @@ h1 {
 
 #previous-trick{
   width: 300px;
-  margin-left: 510px;
+  margin-left: 710px;
 }
 
 #game-page{
   position: absolute;
   top: 120px;
-  width: 500px;
+  width: 700px;
 }
 
 .special-button{
   background:url(/images/d8.gif)
 }
 
+ul {
+list-style-type: none;
+}
 
+li {
+float: left;
+}
+
+input[type="image"]{
+  position: relative; 
+	top: -15px;
+}
 
 .navbar{*position:relative;}
 .navbar-inner{min-height:30px;padding-top:10px;background-image:-webkit-linear-gradient(top, #777, #777);}
