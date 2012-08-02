@@ -3,6 +3,7 @@ require 'spec_helper'
 describe Trick do
   
   before do
+    User.delete_all
     @game = FactoryGirl.create(:game)
     @user1 = FactoryGirl.create(:user, :username => "trick_user1")
     @user2 = FactoryGirl.create(:user, :username => "trick_user2")
@@ -12,6 +13,7 @@ describe Trick do
     @player2 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user2.id, :seat => 1)
     @player3 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user3.id, :seat => 2)
     @player4 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user4.id, :seat => 3)
+    create_cards
     @round = FactoryGirl.create(:round, :game_id => @game.id, :dealer_id => @player1.id)
     @trick = FactoryGirl.create(:trick, :round_id => @round.id, :leader_id => @player1.id)
   end
@@ -42,11 +44,6 @@ describe Trick do
   end
   
   describe "#trick_play" do
-    
-    before do
-      create_cards
-      @round.deal_cards
-    end
     
     context "starting with the two of clubs" do
       
@@ -163,7 +160,6 @@ describe Trick do
       it "should display trick info correctly" do
         display = @trick.display_trick_info
         display.should include("Trick was lead by trick_user1 and won by trick_user")
-        display.should include("The lead suit was ")
       end
     end
     
@@ -249,15 +245,20 @@ describe Trick do
     
   end
   
-  describe "play_trick" do
+  describe "#methods" do
     
-    before do
-      create_cards
-      @round.deal_cards
-    end
-    
-    it "should not crash" do
-      @trick.play_trick
+    context "players_in_order" do
+      
+      it "should work" do
+        @trick.update_attributes(:leader_id => @player1.id)
+        @trick.send(:players_in_order).should == [@player1, @player2, @player3, @player4]
+      end
+      
+      it "should work with a different trick leader" do        
+        @trick.update_attributes(:leader_id => @player2.id)
+        @trick.send(:players_in_order).should == [@player2, @player3, @player4, @player1]
+      end
+      
     end
   end
     

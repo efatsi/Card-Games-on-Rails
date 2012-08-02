@@ -8,15 +8,6 @@ class Game < ActiveRecord::Base
 
   delegate :card_passing_sets, :to => :last_round
   delegate :cards_have_been_passed, :to => :last_round
-
-  def play_game
-    until(is_over?)
-      new_dealer = get_new_dealer
-      new_round = Round.create(:game_id => self.id, :dealer_id => new_dealer.id, :position => next_round_position)
-      new_round.play_round
-      check_for_and_set_winner
-    end    
-  end
   
   def add_player_from_user(user)
     if can_accomodate(user)
@@ -93,7 +84,7 @@ class Game < ActiveRecord::Base
   end
   
   def is_ready_for_a_new_trick?
-    last_round.try(:is_ready_for_a_new_trick?)
+    new_trick_time?
   end
 
   def is_ready_for_a_new_round?
@@ -125,7 +116,7 @@ class Game < ActiveRecord::Base
   end
   
   def has_more_than_one_trick?
-    last_trick.present? && last_trick.position >= 1
+    last_trick.present? && last_round.tricks.length > 1
   end
   
   def computer_should_play?
@@ -140,7 +131,7 @@ class Game < ActiveRecord::Base
     if is_ready_for_a_new_round?
       false
     else
-      rounds.empty? || waiting_for_others_to_pass?(master) || another_human_is_next(master)
+      rounds.empty? || waiting_for_others_to_pass?(master) || another_human_is_next?(master)
     end
   end
   
@@ -148,11 +139,11 @@ class Game < ActiveRecord::Base
     master.card_passing_set.is_ready && !passing_sets_are_ready?
   end
   
-  def another_human_is_next(current_player)
-    next_player.try(:is_human?) && is_not_current_players_turn(current_player)
+  def another_human_is_next?(current_player)
+    next_player.try(:is_human?) && is_not_current_players_turn?(current_player)
   end
   
-  def is_not_current_players_turn(current_player)
+  def is_not_current_players_turn?(current_player)
     mid_trick_time? && next_player != current_player
   end
   

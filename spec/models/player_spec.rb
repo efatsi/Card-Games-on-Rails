@@ -3,17 +3,10 @@ require 'spec_helper'
 describe Player do
   
   before do
+    User.delete_all
     @game = FactoryGirl.create(:game)
-    @user1 = FactoryGirl.create(:user, :username => "player_user1")
-    @user2 = FactoryGirl.create(:user, :username => "player_user2")
-    @user3 = FactoryGirl.create(:user, :username => "player_user3")
-    @user4 = FactoryGirl.create(:user, :username => "player_user4")
-    @player1 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user1.id, :seat => 0)
-    @player2 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user2.id, :seat => 1)
-    @player3 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user3.id, :seat => 2)
-    @player4 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user4.id, :seat => 3)
+    create_users; create_players; create_cards
     @round = FactoryGirl.create(:round, :game_id => @game.id, :dealer_id => @player1.id)
-    create_cards
   end
   
   describe "resource_knowledge" do
@@ -24,10 +17,6 @@ describe Player do
   end
   
   describe "#methods" do
-    
-    before do
-      @round.deal_cards
-    end
     
     context "two_of_clubs" do
       
@@ -50,6 +39,55 @@ describe Player do
       end
     end
     
+    context "master or bystander" do
+      
+      it "should know who the master is" do
+        @player1.is_game_master?.should == true
+        @player2.is_game_master?.should == false
+        @player3.is_game_master?.should == false
+        @player4.is_game_master?.should == false
+      end
+      
+      it "should know who is a bystander" do
+        @player1.is_a_bystander?.should == false
+        @player2.is_a_bystander?.should == true
+        @player3.is_a_bystander?.should == true
+        @player4.is_a_bystander?.should == true
+      end
+    end
+    
+    context "has_passed?" do
+      
+      it "should work" do
+        @player1.card_passing_set.update_attributes(:is_ready => true)
+        @player1.has_passed?.should == true
+        @player2.card_passing_set.update_attributes(:is_ready => false)
+        @player2.has_passed?.should == false
+      end
+    end
+    
+    context "ready_to_pass?" do
+      
+      before do
+        @player1.card_passing_set.update_attributes(:is_ready => false)
+      end
+      
+      it "should be false if < 3 cards have been passed" do
+        @player1.card_passing_set.player_cards.each{|c| c.destroy}
+        @player1.ready_to_pass?.should == false
+      end
+      
+      it "should be false if set is_ready" do
+        @round.fill_computer_passing_sets
+        @player1.card_passing_set.update_attributes(:is_ready => false)
+        @player1.ready_to_pass?.should == true
+      end
+      
+      it "should be true if 3 cards have been chosen and set !is_ready?" do
+        @round.fill_computer_passing_sets
+        @player1.ready_to_pass?.should == true
+      end
+    end
   end
   
   

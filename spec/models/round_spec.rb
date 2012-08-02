@@ -4,14 +4,11 @@ describe Round do
 
   before do
     @game = FactoryGirl.create(:game)
-    @user1 = FactoryGirl.create(:user, :username => "round_user1")
-    @user2 = FactoryGirl.create(:user, :username => "round_user2")
-    @user3 = FactoryGirl.create(:user, :username => "round_user3")
-    @user4 = FactoryGirl.create(:user, :username => "round_user4")
-    @player1 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user1.id, :seat => 0)
-    @player2 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user2.id, :seat => 1)
-    @player3 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user3.id, :seat => 2)
-    @player4 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user4.id, :seat => 3)
+    @player1 = FactoryGirl.create(:player, :game_id => @game.id, :seat => 0)
+    @player2 = FactoryGirl.create(:player, :game_id => @game.id, :seat => 1)
+    @player3 = FactoryGirl.create(:player, :game_id => @game.id, :seat => 2)
+    @player4 = FactoryGirl.create(:player, :game_id => @game.id, :seat => 3)
+    create_cards
     @round = FactoryGirl.create(:round, :game_id => @game.id, :dealer_id => @player1.id)
   end
 
@@ -45,15 +42,32 @@ describe Round do
   end
 
   describe "#methods" do
+    
+    context "create_tricks" do
 
-    context "deal_cards" do
+      it "should increase Tricks by 1" do
+        expect{ @round.create_trick }.to change{ Trick.count }.by(1)
+      end
+    end
+    
+    context "previous_trick" do
       
-      before do        
-        create_cards
+      before do
+        @trick1 = FactoryGirl.create(:trick, :round_id => @round.id)
+        @trick2 = FactoryGirl.create(:trick, :round_id => @round.id)
+        @trick3 = FactoryGirl.create(:trick, :round_id => @round.id)
       end
       
-      it "should deal 13 cards to every player" do
-        @round.deal_cards
+      it "should know the correct trick" do
+        @round.previous_trick.should == @trick2
+        @trick4 = FactoryGirl.create(:trick, :round_id => @round.id)
+        @round.previous_trick.should == @trick3
+      end
+    end
+    
+    context "deal_cards" do
+      
+      it "should have dealt 13 cards to every player on round creation" do
         @round.players.each do |player|
           player.hand.length.should == 13
         end
@@ -63,8 +77,6 @@ describe Round do
     context "pass_cards" do
       
       before do
-        create_cards
-        @round.deal_cards
         @round.fill_computer_passing_sets
       end
       
@@ -128,12 +140,11 @@ describe Round do
     context "two_of_clubs_owner" do
       
       it "should correctly find a Player" do
-        create_cards
-        @round.deal_cards
         @round.send(:two_of_clubs_owner).should be_an_instance_of Player
       end
       
       it "should find the correct Player" do
+        @round.players.each{|p| p.hand.each{|c| c.destroy}}
         two_club = Card.create(:value => "2", :suit => "club")
         pc = PlayerCard.create(:player_id => @player1.id, :card_id => two_club.id)
         @round.send(:two_of_clubs_owner).should == @player1
@@ -167,16 +178,16 @@ describe Round do
         @round.pass_direction(8).should == :left
       end
       
-      it "should return :across for positions 1, 5 ,9" do
-        @round.pass_direction(1).should == :across
-        @round.pass_direction(5).should == :across
-        @round.pass_direction(9).should == :across
+      it "should return :right for positions 1, 5 ,9" do
+        @round.pass_direction(1).should == :right
+        @round.pass_direction(5).should == :right
+        @round.pass_direction(9).should == :right
       end
       
-      it "should return :right for positions 2, 6, 10" do
-        @round.pass_direction(2).should == :right
-        @round.pass_direction(6).should == :right
-        @round.pass_direction(10).should == :right
+      it "should return :across for positions 2, 6, 10" do
+        @round.pass_direction(2).should == :across
+        @round.pass_direction(6).should == :across
+        @round.pass_direction(10).should == :across
       end
       
       it "should return :none for positions 3, 7, 11" do
@@ -283,11 +294,6 @@ describe Round do
       
     context "making new tricks" do
       
-      before do
-        create_cards
-        @round.deal_cards
-      end
-      
       it "should increment trick count of the round" do
         expect{ Trick.create(:round_id => @round.id, :leader_id => @player1.id, :position => 0) }.to change{ @round.tricks(true).length }.by(1)
       end
@@ -380,16 +386,5 @@ describe Round do
       end
     end
   end
-  
-  describe "#play_round" do
-    
-    before do
-      create_cards
-    end
-    
-    it "should not crash" do
-      @round.play_round
-    end
-    
-  end
+
 end

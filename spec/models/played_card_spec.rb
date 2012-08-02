@@ -2,14 +2,13 @@ require 'spec_helper'
 
 describe PlayedCard do
   
-  before do
-    @game = FactoryGirl.create(:game)
+  before :all do
+    User.delete_all
     @user1 = FactoryGirl.create(:user, :username => "trick_user1")
     @user2 = FactoryGirl.create(:user, :username => "trick_user2")
-    @player1 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user1.id, :seat => 0)
-    @player2 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user2.id, :seat => 1)
-    @round = FactoryGirl.create(:round, :game_id => @game.id, :dealer_id => @player1.id)
-    @trick = FactoryGirl.create(:trick, :round_id => @round.id, :leader_id => @player1.id)    
+    @player1 = FactoryGirl.create(:player, :user_id => @user1.id)
+    @player2 = FactoryGirl.create(:player, :user_id => @user2.id)
+    @trick = FactoryGirl.create(:trick, :round_id => 2, :leader_id => @player1.id)    
   end
 
   describe "beats?" do

@@ -26,10 +26,7 @@ describe Game do
     context "#players" do
 
       it "should know about any players" do
-        @player1 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user1.id, :seat => 0)
-        @player2 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user2.id, :seat => 1)
-        @player3 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user3.id, :seat => 2)
-        @player4 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user4.id, :seat => 3)
+        create_players
         @game.players.length.should == 4
       end
     end
@@ -73,6 +70,7 @@ describe Game do
       end
 
       it "should return the correct round with multiple" do
+        create_cards; create_players        
         @round1 = FactoryGirl.create(:round, :game_id => @game.id, :position => @game.next_round_position); @game.reload
         @round2 = FactoryGirl.create(:round, :game_id => @game.id, :position => @game.next_round_position); @game.reload
         @round3 = FactoryGirl.create(:round, :game_id => @game.id, :position => @game.next_round_position); @game.reload
@@ -85,10 +83,7 @@ describe Game do
   describe "#game_is_full" do
 
     before do
-      @player1 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user1.id, :seat => 0)
-      @player2 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user2.id, :seat => 1)
-      @player3 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user3.id, :seat => 2)
-      @player4 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user4.id, :seat => 3)
+      create_cards; create_players
     end
 
     context "get_new_dealer" do
@@ -139,6 +134,13 @@ describe Game do
     end
 
     context "already_has?(user)" do
+      
+      before do
+        @player1 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user1.id, :seat => 0)
+        @player2 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user2.id, :seat => 1)
+        @player3 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user3.id, :seat => 2)
+        @player4 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user4.id, :seat => 3)
+      end
 
       it "should work for a user/player in the game" do
         @game.already_has?(@user1).should == true
@@ -147,7 +149,7 @@ describe Game do
 
       it "should work for a user/player not in the game" do
         @user5 = FactoryGirl.create(:user, :username => "game_user5")
-        @player1 = FactoryGirl.create(:player, :game_id => @game.id + 1, :user_id => @user5.id, :seat => 0)
+        @player5 = FactoryGirl.create(:player, :game_id => @game.id + 1, :user_id => @user5.id, :seat => 0)
         @game.already_has?(@user5).should == false
       end
     end
@@ -177,9 +179,7 @@ describe Game do
       end
 
       it "should know player 2 is next after player1" do
-        create_cards
-        @round.deal_cards
-        @trick.play_card_from(@player1); @trick.reload
+        @trick.play_card_from(@player1, @player1.hand.first); @trick.reload
         @game.is_current_players_turn?(@player2).should == true
       end
     end
@@ -203,8 +203,6 @@ describe Game do
       before do
         @round = FactoryGirl.create(:round, :game_id => @game.id, :dealer_id => @player1.id)
         @trick = FactoryGirl.create(:trick, :round_id => @round.id, :leader_id => @player1.id)
-        create_cards
-        @round.deal_cards
       end
 
       it "should know about cards that have been played" do
@@ -219,10 +217,7 @@ describe Game do
   describe "#situations" do
 
     before do
-      @player1 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user1.id, :seat => 0)
-      @player2 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user2.id, :seat => 1)
-      @player3 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user3.id, :seat => 2)
-      @player4 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user4.id, :seat => 3)
+      create_cards; create_players
     end
 
     context "new_round_time" do
@@ -246,83 +241,217 @@ describe Game do
     end
 
     context "passing_time" do
-      # this is dependent on round...so
-
-      it "should return true if round says so" do
+      
+      it "should throw it to last_round" do
         fake_last_round = double("my last round")
         @game.stub(:last_round).and_return(fake_last_round)
-        fake_last_round.stub(:passing_time?).and_return(true)
-        @game.passing_time?.should == true
-      end
-
-      it "sould return false if round says so" do
-        fake_last_round = double("my last round")
-        @game.stub(:last_round).and_return(fake_last_round)
-        fake_last_round.stub(:passing_time?).and_return(false)
-        @game.passing_time?.should == false
-      end
-
-      it "should return false if no round exists" do
-        @game.passing_time?.should == false
+        fake_last_round.should_receive(:try).with(:passing_time?)
+        @game.passing_time?
       end
     end
 
-    context "ready_to_pass?" do
-
-      it "should return true if it's passing_time and passing sets are full" do
-        @game.stub(:passing_time?).and_return(true)
-        @game.stub(:passing_sets_are_full?).and_return(true)
-        @game.ready_to_pass?.should == true
-      end
-    end
 
     context "new_trick_time?" do
-      # dependent on last_round
-
-      it "should return true if round says so" do
+      
+      it "should throw it to last_round" do
         fake_last_round = double("my last round")
         @game.stub(:last_round).and_return(fake_last_round)
-        fake_last_round.stub(:is_ready_for_a_new_trick?).and_return(true)
-        @game.new_trick_time?.should == true
-      end
-
-      it "should return false if round says so" do
-        fake_last_round = double("my last round")
-        @game.stub(:last_round).and_return(fake_last_round)
-        fake_last_round.stub(:is_ready_for_a_new_trick?).and_return(false)
-        @game.new_trick_time?.should == false
-      end
-
-      it "should return false if no round exists" do
-        @game.new_trick_time?.should == false
+        fake_last_round.should_receive(:try).with(:is_ready_for_a_new_trick?)
+        @game.new_trick_time? 
       end
     end
 
     context "mid_trick_time?" do
-      # dependent on last_round
-
-      it "should return true if round says so" do
+      
+      it "should throw it to last_round" do
         fake_last_round = double("my last round")
         @game.stub(:last_round).and_return(fake_last_round)
-        fake_last_round.stub(:has_an_active_trick?).and_return(true)
-        @game.mid_trick_time?.should == true
+        fake_last_round.should_receive(:try).with(:has_an_active_trick?)
+        @game.mid_trick_time? 
       end
+    end
 
-      it "should return false if round says so" do
-        fake_last_round = double("my last round")
-        @game.stub(:last_round).and_return(fake_last_round)
-        fake_last_round.stub(:has_an_active_trick?).and_return(false)
-        @game.mid_trick_time?.should == false
+    
+    context "is_ready_for_a_new_trick?" do
+      
+      it "should throw the call to it's own new_trick_time? method" do
+        @game.should_receive(:new_trick_time?)
+        @game.is_ready_for_a_new_trick?
       end
+    end
+    
+    context "is_ready_for_a_new_round?" do
+      
+      it "should return true if is_full, new_round_time, and is_not_over" do
+        @game.stub(:is_full?).and_return(true)
+        @game.stub(:new_round_time?).and_return(true)
+        @game.stub(:is_not_over?).and_return(true)
+        @game.is_ready_for_a_new_round?.should == true
+      end
+    end
+    
+    context "ready_to_pass?" do
+      
+      it "should return true if passing_time? and passing_sets_are_ready?" do
+        @game.stub(:passing_time?).and_return(true)
+        @game.stub(:passing_sets_are_ready?).and_return(true)
+        @game.ready_to_pass?.should == true
+      end
+    end
+    
+    context "trick_is_first?" do
+      
+      it "should pass call to last_trick" do
+        fake_last_trick = double("my last trick")
+        @game.stub(:last_trick).and_return(fake_last_trick)
+        fake_last_trick.should_receive(:trick_is_first?)
+        @game.trick_is_first?
+      end
+    end
+    
+    context "has_more_than_one_trick?" do
+      
+      it "should return false with no rounds" do
+        @game.has_more_than_one_trick?.should == false
+      end
+      
+      it "should return false with no tricks" do
+        @round = FactoryGirl.create(:round, :game_id => @game.id, :dealer_id => 1)
+        @game.has_more_than_one_trick?.should == false
+      end
+      
+      it "should return false with one trick" do
+        @round = FactoryGirl.create(:round, :game_id => @game.id, :dealer_id => 1)
+        FactoryGirl.create(:trick, :round_id => @round.id, :leader_id => 2)
+        @game.has_more_than_one_trick?.should == false
+      end
+      
+      it "should return false with > 1 tricks" do
+        @round = FactoryGirl.create(:round, :game_id => @game.id, :dealer_id => 1)
+        FactoryGirl.create(:trick, :round_id => @round.id, :leader_id => 2)
+        FactoryGirl.create(:trick, :round_id => @round.id, :leader_id => 2)
+        @game.has_more_than_one_trick?.should == true
+      end
+    end
 
-      it "should return false if no round exists" do
-        @game.mid_trick_time?.should == false
+    context "computer_should_play?" do
+
+      it "should not crash" do
+        @game.computer_should_play?
+      end
+    end
+
+    context "should_reload?" do
+
+      it "should not crash" do
+        @game.should_reload?(@player2)
+      end
+    end
+
+    context "master_should_reload?" do
+
+      it "should not crash" do
+        @game.computer_should_play?
+      end
+    end
+
+    context "waiting_for_others_to_pass?" do
+
+      it "should not crash" do
+        @game.waiting_for_others_to_pass?(@player1)
+      end
+    end
+    
+    context "another_human_is_next?" do
+
+      it "should not crash" do
+        @game.another_human_is_next?(@player2)
+      end
+    end
+    
+    context "is_not_current_players_turn?" do
+
+      it "should not crash" do
+        @game.is_not_current_players_turn?(@player1)
       end
     end
 
   end 
   
   describe "#methods" do
+    
+    context "fill_empty_seats" do
+      
+      it "should make 4 computer players with no one in the room" do
+        expect{ @game.fill_empty_seats }.to change{ @game.players.size }.from(0).to(4)
+        @game.players.each do |p|
+          p.is_computer?.should == true
+        end
+      end
+    end
+    
+    context "add_player_from_user(user)" do
+      
+      it "should add a player if it's not full and doesn't have player already" do
+        expect{ @game.add_player_from_user(@user1) }.to change{ @game.reload.players.length }.by(1)
+      end
+      
+      it "should not do anything if player is in game already" do
+        @game.add_player_from_user(@user1)
+        expect{ @game.add_player_from_user(@user1) }.to_not change{ @game.reload.players.length }
+      end
+      
+      it "should not do anything if game is full" do
+        @game.add_player_from_user(@user1)
+        @game.add_player_from_user(@user2)
+        @game.add_player_from_user(@user3)
+        @game.add_player_from_user(@user4)
+        @user5 = FactoryGirl.create(:user, :username => "game_user5")
+        expect{ @game.add_player_from_user(@user5) }.to_not change{ @game.reload.players.length }
+      end
+    end
+    
+    context "create_round" do
+      
+      before do
+        create_players; create_cards
+      end
+      
+      it "should increase round count by 1" do
+        expect{ @game.create_round}.to change{ Round.count }.by(1)
+      end
+    end
+    
+    context "play_card(card)" do
+    
+      it "should throw the call to the last trick" do
+        card = double("Fake Card")
+        my_fake_trick = double("Fake Last Trick")
+        @game.stub(:last_trick).and_return(my_fake_trick)
+        my_fake_trick.stub(:next_player).and_return(nil)
+        my_fake_trick.should_receive(:play_card_from).with(@game.next_player, card)
+        @game.play_card(card)
+      end
+    end
+    
+    context "is_not_over?" do
+      
+      it "should return true and false when it has to" do
+        @game.is_not_over?.should == true
+        @game.update_attributes(:winner_id => 3)
+        @game.is_not_over?.should == false
+      end
+    end
+    
+    context "previous_trick" do
+      
+      it "should throw the call to last_round" do
+        fake_last_round = double("My Fake Last Round")
+        @game.stub(:last_round).and_return(fake_last_round)
+        fake_last_round.should_receive(:try).with(:previous_trick)
+        @game.previous_trick
+      end
+    end
     
     context "update_scores_if_necessary" do
       
@@ -375,27 +504,6 @@ describe Game do
       end
     end
     
-    context "passing_sets_are_full?" do
-      
-      before do
-        @player1 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user1.id, :seat => 0)
-        @player2 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user2.id, :seat => 1)
-        @player3 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user3.id, :seat => 2)
-        @player4 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user4.id, :seat => 3)
-        @round = FactoryGirl.create(:round, :game_id => @game.id, :dealer_id => @player1.id)
-        create_cards
-        @round.deal_cards
-      end
-      
-      it "should return false if sets have not been filled" do
-        @game.send(:passing_sets_are_full?).should == false
-      end
-      
-      it "should return true if sets have been filled" do
-        @round.fill_computer_passing_sets
-        @game.send(:passing_sets_are_full?).should == true
-      end
-    end
     
     context "present_usernames" do
 
@@ -412,20 +520,5 @@ describe Game do
     end
     
   end
-  
-  describe "#play_game" do
 
-    before do
-      @player1 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user1.id, :seat => 0)
-      @player2 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user2.id, :seat => 1)
-      @player3 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user3.id, :seat => 2)
-      @player4 = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user4.id, :seat => 3)
-      create_cards
-    end
-
-    it "should not crash" do
-      @game.play_game
-    end
-
-  end
 end

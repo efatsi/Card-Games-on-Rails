@@ -24,17 +24,17 @@ describe User do
     end
     
     it "should know about it's current player" do
-      @user.current_player.should == @player
+      @user.current_player_in_game(@game).should == @player
       @game2 = FactoryGirl.create(:game)
       @player2 = FactoryGirl.create(:player, :game_id => @game2.id, :user_id => @user.id, :seat => 0)
-      @user.current_player.should == @player2
+      @user.current_player_in_game(@game2).should == @player2
     end
     
     it "should know it is in a game" do
       @user.is_playing_in?(@game).should == true
       @game2 = FactoryGirl.create(:game)
       @player2 = FactoryGirl.create(:player, :game_id => @game2.id, :user_id => @user.id, :seat => 0)
-      @user.is_playing_in?(@game).should == false
+      @user.is_playing_in?(@game).should == true
       @user.is_playing_in?(@game2).should == true
     end
   end

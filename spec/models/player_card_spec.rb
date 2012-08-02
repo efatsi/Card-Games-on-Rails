@@ -3,17 +3,18 @@ require 'spec_helper'
 describe PlayerCard do
   
   before do
+    User.delete_all
     @game = FactoryGirl.create(:game)
-    @user = FactoryGirl.create(:user, :username => "p_c_user")
-    @player = FactoryGirl.create(:player, :game_id => @game.id, :user_id => @user.id)
-    @round = FactoryGirl.create(:round, :game_id => @game.id, :dealer_id => @player.id)
-    @trick = FactoryGirl.create(:trick, :round_id => @round.id, :leader_id => @player.id + 1)
+    create_users; create_players; create_cards
+    @round = FactoryGirl.create(:round, :game_id => @game.id, :dealer_id => @player1.id)
+    @trick = FactoryGirl.create(:trick, :round_id => @round.id, :leader_id => @player1.id + 1)
+    @round.players.each{|p| p.hand.each{|c| c.destroy} }
     @c1 = FactoryGirl.create(:card, :suit => "club", :value => "2")
     @c2 = FactoryGirl.create(:card, :suit => "club", :value => "5")
     @c3 = FactoryGirl.create(:card, :suit => "heart", :value => "5")
-    @p_c1 = FactoryGirl.create(:player_card, :player_id => @player.id, :card_id => @c1.id)
-    @p_c2 = FactoryGirl.create(:player_card, :player_id => @player.id, :card_id => @c2.id)
-    @p_c3 = FactoryGirl.create(:player_card, :player_id => @player.id, :card_id => @c3.id)
+    @p_c1 = FactoryGirl.create(:player_card, :player_id => @player1.id, :card_id => @c1.id)
+    @p_c2 = FactoryGirl.create(:player_card, :player_id => @player1.id, :card_id => @c2.id)
+    @p_c3 = FactoryGirl.create(:player_card, :player_id => @player1.id, :card_id => @c3.id)
   end
   
   describe "resource_knowledge" do
@@ -26,7 +27,7 @@ describe PlayerCard do
   describe "#choosing_abilities" do
     
     before do
-      @p_r = @player.player_rounds.last
+      @p_r = @player1.player_rounds.last
       @set = @p_r.card_passing_set
     end
     
@@ -61,7 +62,7 @@ describe PlayerCard do
       
       it "should return false for an unchosen card with 3 existing choices" do
         @c4 = FactoryGirl.create(:card, :suit => "diamond", :value => "A")
-        @p_c4 = FactoryGirl.create(:player_card, :player_id => @player.id, :card_id => @c4.id)
+        @p_c4 = FactoryGirl.create(:player_card, :player_id => @player1.id, :card_id => @c4.id)
         @p_c1.update_attributes(:card_passing_set_id => @set.id)
         @p_c2.update_attributes(:card_passing_set_id => @set.id)
         @p_c3.update_attributes(:card_passing_set_id => @set.id)
@@ -148,7 +149,7 @@ describe PlayerCard do
         @c1.update_attributes(:suit => "spade", :value => "5")
         @c2.update_attributes(:suit => "diamond", :value => "3")
         @c4 = FactoryGirl.create(:card, :suit => "spade", :value => "Q")
-        @p_c4 = FactoryGirl.create(:player_card, :player_id => @player.id, :card_id => @c4.id)
+        @p_c4 = FactoryGirl.create(:player_card, :player_id => @player1.id, :card_id => @c4.id)
       end
       
       it "should not let you play a scoring card if you have no clubs" do
@@ -157,9 +158,32 @@ describe PlayerCard do
         @p_c3.is_valid?("club", true).should == false
         @p_c4.is_valid?("club", true).should == false
       end
-      
     end
     
+  end
+  
+  describe "#methods" do
+    
+    context "image_path" do
+      
+      it "should work for a generic card (they're all generic ahaha)" do
+        @p_c1.image_path.should == "/assets/cards/c2.gif"
+      end
+    end
+    
+    context "flip_passing_status" do
+      
+      it "should work if original status is nil" do
+        id_will_be = @p_c1.player.card_passing_set.id
+        expect{ @p_c1.flip_passing_status }.to change{ @p_c1.card_passing_set_id }.from(nil).to(id_will_be)
+      end
+      
+      it "should work if original status is not nil" do
+        @p_c1.update_attributes(:card_passing_set_id => 39)
+        expect{ @p_c1.flip_passing_status }.to change{ @p_c1.card_passing_set_id }.from(39).to(nil)
+      end
+    end
+        
   end
   
 end

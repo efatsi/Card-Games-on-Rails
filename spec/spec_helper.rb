@@ -11,7 +11,7 @@ require 'capybara/rails'
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
 RSpec.configure do |config|
-  config.include MakeCards, :type => :model
+  config.include MakeThings, :type => :model
   config.use_transactional_fixtures = true
   config.infer_base_class_for_anonymous_controllers = false
 end

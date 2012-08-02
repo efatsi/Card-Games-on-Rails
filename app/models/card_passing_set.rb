@@ -6,6 +6,8 @@ class CardPassingSet < ActiveRecord::Base
   
   attr_accessible :player_round_id, :is_ready
   
+  validates_presence_of :player_round
+  
   def is_not_ready?
     !is_ready
   end

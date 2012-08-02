@@ -14,12 +14,6 @@ class Trick < ActiveRecord::Base
 
   delegate :players, :player_seated_at, :to => :round
 
-  def play_trick
-    players_in_order.each do |player|
-      play_card_from(player)
-    end
-  end
-
   def play_card_from(player, card = nil)
     card ||= player.choose_card(lead_suit, trick_is_first?)
     card_position = next_position

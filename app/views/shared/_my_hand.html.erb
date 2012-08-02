@@ -30,6 +30,7 @@
                     <% if card.is_valid?(@game.get_lead_suit, @game.trick_is_first?) %>
                     <form action="<%= game_play_one_card_path(@game, :card => card) %>" class="immediate-reload" data-remote="true" method="post">
                       <%= image_submit_tag(card.image_path, :class => "elevated-card") %>
+                      <!-- <input class="card-button" type="image" src="<%= card.image_path %>"> -->
                     </form>
                     <% else %>
                       <%= image_tag(card.image_path) %>

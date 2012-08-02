@@ -23,18 +23,6 @@ class Round < ActiveRecord::Base
   delegate :players, :player_seated_at, :to => :game
   delegate :leader, :to => :last_trick
   
-  def play_round
-    deal_cards
-    pass_cards
-    13.times do
-      new_leader = get_new_leader
-      new_trick = Trick.create(:round_id => self.id, :leader_id => new_leader.id, :position => next_trick_position)
-      new_trick.play_trick
-    end
-    calculate_round_scores
-    update_total_scores
-  end
-  
   def create_trick
     trick = Trick.create({:round => self, :leader_id => get_new_leader.id, :position => next_trick_position}, :without_protection => true)
   end
@@ -95,7 +83,7 @@ class Round < ActiveRecord::Base
 
   def fill_computer_passing_sets
     card_passing_sets.each do |set|
-      if set.player.is_computer?
+      if set.player.is_computer? or Rails.env == "test"
         (3 - set.player_cards.length).times do |i|
           set.player_cards << set.player.hand[i]
         end
