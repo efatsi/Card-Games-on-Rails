@@ -22,7 +22,8 @@ class GamesController < ApplicationController
           :isStartingFirstRound => @game.rounds.empty?,
           :isStartingFirstTrick => current_round.try(:tricks).try(:empty?),
           :shouldReloadWaitAutoplay => @game.should_reload?(current_player),
-          :isCurrentPlayersTurn => @game.is_current_players_turn?(current_player)
+          :shouldReloadAndJustWait => @game.should_reload_and_wait?(current_player),
+          :shouldReloadPreviousTrick => @game.should_reload_previous_trick?
         }
       end
     end

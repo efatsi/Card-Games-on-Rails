@@ -358,7 +358,11 @@ describe Game do
     context "waiting_for_others_to_pass?" do
 
       it "should not crash" do
-        @game.waiting_for_others_to_pass?(@player1)
+        fake_set = double("player1's fake passing set")
+        @game.stub(:passing_sets_are_ready?).and_return(false)
+        @player1.stub(:card_passing_set).and_return(fake_set)
+        fake_set.stub(:is_ready).and_return(true)
+        @game.waiting_for_others_to_pass?(@player1).should == true
       end
     end
     

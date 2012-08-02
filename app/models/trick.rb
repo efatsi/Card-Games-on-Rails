@@ -66,6 +66,10 @@ class Trick < ActiveRecord::Base
   def trick_is_first?
     position == 0 && Rails.env != "test"
   end
+  
+  def is_really_young?
+    Time.now - created_at < 3.seconds
+  end
 
   private
   def players_in_order

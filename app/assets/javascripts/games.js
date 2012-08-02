@@ -29,7 +29,10 @@ CardGames = {
   
   autoplay: function(){
     $.getJSON(window.location.pathname, function(game){
-      if (game.isCurrentPlayersTurn){
+      if (game.shouldReloadPreviousTrick){
+        CardGames.reloadPreviousTrick();
+      }
+      if (game.shouldReloadAndJustWait){
         CardGames.reloadAndJustWait();
       }
       else if (game.shouldReloadWaitAutoplay){
@@ -96,7 +99,6 @@ CardGames = {
   startNewTrick: function(){    
     $.post(window.location.pathname + "/new_trick", function(html){
       $("#game-page").html(html);
-      CardGames.reloadPreviousTrick();
       CardGames.autoplay();
     });  
   },

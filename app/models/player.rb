@@ -89,4 +89,8 @@ class Player < ActiveRecord::Base
     card_passing_set.is_ready
   end
   
+  def has_not_passed_yet?
+    !has_passed?
+  end
+  
 end

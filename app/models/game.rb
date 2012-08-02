@@ -147,6 +147,14 @@ class Game < ActiveRecord::Base
     mid_trick_time? && next_player != current_player
   end
   
+  def should_reload_and_wait?(current_player)
+    is_current_players_turn?(current_player) || (passing_time? && current_player.has_not_passed_yet?)
+  end
+  
+  def should_reload_previous_trick?
+    last_trick.present? && last_trick.is_really_young?
+  end
+  
   def update_scores_if_necessary
     if last_trick.is_over?
       last_round.calculate_round_scores
