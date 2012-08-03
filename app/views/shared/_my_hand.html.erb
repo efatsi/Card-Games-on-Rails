@@ -1,48 +1,54 @@
 <% if current_user.is_playing_in?(@game) %>
   <% if current_player.try(:hand).present? %>
-    <br />
- 
-            <div id="pass-button">
-              <%= progress_button("passing_set_ready", "remove-pass-button", "button btn-info") if player_can_pass? %>
-            </div>
-            <ul>
-              <% current_player.try(:hand).each do |card| %>
-                <li>
-                  <% if @game.passing_time? %>
-                    <% if card.has_been_chosen? %>
-                      <% if !player_has_passed? %>
-                        <form action="<%= game_flip_passing_status_path(@game, :card => card) %>" class="reload-hand" data-remote="true" method="post">
-                          <%= image_submit_tag(card.image_path, :class => "elevated-card") %>
-                        </form>
-                      <% else %>
-                        <%= image_tag(card.image_path, :class => "elevated-card") %>
-                      <% end %>
-                    <% elsif card.can_be_chosen? %>
-                      <form action="<%= game_flip_passing_status_path(@game, :card => card) %>" class="reload-hand" data-remote="true" method="post">
-                        <%= image_submit_tag(card.image_path) %>
-                      </form>
-                    <% else %>
-                      <%= image_tag(card.image_path) %>
-                    <% end %>
-                    
-                  <% elsif @game.is_current_players_turn?(current_player) %>
-                    
-                    <% if card.is_valid?(@game.get_lead_suit, @game.trick_is_first?) %>
-                    <form action="<%= game_play_one_card_path(@game, :card => card) %>" class="immediate-reload" data-remote="true" method="post">
-                      <%= image_submit_tag(card.image_path, :class => "elevated-card") %>
-                      <!-- <input class="card-button" type="image" src="<%= card.image_path %>"> -->
-                    </form>
-                    <% else %>
-                      <%= image_tag(card.image_path) %>
-                    <% end %>
-                    
-                  <% else %>  
-                    <%= image_tag(card.image_path) %>
+      <div id="pass-button">
+        <%= progress_button("passing_set_ready", "remove-pass-button", "button btn-info") if player_can_pass? %>
+      </div>
+      <div class="hand">
+        <ul>
+          <% current_player.try(:hand).each do |card| %>
+            <li>
+              <% if @game.passing_time? %>
+                <% if card.has_been_chosen? %>
+                  <% if !player_has_passed? %>
+                    <div class="card-<%= card.value + "-" + card.suit %>">
+                      <%= card.value + " of " + card.suit %>
+                    </div>
+                  <% else %>
+                    <div class="card card-<%= card.value + "-" + card.suit %>">
+                      <%= card.value + " of " + card.suit %>
+                    </div>
                   <% end %>
-                </li>
+                <% elsif card.can_be_chosen? %>
+                  <div class="card elevated card-<%= card.value + "-" + card.suit %>">
+                    <%= card.value + " of " + card.suit %>
+                  </div>
+                <% else %>  
+                  <div class="card card-<%= card.value + "-" + card.suit %>">
+                    <%= card.value + " of " + card.suit %>
+                  </div>
+                <% end %>
+              
+              <% elsif @game.is_current_players_turn?(current_player) %>
+              
+                <% if card.is_valid?(@game.get_lead_suit, @game.trick_is_first?) %>
+                  <div class="card elevated card-<%= card.value + "-" + card.suit %>">
+                    <%= card.value + " of " + card.suit %>
+                  </div>
+                <% else %>
+                  <div class="card card-<%= card.value + "-" + card.suit %>">
+                    <%= card.value + " of " + card.suit %>
+                  </div>
+                <% end %>
+              
+              <% else %>  
+                <div class="card card-<%= card.value + "-" + card.suit %>">
+                  <%= card.value + " of " + card.suit %>
+                </div>
               <% end %>
-            </ul>
-         
+            </li>
+          <% end %>
+        </ul>
+      </div>
     </div>
   <% else %>
     <br />

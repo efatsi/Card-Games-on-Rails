@@ -8,7 +8,7 @@ CardGames::Application.routes.draw do
     post 'new_trick' => 'tricks#create'
     post 'play_one_card' => 'played_cards#create'
     post 'pass_cards' => 'card_passings#create'
-    post 'flip_passing_status' => 'card_passings#flip_passing_status'
+    post 'toggle_passing_status' => 'card_passings#toggle_passing_status'
     post 'passing_set_ready' => 'card_passings#passing_set_ready'
   end
     

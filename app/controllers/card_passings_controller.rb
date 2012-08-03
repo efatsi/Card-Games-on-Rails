@@ -7,9 +7,9 @@ class CardPassingsController < ApplicationController
     reload_partial
   end
 
-  def flip_passing_status
+  def toggle_passing_status
     player_choice = PlayerCard.find(params[:card].to_i)
-    player_choice.flip_passing_status
+    player_choice.toggle_passing_status
     reload_partial("shared/my_hand")
   end
   

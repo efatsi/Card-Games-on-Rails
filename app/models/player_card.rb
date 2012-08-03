@@ -38,7 +38,7 @@ class PlayerCard < ActiveRecord::Base
     suit_weight*13 + value_weight   
   end
   
-  def flip_passing_status
+  def toggle_passing_status
     new_value = (card_passing_set_id.present? ? nil : player.card_passing_set.id)
     self.update_attributes(:card_passing_set_id => new_value)
   end
@@ -46,12 +46,7 @@ class PlayerCard < ActiveRecord::Base
   def is_a_scoring_card?
     is_a_heart || is_queen_of_spades
   end
-  
-  def image_path
-    suit_letter = suit[0]
-    "/assets/cards/#{suit_letter}#{value}.gif"
-  end
-  
+
   private
   def is_not_chosen?
     card_passing_set_id.nil?

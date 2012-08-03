@@ -3,3 +3,131 @@
 .previous-trick-info {
 	display: none;
 }
+
+/* @group hands */
+
+.hand {
+  # overflow: hidden;
+  # padding-top: 40px;
+  # width: 100%;
+
+	.card {
+		float: left;
+		position: relative;
+		margin-right: -55px;
+		top: 0;
+		@include transition(all .25s);
+
+		&.elevated {
+			top: -10px;
+
+			&:hover {
+				left: -10px;
+				@include rotate(-5deg);
+			}
+
+			&:active {
+				top: -20px;
+			}
+		}
+	}
+}
+
+/* @group cards */
+
+.card {
+  background: #fff url(../assets/deck.gif);
+  display: block;
+  height: 100px;
+	overflow: hidden;
+	text-indent: -9999px;
+  width: 72px;
+}
+
+@for $i from 2 through 10 {
+	.card-#{$i}-heart {
+		background-position: -72px * $i + 72px 0;
+	}
+}
+
+.card-J-heart {
+	background-position: -720px 0;
+}
+
+.card-Q-heart {
+	background-position: -792px 0;
+}
+
+.card-K-heart {
+	background-position: -864px 0;
+}
+
+.card-A-heart {
+	background-position: 0 0;
+}
+
+@for $i from 2 through 10 {
+	.card-#{$i}-diamond {
+		background-position: -72px * $i + 72px -100px;
+	}
+}
+
+.card-J-diamond {
+	background-position: -720px -100px;
+}
+
+.card-Q-diamond {
+	background-position: -792px -100px;
+}
+
+.card-K-diamond {
+	background-position: -864px -100px;
+}
+
+.card-A-diamond {
+	background-position: 0 -100px;
+}
+
+@for $i from 2 through 10 {
+	.card-#{$i}-club {
+		background-position: -72px * $i + 72px -200px;
+	}
+}
+
+.card-J-club {
+	background-position: -720px -200px;
+}
+
+.card-Q-club {
+	background-position: -792px -200px;
+}
+
+.card-K-club {
+	background-position: -864px -200px;
+}
+
+.card-A-club {
+	background-position: 0 -200px;
+}
+
+@for $i from 2 through 10 {
+	.card-#{$i}-spade {
+		background-position: -72px * $i + 72px -300px;
+	}
+}
+
+.card-J-spade {
+	background-position: -720px -300px;
+}
+
+.card-Q-spade {
+	background-position: -792px -300px;
+}
+
+.card-K-spade {
+	background-position: -864px -300px;
+}
+
+.card-A-spade {
+	background-position: 0 -300px;
+}

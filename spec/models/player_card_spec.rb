@@ -164,23 +164,16 @@ describe PlayerCard do
   
   describe "#methods" do
     
-    context "image_path" do
-      
-      it "should work for a generic card (they're all generic ahaha)" do
-        @p_c1.image_path.should == "/assets/cards/c2.gif"
-      end
-    end
-    
-    context "flip_passing_status" do
+    context "toggle_passing_status" do
       
       it "should work if original status is nil" do
         id_will_be = @p_c1.player.card_passing_set.id
-        expect{ @p_c1.flip_passing_status }.to change{ @p_c1.card_passing_set_id }.from(nil).to(id_will_be)
+        expect{ @p_c1.toggle_passing_status }.to change{ @p_c1.card_passing_set_id }.from(nil).to(id_will_be)
       end
       
       it "should work if original status is not nil" do
         @p_c1.update_attributes(:card_passing_set_id => 39)
-        expect{ @p_c1.flip_passing_status }.to change{ @p_c1.card_passing_set_id }.from(39).to(nil)
+        expect{ @p_c1.toggle_passing_status }.to change{ @p_c1.card_passing_set_id }.from(39).to(nil)
       end
     end
         
