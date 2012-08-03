@@ -14,6 +14,9 @@ CardPassingSet.delete_all
 
 if User.all.empty?
   User.create(:username => "efatsi", :password => "secret", :password_confirmation => "secret")
+  User.create(:username => "amelia")
+  User.create(:username => "noah")
+  User.create(:username => "parents")
 end
 
 # Make all of the cards you need
