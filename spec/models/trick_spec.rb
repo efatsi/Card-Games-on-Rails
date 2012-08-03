@@ -133,6 +133,11 @@ describe Trick do
         display = @trick.display_trick_info
         display.should include("Trick is lead by trick_user1, it is trick_user3's turn")
       end
+      
+      it "should not let a player play twice" do
+        expect{ @trick.play_card_from(@player3) }.to change{ @trick.reload.played_cards.length }.from(2).to(3)
+        expect{ @trick.play_card_from(@player3) }.to_not change{ @trick.reload.played_cards.length }
+      end
     end
     
     context "after all cards are played" do
@@ -257,9 +262,32 @@ describe Trick do
       it "should work with a different trick leader" do        
         @trick.update_attributes(:leader_id => @player2.id)
         @trick.send(:players_in_order).should == [@player2, @player3, @player4, @player1]
+      end    
+    end
+  
+    context "has_card_from?(player)" do
+        
+      it "should return false for all players initially" do
+        @trick.send(:has_card_from?, @player1).should == false
+        @trick.send(:has_card_from?, @player2).should == false
+        @trick.send(:has_card_from?, @player3).should == false
+        @trick.send(:has_card_from?, @player4).should == false
       end
       
+      it "should return true when a player plays a card" do
+        @trick.play_card_from(@player1)
+        @trick.send(:has_card_from?, @player1).should == true
+      end
     end
+    
+  end
+  
+  
+  def has_card_from?(player)
+    played_cards.each do |p_c|
+      return true if p_c.player == player
+    end
+    false
   end
     
 end

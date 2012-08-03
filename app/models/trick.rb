@@ -17,11 +17,11 @@ class Trick < ActiveRecord::Base
   def play_card_from(player, card = nil)
     card ||= player.choose_card(lead_suit, trick_is_first?)
     card_position = next_position
-    PlayedCard.create(:player_card_id => card.id, :trick_id => self.id, :position => card_position) unless card.has_been_played?
+    PlayedCard.create(:player_card_id => card.id, :trick_id => self.id, :position => card_position) unless has_card_from?(player)
     self.update_attributes(:lead_suit => card.suit) if player == leader
     round.hearts_broken = true if card.is_a_scoring_card?
     round.save
-  end
+  end    
 
   def next_player
     player_seated_at((leader.seat + next_position) % 4)
@@ -94,6 +94,14 @@ class Trick < ActiveRecord::Base
   
   def start_with_two_of_clubs
     play_card_from(leader, leader.two_of_clubs)
+  end
+  
+  
+  def has_card_from?(player)
+    played_cards.each do |p_c|
+      return true if p_c.player == player
+    end
+    false
   end
 
 end
