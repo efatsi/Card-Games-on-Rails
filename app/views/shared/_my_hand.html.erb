@@ -19,7 +19,7 @@
                     </div>
                   <% end %>
                 <% elsif card.can_be_chosen? %>
-                  <div class="card choosable card-<%= card.value + "-" + card.suit %>" data="<%= card.id %>">
+                  <div class="card choosable card-<%= card.value + "-" + card.suit %>" card-id="<%= card.id %>">
                     <%= card.value + " of " + card.suit %>
                   </div>
                 <% else %>  

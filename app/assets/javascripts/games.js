@@ -3,11 +3,11 @@ $(document).ready(function(){
   setTimeout(CardGames.autoplay, 2000);
   
   $('.choosable').live("click", function(){
-    var $player-card-id = this.getAttribute('data')
-    // $.post(window.location.pathname + "/play_one_card", function(html){
-    //   $("#game-page").html(html);
-    //   CardGames.autoplay();
-    // });
+    var $cardId = this.getAttribute('card-id');
+    $.post(window.location.pathname + "/toggle_passing_status?card=" + $cardId, function(html){
+      $("#game-page").html(html);
+      CardGames.autoplay();
+    });
   });
   
   $('form.skip-reload').live("ajax:success", function(event, html){
