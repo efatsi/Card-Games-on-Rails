@@ -38,10 +38,6 @@ $cardPos: -10px;
         top: $cardPos - 5px;
 				@include rotate(5deg);
 			}
-
-			&:active {
-				top: -20px;
-			}
 		}
 	}
 }

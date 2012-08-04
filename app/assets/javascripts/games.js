@@ -5,6 +5,22 @@ $(document).ready(function(){
   $('.choosable').live("click", function(){
     var $cardId = this.getAttribute('card-id');
     $.post(window.location.pathname + "/toggle_passing_status?card=" + $cardId, function(html){
+      $("#my-hand").html(html);
+      // CardGames.autoplay();
+    });
+  });
+  
+  $('.chosen').live("click", function(){
+    var $cardId = this.getAttribute('card-id');
+    $.post(window.location.pathname + "/toggle_passing_status?card=" + $cardId, function(html){
+      $("#my-hand").html(html);
+      // CardGames.autoplay();
+    });
+  });
+  
+  $('.playable').live("click", function(){
+    var $cardId = this.getAttribute('card-id');
+    $.post(window.location.pathname + "/play_one_card?card=" + $cardId, function(html){
       $("#game-page").html(html);
       CardGames.autoplay();
     });
@@ -24,9 +40,9 @@ $(document).ready(function(){
     CardGames.autoplay();
   });
 
-  $('form.reload-hand').live("ajax:success", function(event, html){
-    $("#my-hand").html(html);
-  });
+  // $('form.reload-hand').live("ajax:success", function(event, html){
+  //   $("#my-hand").html(html);
+  // });
   
   $("#toggle-last-trick").live("click", function(){
     $(".previous-trick-info").slideToggle("fast");
