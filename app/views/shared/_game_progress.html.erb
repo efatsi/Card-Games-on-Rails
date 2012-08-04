@@ -7,7 +7,7 @@
   <% elsif @game.last_round.tricks.any? %>
     <div class="table">
       <% @game.played_cards.each do |card| %>
-        <% position = card.player.seat %>
+        <% position = card.get_position(current_player) %>
         <p class="card played position-<%= position %> card-<%= card.value + "-" + card.suit %>" card-id="<%= card.id %>">
           <%= card.value + " of " + card.suit %>
         </p>

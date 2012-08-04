@@ -47,6 +47,10 @@ class PlayerCard < ActiveRecord::Base
     is_a_heart || is_queen_of_spades
   end
 
+  def get_position(current_player)
+    (player.seat - current_player.seat) % 4
+  end
+  
   private
   def is_not_chosen?
     card_passing_set_id.nil?
