@@ -3,7 +3,11 @@ $(document).ready(function(){
   setTimeout(CardGames.autoplay, 2000);
   
   $('.choosable').live("click", function(){
-    alert(this.data)
+    var $player-card-id = this.getAttribute('data')
+    // $.post(window.location.pathname + "/play_one_card", function(html){
+    //   $("#game-page").html(html);
+    //   CardGames.autoplay();
+    // });
   });
   
   $('form.skip-reload').live("ajax:success", function(event, html){
