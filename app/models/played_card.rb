@@ -13,5 +13,8 @@ class PlayedCard < ActiveRecord::Base
   
   delegate :suit, :value, :is_a_heart, :is_queen_of_spades, :beats?, :value_weight, :in_english, :to => :card
 
+  def get_position(current_player)
+    (player.seat - current_player.seat) % 4
+  end
   
 end

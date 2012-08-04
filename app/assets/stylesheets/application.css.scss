@@ -81,7 +81,7 @@ $cardPos: -10px;
 		top: 0;
 		@include transition(all .25s);
     
-    &.chosen {
+    &.chosen, &.chosen-final {
       top: $cardPos - 10px;
     }
     

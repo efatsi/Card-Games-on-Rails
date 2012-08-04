@@ -1,6 +1,6 @@
 <% if current_user.is_playing_in?(@game) %>
   <% if current_player.try(:hand).present? %>
-      <div id="pass-button">
+      <div class="pass-button">
         <%= progress_button("passing_set_ready", "remove-pass-button", "button btn-info") if player_can_pass? %>
       </div>
       <div class="hand">

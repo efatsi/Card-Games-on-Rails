@@ -5,7 +5,7 @@ $(document).ready(function(){
   $('.choosable').live("click", function(){
     var $cardId = this.getAttribute('card-id');
     $.post(window.location.pathname + "/toggle_passing_status?card=" + $cardId, function(html){
-      $("#my-hand").html(html);
+      $(".my-hand").html(html);
       // CardGames.autoplay();
     });
   });
@@ -13,7 +13,7 @@ $(document).ready(function(){
   $('.chosen').live("click", function(){
     var $cardId = this.getAttribute('card-id');
     $.post(window.location.pathname + "/toggle_passing_status?card=" + $cardId, function(html){
-      $("#my-hand").html(html);
+      $(".my-hand").html(html);
       // CardGames.autoplay();
     });
   });
@@ -21,7 +21,7 @@ $(document).ready(function(){
   $('.playable').live("click", function(){
     var $cardId = this.getAttribute('card-id');
     $.post(window.location.pathname + "/play_one_card?card=" + $cardId, function(html){
-      $("#game-page").html(html);
+      $(".game-page").html(html);
       CardGames.autoplay();
     });
   });
@@ -31,12 +31,12 @@ $(document).ready(function(){
   });
    
   $('form.immediate-reload').live("ajax:success", function(event, html){
-    $("#game-page").html(html);
+    $(".game-page").html(html);
     CardGames.autoplay();
   });
 
   $('form.remove-pass-button').live("ajax:success", function(event){
-    $("#pass-button").remove();
+    $(".pass-button").remove();
     CardGames.autoplay();
   });
 
@@ -95,34 +95,34 @@ CardGames = {
   
   reloadAndJustWait: function(){
     $.post(window.location.pathname + "/reload", function(html){
-      $("#game-page").html(html);
+      $(".game-page").html(html);
     });
   },
   
   reloadWaitAutoplay: function(){
     $.post(window.location.pathname + "/reload", function(html){
-      $("#game-page").html(html);
+      $(".game-page").html(html);
       setTimeout(CardGames.autoplay, 1000);
     });  
   },
 
   playAsComputer: function(){
     $.post(window.location.pathname + "/play_one_card", function(html){
-      $("#game-page").html(html);
+      $(".game-page").html(html);
       CardGames.autoplay();
     });  
   },
 
   startNewRound: function(){
     $.post(window.location.pathname + "/new_round", function(html){
-      $("#game-page").html(html);
+      $(".game-page").html(html);
       CardGames.autoplay();
     });  
   },
 
   startNewTrick: function(){    
     $.post(window.location.pathname + "/new_trick", function(html){
-      $("#game-page").html(html);
+      $(".game-page").html(html);
       CardGames.autoplay();
     });  
   },
@@ -135,7 +135,7 @@ CardGames = {
   
   reloadPreviousTrick: function(){
     $.post(window.location.pathname + "/reload_trick", function(html){
-      $("#previous-trick").html(html);      
+      $(".previous-trick").html(html);      
     });
   }
   

@@ -46,10 +46,6 @@ class PlayerCard < ActiveRecord::Base
   def is_a_scoring_card?
     is_a_heart || is_queen_of_spades
   end
-
-  def get_position(current_player)
-    (player.seat - current_player.seat) % 4
-  end
   
   private
   def is_not_chosen?
