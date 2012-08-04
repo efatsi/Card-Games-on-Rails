@@ -6,46 +6,44 @@
       <div class="hand">
         <ul>
           <% current_player.try(:hand).each do |card| %>
-            <li>
-              <% if @game.passing_time? %>
-                <% if card.has_been_chosen? %>
-                  <% if !player_has_passed? %>
-                    <div class="card chosen card-<%= card.value + "-" + card.suit %>" card-id="<%= card.id %>">
-                      <%= card.value + " of " + card.suit %>
-                    </div>
-                  <% else %>
-                    <div class="card chosen-final card-<%= card.value + "-" + card.suit %>">
-                      <%= card.value + " of " + card.suit %>
-                    </div>
-                  <% end %>
-                <% elsif card.can_be_chosen? %>
-                  <div class="card choosable card-<%= card.value + "-" + card.suit %>" card-id="<%= card.id %>">
-                    <%= card.value + " of " + card.suit %>
-                  </div>
-                <% else %>  
-                  <div class="card card-<%= card.value + "-" + card.suit %>">
-                    <%= card.value + " of " + card.suit %>
-                  </div>
-                <% end %>
-              
-              <% elsif @game.is_current_players_turn?(current_player) %>
-              
-                <% if card.is_valid?(@game.get_lead_suit, @game.trick_is_first?) %>
-                  <div class="card playable card-<%= card.value + "-" + card.suit %>" card-id="<%= card.id %>">
+            <% if @game.passing_time? %>
+              <% if card.has_been_chosen? %>
+                <% if !player_has_passed? %>
+                  <div class="card chosen card-<%= card.value + "-" + card.suit %>" card-id="<%= card.id %>">
                     <%= card.value + " of " + card.suit %>
                   </div>
                 <% else %>
-                  <div class="card card-<%= card.value + "-" + card.suit %>">
+                  <li class="card chosen-final card-<%= card.value + "-" + card.suit %>">
                     <%= card.value + " of " + card.suit %>
-                  </div>
+                  </li>
                 <% end %>
-              
-              <% else %>  
-                <div class="card card-<%= card.value + "-" + card.suit %>">
+              <% elsif card.can_be_chosen? %>
+                <li class="card choosable card-<%= card.value + "-" + card.suit %>" card-id="<%= card.id %>">
                   <%= card.value + " of " + card.suit %>
-                </div>
+                </li>
+              <% else %>  
+                <li class="card card-<%= card.value + "-" + card.suit %>">
+                  <%= card.value + " of " + card.suit %>
+                </li>
               <% end %>
-            </li>
+            
+            <% elsif @game.is_current_players_turn?(current_player) %>
+            
+              <% if card.is_valid?(@game.get_lead_suit, @game.trick_is_first?) %>
+                <li class="card playable card-<%= card.value + "-" + card.suit %>" card-id="<%= card.id %>">
+                  <%= card.value + " of " + card.suit %>
+                </li>
+              <% else %>
+                <li class="card card-<%= card.value + "-" + card.suit %>">
+                  <%= card.value + " of " + card.suit %>
+                </li>
+              <% end %>
+            
+            <% else %>  
+              <li class="card card-<%= card.value + "-" + card.suit %>">
+                <%= card.value + " of " + card.suit %>
+              </li>
+            <% end %>
           <% end %>
         </ul>
       </div>

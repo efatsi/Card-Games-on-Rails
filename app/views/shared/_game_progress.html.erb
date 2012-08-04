@@ -5,10 +5,13 @@
   <% if !@game.cards_have_been_passed %>
     <h3>Please Select Three Cards To Pass <%= @game.last_round.pass_direction.capitalize %></h3>
   <% elsif @game.last_round.tricks.any? %>
-    <h3>Current Trick</h3>
-    <% @game.played_cards.each do |card| %>
-      <%= card.in_english + " from " + card.player.username %><br />
-    <% end %><br />
-    <%= @game.last_trick.display_trick_info %>
+    <div class="table">
+      <% @game.played_cards.each do |card| %>
+        <% position = card.player.seat %>
+        <p class="card played position-<%= position %> card-<%= card.value + "-" + card.suit %>" card-id="<%= card.id %>">
+          <%= card.value + " of " + card.suit %>
+        </p>
+      <% end %><br />
+    </div>
   <% end %>
 <% end %>
