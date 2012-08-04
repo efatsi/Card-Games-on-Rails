@@ -2,6 +2,10 @@ $(document).ready(function(){
   
   setTimeout(CardGames.autoplay, 2000);
   
+  $('.choosable').live("click", function(){
+    alert(this.data)
+  });
+  
   $('form.skip-reload').live("ajax:success", function(event, html){
     CardGames.autoplay();
   });

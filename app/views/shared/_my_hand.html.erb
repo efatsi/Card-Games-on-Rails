@@ -10,16 +10,16 @@
               <% if @game.passing_time? %>
                 <% if card.has_been_chosen? %>
                   <% if !player_has_passed? %>
-                    <div class="card-<%= card.value + "-" + card.suit %>">
+                    <div class="card chosen card-<%= card.value + "-" + card.suit %>">
                       <%= card.value + " of " + card.suit %>
                     </div>
                   <% else %>
-                    <div class="card card-<%= card.value + "-" + card.suit %>">
+                    <div class="card chosen card-<%= card.value + "-" + card.suit %>">
                       <%= card.value + " of " + card.suit %>
                     </div>
                   <% end %>
                 <% elsif card.can_be_chosen? %>
-                  <div class="card elevated card-<%= card.value + "-" + card.suit %>">
+                  <div class="card choosable card-<%= card.value + "-" + card.suit %>" data="this_is_data!">
                     <%= card.value + " of " + card.suit %>
                   </div>
                 <% else %>  
@@ -31,7 +31,7 @@
               <% elsif @game.is_current_players_turn?(current_player) %>
               
                 <% if card.is_valid?(@game.get_lead_suit, @game.trick_is_first?) %>
-                  <div class="card elevated card-<%= card.value + "-" + card.suit %>">
+                  <div class="card playable card-<%= card.value + "-" + card.suit %>">
                     <%= card.value + " of " + card.suit %>
                   </div>
                 <% else %>

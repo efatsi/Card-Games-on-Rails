@@ -4,6 +4,8 @@
 	display: none;
 }
 
+$cardPos: -10px;
+
 /* @group hands */
 
 .hand {
@@ -18,12 +20,23 @@
 		top: 0;
 		@include transition(all .25s);
 
-		&.elevated {
-			top: -10px;
+    &.chosen {
+      top: $cardPos;
+    }
+    
+    &.choosable {
+  		&:hover {
+        top: -5px;
+  			@include rotate(5deg);
+  		}
+    }
+		
+		&.playable {
+			top: $cardPos;
 
 			&:hover {
-				left: -10px;
-				@include rotate(-5deg);
+        top: $cardPos - 5px;
+				@include rotate(5deg);
 			}
 
 			&:active {
