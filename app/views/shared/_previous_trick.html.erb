@@ -24,8 +24,10 @@
 <% end %>
 
 <div class="scoreboard">
-  <h3>Total Scores</h3>
-  <% @game.players.each do |player| %>
-    <b><%= player.username + ": " + player.total_score.to_s %></b></br>
+  <% if @game.is_full %>
+    <h3>Total Scores</h3>
+    <% @game.players.each do |player| %>
+      <b><%= player.username + ": " + player.total_score.to_s %></b></br>
+    <% end %>
   <% end %>
 </div>

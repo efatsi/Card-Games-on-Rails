@@ -7,6 +7,7 @@ body {
   padding-left: 20px;
   padding-right: 20px;
   width: 940px;
+  margin: auto;
   }
 
 p, ol, ul, td {
@@ -25,15 +26,16 @@ pre {
 
 h1 {
   padding-bottom: 20px;
-  color: #fdf;
+  color: #fff;
 }
 
 h3 {
   &:a:visited{
-    color: #fdf;
+    color: #fff;
   }
-  color: #fdf;
+  color: #fff;
 }
+
 
 .special-button{
   background:url(/images/d8.gif)
@@ -57,9 +59,12 @@ float: left;
 
 
 a {
+  &.btn:visited {
+    color: #000;
+  }
   color: #000;
   &:visited {
-    color: #fdf; 
+    color: #fff; 
   }
   &:hover {
     color: #FFF; 
