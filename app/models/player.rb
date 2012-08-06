@@ -93,4 +93,9 @@ class Player < ActiveRecord::Base
     !has_passed?
   end
   
+  def relative_seat_of(player)
+    seat_shift = (player.seat - self.seat) % 4
+    %w(none left top right)[seat_shift]
+  end
+  
 end

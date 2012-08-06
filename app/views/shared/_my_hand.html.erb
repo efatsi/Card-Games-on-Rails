@@ -1,57 +1,51 @@
 <% if current_user.is_playing_in?(@game) %>
   <% if current_player.try(:hand).present? %>
-      <div class="pass-button">
-        <%= progress_button("passing_set_ready", "remove-pass-button", "button btn-info") if player_can_pass? %>
-      </div>
-      <div class="hand">
-        <ul>
-          <% current_player.try(:hand).each do |card| %>
-            <% if @game.passing_time? %>
-              <% if card.has_been_chosen? %>
-                <% if !player_has_passed? %>
-                  <div class="card chosen card-<%= card.value + "-" + card.suit %>" card-id="<%= card.id %>">
-                    <%= card.value + " of " + card.suit %>
-                  </div>
-                <% else %>
-                  <li class="card chosen-final card-<%= card.value + "-" + card.suit %>">
-                    <%= card.value + " of " + card.suit %>
-                  </li>
-                <% end %>
-              <% elsif card.can_be_chosen? %>
-                <li class="card choosable card-<%= card.value + "-" + card.suit %>" card-id="<%= card.id %>">
+    <div class="hand">
+      <ul>
+        <% current_player.try(:hand).each do |card| %>
+          <% if @game.passing_time? %>
+            <% if card.has_been_chosen? %>
+              <% if !player_has_passed? %>
+                <div class="card chosen card-<%= card.value + "-" + card.suit %>" card-id="<%= card.id %>">
                   <%= card.value + " of " + card.suit %>
-                </li>
-              <% else %>  
-                <li class="card card-<%= card.value + "-" + card.suit %>">
-                  <%= card.value + " of " + card.suit %>
-                </li>
-              <% end %>
-            
-            <% elsif @game.is_current_players_turn?(current_player) %>
-            
-              <% if card.is_valid?(@game.get_lead_suit, @game.trick_is_first?) %>
-                <li class="card playable card-<%= card.value + "-" + card.suit %>" card-id="<%= card.id %>">
-                  <%= card.value + " of " + card.suit %>
-                </li>
+                </div>
               <% else %>
-                <li class="card card-<%= card.value + "-" + card.suit %>">
+                <li class="card chosen-final card-<%= card.value + "-" + card.suit %>">
                   <%= card.value + " of " + card.suit %>
                 </li>
               <% end %>
-            
+            <% elsif card.can_be_chosen? %>
+              <li class="card choosable card-<%= card.value + "-" + card.suit %>" card-id="<%= card.id %>">
+                <%= card.value + " of " + card.suit %>
+              </li>
             <% else %>  
               <li class="card card-<%= card.value + "-" + card.suit %>">
                 <%= card.value + " of " + card.suit %>
               </li>
             <% end %>
+          
+          <% elsif @game.is_current_players_turn?(current_player) %>
+          
+            <% if card.is_valid?(@game.get_lead_suit, @game.trick_is_first?) %>
+              <li class="card playable card-<%= card.value + "-" + card.suit %>" card-id="<%= card.id %>">
+                <%= card.value + " of " + card.suit %>
+              </li>
+            <% else %>
+              <li class="card card-<%= card.value + "-" + card.suit %>">
+                <%= card.value + " of " + card.suit %>
+              </li>
+            <% end %>
+          
+          <% else %>  
+            <li class="card card-<%= card.value + "-" + card.suit %>">
+              <%= card.value + " of " + card.suit %>
+            </li>
           <% end %>
-        </ul>
-      </div>
+        <% end %>
+      </ul>
     </div>
-  <% else %>
-    <br />
-    <% if @game.is_full? %>
-      <h3>Your Hand Is Empty</h3>
-    <% end %>
+    <div class="pass-button">
+      <%= progress_button("passing_set_ready", "remove-pass-button", "button btn-info") if player_can_pass? %>
+    </div>
   <% end %>
 <% end %>

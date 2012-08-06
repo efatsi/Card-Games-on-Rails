@@ -35,13 +35,17 @@ $cardPos: -10px;
 
 /* @group game_layout */
 
+.game-title{
+  width: 180px;
+}
+
 .game-info{
-  width: 450px;
+  width: 490px;
 }
 
 .previous-trick{
   width: 300px;
-  margin-left: 650px;
+  margin-left: 690px;
 }
 
 .game-page{
@@ -52,11 +56,16 @@ $cardPos: -10px;
 
 .game-progress{
   width: 550px;
-  margin: 70px;
+  margin: 90px;
+  margin-bottom: 20px;
 }
 
 .scoreboard{
   width: 400px;
+}
+
+.previous-trick-info{
+  height: 120px;
 }
 
 /* @group table */
@@ -102,9 +111,18 @@ $cardPos: -10px;
 
 /* @group hands */
 
+.my-hand{
+  height: 120px;
+}
+  
+.pass-button{
+  position: relative;
+  top: -50px;
+}
+
 .hand {
   height: 100px;
-  margin-left: 150px;
+  margin-left: 180px;
   overflow: hidden;
   padding-top: 20px;
   width: 100%;
@@ -229,4 +247,62 @@ $cardPos: -10px;
 
 .card-A-spade {
 	background-position: 0 -300px;
+}
+
+/* @group previous-trick */
+
+.previous-trick-info{
+  .card{
+  	margin-right: -55px;
+  }
+}
+
+/* @group scoreboard */
+
+.scoreboard{
+  color: #fdf
+}
+
+/* @group seated-players */
+
+.seated-players{
+  position: absolute;
+  
+  .seated-at-left, .seated-at-top, .seated-at-right{
+    background: #f00;
+    height: 120px;
+    width: 120px;
+    position: absolute;
+    .round-score{
+      color: white;
+      position:relative;
+      bottom: -103px;
+    }
+  }
+  
+  .seated-at-none{
+    position: absolute;
+    right: -300px;
+    width: 120px;
+
+    .round-score{
+      color: white;
+      position:relative;
+      bottom: -145px;
+    }
+  }
+  .seated-at-left{
+    left: -90px;
+    top: -250px;
+  }
+  
+  .seated-at-top{
+    right: -300px;
+    top: -520px;
+  }
+  
+  .seated-at-right{
+    right: -570px;
+    top: -250px;
+  }
 }

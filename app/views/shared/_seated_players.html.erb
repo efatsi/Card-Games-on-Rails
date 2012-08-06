@@ -1,0 +1,10 @@
+<% if @game.is_full? %>
+  <% @game.players.each do |player| %>
+    <% relative_seat = current_player.relative_seat_of(player) %>
+    <div class="seated-at-<%= relative_seat %>">
+      <div class="round-score">
+        Round Score: <%= player.round_score %>
+      </div>
+    </div>
+  <% end %>
+<% end %>
