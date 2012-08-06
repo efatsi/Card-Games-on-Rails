@@ -1,7 +1,11 @@
 @import "twitter/bootstrap";
 
 .previous-trick-info {
-	display: none;
+  color: #ffe;
+  position: relative;
+  bottom: -80px;
+  left: -79px;
+  width: 250px;
 }
 
 $cardPos: -10px;
@@ -62,10 +66,6 @@ $cardPos: -10px;
 
 .scoreboard{
   width: 400px;
-}
-
-.previous-trick-info{
-  height: 120px;
 }
 
 /* @group table */
@@ -251,7 +251,13 @@ $cardPos: -10px;
 
 /* @group previous-trick */
 
-.previous-trick-info{
+
+.previous-trick-cards{
+  display: none;
+  height: 150px;
+  position: relative;
+  right: -20px;
+  
   .card{
   	margin-right: -55px;
   }

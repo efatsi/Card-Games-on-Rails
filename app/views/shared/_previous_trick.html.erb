@@ -5,7 +5,7 @@
         <button class="btn" id="toggle-last-trick" type="submit">Previous Trick</button>
       </center>
     </h3>
-    <div class="previous-trick-info">
+    <div class="previous-trick-cards">
       <br />
       <ul>
         <% @game.previous_trick.try(:played_cards).each do |card| %>
@@ -15,6 +15,10 @@
         <% end %>
       </ul>
       <br />
+      <div class="previous-trick-info">
+        Led by: <%= @game.previous_trick.trick_winner.username %> <br />
+        Won by: <%= @game.previous_trick.leader.username %> <br />        
+      </div>
     </div>
   </div>
 <% end %>

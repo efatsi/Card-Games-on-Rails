@@ -45,7 +45,7 @@ $(document).ready(function(){
   // });
   
   $("#toggle-last-trick").live("click", function(){
-    $(".previous-trick-info").slideToggle("fast");
+    $(".previous-trick-cards").slideToggle("fast");
   });
 });
 
