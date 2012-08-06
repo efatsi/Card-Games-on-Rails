@@ -6,6 +6,33 @@
 
 $cardPos: -10px;
 
+/* @group game_index */
+
+.my-table{
+  
+  width: 800px;
+}
+
+.indexed-game{
+  background: #0f0;
+  height: 200px;
+  margin: 10px;
+  width: 200px;
+
+	&:hover {
+	  background: #0e0;
+	}
+	
+	&.players-4{
+	  background: #f00;
+	  
+  	&:hover {
+  	  background: #e00;
+  	}
+	}
+	
+}
+
 /* @group game_layout */
 
 .game-info{

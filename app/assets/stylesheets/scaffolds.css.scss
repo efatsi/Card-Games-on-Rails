@@ -1,9 +1,10 @@
 body {
-  background-color: #CCC;
+  background-color: #1f4d1f;
   color: #333;
   font-family: verdana, arial, helvetica, sans-serif;
   font-size: 13px;
-  line-height: 18px; }
+  line-height: 18px; 
+  }
 
 p, ol, ul, td {
   font-family: verdana, arial, helvetica, sans-serif;
@@ -22,6 +23,14 @@ body {
 
 h1 {
   padding-bottom: 20px;
+  color: #fdf;
+}
+
+h3 {
+  &:a:visited{
+    color: #fdf;
+  }
+  color: #fdf;
 }
 
 .special-button{
@@ -42,13 +51,13 @@ float: left;
 }
 
 .navbar{*position:relative;}
-.navbar-inner{min-height:30px;padding-top:10px;background-image:-webkit-linear-gradient(top, #777, #777);}
+.navbar-inner{min-height:30px;padding-top:10px;background-image:-webkit-linear-gradient(top, #008000, #008000);}
 
 
 a {
   color: #000;
   &:visited {
-    color: #333; }
+    color: #fdf; }
   &:hover {
     color: #FFF; } }
 

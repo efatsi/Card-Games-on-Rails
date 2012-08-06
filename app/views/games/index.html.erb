@@ -1,15 +1,16 @@
-<h1>Listing Games</h1>
+<h1>Lobby</h1>
 
-<div class="mytable">
-  <table class="table table-striped">
-  <% i = 1 %>
-  <% @games.each do |game| %>
-    <tr>
-      <td><%= link_to "Game #{i} - #{game.name}", game %></td>
-    </tr>
-    <% i += 1 %>
-  <% end %>
-  </table>
+
+<div class="my-table">
+  <ul>
+    <% @games.each do |game| %>
+      <li>
+        <div class="indexed-game players-<%= game.players.length.to_s %> ">
+          <h3><%= link_to game.name.to_s, game %></h3>
+        </div>
+      </li>
+    <% end %>
+  </ul>  
 </div>
 
 <%= link_to 'New Game', new_game_path, :class => "btn" %>
