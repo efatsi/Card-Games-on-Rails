@@ -41,13 +41,18 @@ $cardPos: -10px;
 
 .previous-trick{
   width: 300px;
-  margin-left: 450px;
+  margin-left: 650px;
 }
 
 .game-page{
   position: absolute;
   top: 120px;
-  width: 450px;
+  width: 650px;
+}
+
+.game-progress{
+  width: 550px;
+  margin: 70px;
 }
 
 .scoreboard{
@@ -57,8 +62,10 @@ $cardPos: -10px;
 /* @group table */
 
 .table{
+  background: #008000;
   margin-left: 50px;
   height: 300px;
+  padding: 40px;
   position: relative;
   width: 300px;
   
@@ -66,13 +73,13 @@ $cardPos: -10px;
     position: absolute;
     
   	&.position-0 {
-  		bottom: 0;
+  		bottom: -10px;
   		left: 50%;
   		margin-left: -36px;
   	}
 
   	&.position-1 {
-  		left: 0;
+  		left: 14px;
   		margin-top: -50px;
   		@include rotate(90deg);
   		top: 50%;
@@ -86,7 +93,7 @@ $cardPos: -10px;
 
   	&.position-3 {
   		margin-top: -50px;
-  		right: 0;
+  		right: 14px;
   		@include rotate(-90deg);
   		top: 50%;
   	}
@@ -97,6 +104,7 @@ $cardPos: -10px;
 
 .hand {
   height: 100px;
+  margin-left: 150px;
   overflow: hidden;
   padding-top: 20px;
   width: 100%;

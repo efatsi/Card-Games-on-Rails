@@ -1,9 +1,7 @@
 <% if !@game.is_full? && current_player.is_game_master? %>
 <div style="float: left; width: auto;">
-  <div class="well">
-    <center>
-      <%= progress_button("fill", "skip-reload") %>
-    </center>
-  </div>
+  <center>
+    <%= progress_button("fill", "skip-reload") %>
+  </center>
 </div>                     
 <% end %>

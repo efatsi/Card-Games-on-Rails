@@ -4,6 +4,9 @@ body {
   font-family: verdana, arial, helvetica, sans-serif;
   font-size: 13px;
   line-height: 18px; 
+  padding-left: 20px;
+  padding-right: 20px;
+  width: 900px;
   }
 
 p, ol, ul, td {
@@ -16,9 +19,8 @@ pre {
   padding: 10px;
   font-size: 11px; }
 
-body {
-  padding-left: 20px;
-  padding-right: 20px;
+.span3 {
+  width: 210px;
 }
 
 h1 {
@@ -57,16 +59,19 @@ float: left;
 a {
   color: #000;
   &:visited {
-    color: #fdf; }
+    color: #fdf; 
+  }
   &:hover {
-    color: #FFF; } }
+    color: #FFF; 
+  }
+}
 
 
 navbartext{
+  color: #000;
   font-size: 16px;
   padding-left: 10px;
   vertical-align: top;
-  color: #000;
 }
 
 navbartext > a {
@@ -81,6 +86,10 @@ navbartext > a {
 .mytable {
   width:300px;
   padding-bottom: 20px;
+}
+
+.well{
+  background: #008000;
 }
 
 
