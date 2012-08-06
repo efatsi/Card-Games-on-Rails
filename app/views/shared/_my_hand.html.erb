@@ -44,6 +44,11 @@
         <% end %>
       </ul>
     </div>
+    <div class="pass-instructions">
+      <% if !@game.cards_have_been_passed %>
+        <h3>Please Select Three Cards To Pass <%= @game.last_round.pass_direction.capitalize %></h3>
+      <% end %>
+    <div>    
     <div class="pass-button">
       <%= progress_button("passing_set_ready", "remove-pass-button", "button btn-info") if player_can_pass? %>
     </div>
