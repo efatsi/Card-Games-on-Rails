@@ -10,6 +10,16 @@ class GamesController < ApplicationController
   end
 
   def show
+    
+    @api_key = "17052081"
+    api_secret = "0d219ab9c3e5a7bf92fec80ba458f0e7ba6a3a2d"
+
+    opentok = OpenTok::OpenTokSDK.new @api_key, api_secret 
+    session = opentok.create_session request.remote_addr 
+    
+    @session_id = session.session_id
+    @token = opentok.generate_token :session_id => @session_id
+    
     @game.add_player_from_user(current_user)
     respond_to do |format|
       format.html

@@ -4,31 +4,7 @@
   <title>CardGames</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
-  <%= csrf_meta_tags %>
-  <script src="http://staging.tokbox.com/v0.91/js/TB.min.js"></script>
-  
-	<script type="text/javascript">
-    var apiKey = '17065091';
-    var sessionId = '1_MX4xNzA2NTA5MX5-VHVlIEF1ZyAwNyAwODoxODoxOCBQRFQgMjAxMn4wLjc3NTAxN34';
-    var token = 'T1==cGFydG5lcl9pZD0xNzA2NTA5MSZzZGtfdmVyc2lvbj10YnB5LUBzZGtfdmVyc2lvbkAuQG9wZW50b2suc2RrLnB5dGhvbi5tb2RfdGltZUAmc2lnPTJlZTU0MjBlYmE2YTk4MzMzYzI4MzJhMWRhYmE1MzkwYmFiM2YxMjA6bm9uY2U9OTM5MTE2JmNyZWF0ZV90aW1lPTEzNDQzNTI2OTgmcm9sZT1wdWJsaXNoZXImc2Vzc2lvbl9pZD0xX01YNHhOekEyTlRBNU1YNS1WSFZsSUVGMVp5QXdOeUF3T0RveE9Eb3hPQ0JRUkZRZ01qQXhNbjR3TGpjM05UQXhOMzQ=';           
- 
-    TB.setLogLevel(TB.DEBUG); // Set this for helpful debugging messages in console
- 
-    var session = TB.initSession(sessionId);      
-    session.addEventListener('sessionConnected', sessionConnectedHandler);      
-    session.connect(apiKey, token);
- 
-    var publisher;
- 
-    function sessionConnectedHandler(event) {
-      // Put my webcam in a div
-      var publishProps = {height:240, width:320};
-      publisher = TB.initPublisher(apiKey, 'myPublisherDiv', publishProps);
-      // Send my stream to the session
-      session.publish(publisher);
-    } 
-  </script>
-  
+  <%= csrf_meta_tags %>  
 </head>
 <body>
   
@@ -48,7 +24,6 @@
 			</div>
 		</div>
 	</div>
-	<div id="myPublisherDiv"></div>
   <%= yield %>
 
 </body>
