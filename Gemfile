@@ -12,6 +12,7 @@ gem "bcrypt-ruby", :require => "bcrypt"
 gem 'simplest_auth'
 gem 'sass-twitter-bootstrap-rails', '~> 1.0'
 
+gem 'opentok'
 
 group :test, :development do
   gem "rspec-rails", "~> 2.4"
