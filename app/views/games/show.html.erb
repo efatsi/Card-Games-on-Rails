@@ -37,7 +37,7 @@
  
         // Create the div to put the subscriber element in to
         var div = document.createElement('div');
-        div.setAttribute('id', 'stream' + streams[i].streamId);
+        div.setAttribute('id', 'stream' + '<%= i.to_s %>');
         document.body.appendChild(div);
                            
         // Subscribe to the stream
@@ -49,6 +49,8 @@
 </head>
 
 <div id="myPublisherDiv"></div>
+<div id="stream-0"></div>
+<div id="stream-1"></div>
 
 <div class="game-title">
   <h1><%= @game.name.to_s %></h1>
