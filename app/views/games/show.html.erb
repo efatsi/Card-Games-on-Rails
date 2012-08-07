@@ -10,7 +10,8 @@
  
     var session = TB.initSession(sessionId);      
     session.addEventListener('sessionConnected', sessionConnectedHandler);
-    session.addEventListener('streamCreated', streamCreatedHandler);  
+    session.addEventListener('streamCreated', streamCreatedHandler);
+    session.addEventListener('streamDestroyed', function(){alert("destroyed!")});  
     session.connect(apiKey, token);
  
     var publisher;
