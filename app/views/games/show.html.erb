@@ -37,7 +37,7 @@
  
         // Create the div to put the subscriber element in to
         var div = document.createElement('div');
-        div.setAttribute('id', 'stream' + i.toString());
+        div.setAttribute('id', 'stream-' + i.toString());
         document.body.appendChild(div);
                            
         // Subscribe to the stream
@@ -48,7 +48,7 @@
   </script>
 </head>
 
-<div id="myPublisherDiv"></div>
+<div id="myPublisherDiv" style="position:absolute;right:0px;"></div>
 <div id="stream-0"></div>
 <div id="stream-1"></div>
 
