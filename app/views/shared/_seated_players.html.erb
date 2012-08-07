@@ -1,11 +1,13 @@
 <% if @game.is_full? %>
   <% @game.players.each do |player| %>
-    <% relative_seat = current_player.relative_seat_of(player) %>
-    <div class="seated-at-<%= relative_seat %>">
-        <%= player.username if player != current_player %>
-      <div class="round-score">
-        Round Score: <%= player.round_score %>
-      </div>
+    <% relative_seat = current_player.try(:relative_seat_of, player) || player.seat_position %>
+    <div class="seated-at-<%= relative_seat %> <%= player.is_computer?%>">
+        <div class="current-player-nil-<%= current_player.nil? %>">
+          <%= player.username if player != current_player %>
+          <div class="round-score">
+            Round Score: <%= player.round_score %>
+          </div>
+        </div>
     </div>
   <% end %>
 <% end %>

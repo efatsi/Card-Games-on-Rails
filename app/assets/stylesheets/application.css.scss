@@ -283,8 +283,26 @@ $cardPos: -10px;
 .seated-players{
   position: absolute;
   
+  .seated-at-none, .seated-at-left, .seated-at-top, .seated-at-right{
+    &.false {
+      .current-player-nil-true {
+        background: url(../assets/user.png);
+        bottom: -130px;
+        height: 120px;
+        width: 120px;
+        
+        .round-score {
+        color: white;
+        position: relative;
+        bottom: -105px;
+        }
+      }
+    }
+  }
   .seated-at-left, .seated-at-top, .seated-at-right{
-    background: #f00;
+    &.false{
+      background: url(../assets/user.png);
+    }
     height: 120px;
     width: 120px;
     position: absolute;
@@ -307,16 +325,25 @@ $cardPos: -10px;
     }
   }
   .seated-at-left{
+    &.true{
+      background: url(http://cageme.herokuapp.com/120/120);
+    }
     left: -90px;
     top: -250px;
   }
   
   .seated-at-top{
+    &.true{
+      background: url(http://cageme.herokuapp.com/121/121);
+    }
     right: -300px;
     top: -520px;
   }
   
   .seated-at-right{
+    &.true{
+      background: url(http://cageme.herokuapp.com/122/122);
+    }
     right: -570px;
     top: -250px;
   }

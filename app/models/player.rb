@@ -98,4 +98,8 @@ class Player < ActiveRecord::Base
     %w(none left top right)[seat_shift]
   end
   
+  def seat_position
+    %w(none left top right)[seat]
+  end
+  
 end

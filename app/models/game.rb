@@ -125,6 +125,7 @@ class Game < ActiveRecord::Base
   end
   
   def should_reload?(current_player)
+    return true if current_player.nil?
     current_player.is_a_bystander? || master_should_reload(current_player)
   end
   
