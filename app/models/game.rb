@@ -1,6 +1,7 @@
-class Game < ActiveRecord::Base
 
-  attr_accessible :winner_id, :name
+class Game < ActiveRecord::Base
+  
+  attr_accessible :winner_id, :name, :session_id
 
   has_many :players, :dependent => :destroy, :order => "seat ASC"
   has_many :rounds, :dependent => :destroy, :order => "position ASC"
@@ -222,5 +223,5 @@ class Game < ActiveRecord::Base
   def can_accomodate(user)
     !(already_has?(user) || is_full?)
   end
-
+  
 end

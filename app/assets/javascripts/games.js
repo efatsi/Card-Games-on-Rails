@@ -6,15 +6,14 @@ $(document).ready(function(){
     var $cardId = this.getAttribute('card-id');
     $.post(window.location.pathname + "/toggle_passing_status?card=" + $cardId, function(html){
       $(".my-hand").html(html);
-      // CardGames.autoplay();
     });
   });
   
   $('.chosen').live("click", function(){
+    // var $cardId = $(this).data('card-id');
     var $cardId = this.getAttribute('card-id');
     $.post(window.location.pathname + "/toggle_passing_status?card=" + $cardId, function(html){
       $(".my-hand").html(html);
-      // CardGames.autoplay();
     });
   });
   
@@ -39,10 +38,6 @@ $(document).ready(function(){
     $(".pass-button").remove();
     CardGames.autoplay();
   });
-
-  // $('form.reload-hand').live("ajax:success", function(event, html){
-  //   $("#my-hand").html(html);
-  // });
   
   $("#toggle-last-trick").live("click", function(){
     $(".previous-trick-cards").slideToggle("fast");
@@ -66,6 +61,7 @@ CardGames = {
         CardGames.playAsComputer();
       }
       else if (game.shouldStartNewRound){
+        // CardGames.reloadPreviousTrick();
         var $newRoundDelay
         if (game.isStartingFirstRound) {
           $newRoundDelay = 0;
