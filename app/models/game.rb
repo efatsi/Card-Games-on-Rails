@@ -153,7 +153,7 @@ class Game < ActiveRecord::Base
   end
   
   def should_reload_previous_trick?
-    last_trick.present? && last_trick.is_really_young?
+    last_round.try(:is_really_young?) || last_trick.try(:is_really_young?)
   end
   
   def update_scores_if_necessary

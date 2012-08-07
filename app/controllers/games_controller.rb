@@ -1,7 +1,7 @@
 class GamesController < ApplicationController
 
 
-  before_filter :store_location, :only => :show
+  before_filter :store_location, :only => [:index, :show]
   before_filter :require_user, :only => :show
   before_filter :assign_game, :only => [:show, :destroy]
 

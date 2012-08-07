@@ -136,6 +136,10 @@ class Round < ActiveRecord::Base
     !is_over?
   end
   
+  def is_really_young?
+    Time.now - created_at < 3.seconds
+  end
+  
   private
   def create_player_rounds_and_card_passing_sets
     players.each do |player|

@@ -61,7 +61,6 @@ CardGames = {
         CardGames.playAsComputer();
       }
       else if (game.shouldStartNewRound){
-        // CardGames.reloadPreviousTrick();
         var $newRoundDelay
         if (game.isStartingFirstRound) {
           $newRoundDelay = 0;
