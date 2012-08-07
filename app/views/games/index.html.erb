@@ -6,7 +6,7 @@
     <% @games.each do |game| %>
       <li>
         <div class="indexed-game players-<%= game.players.length.to_s %> ">
-          <h3><%= link_to game.name.to_s, game %></h3>
+          <h3><%= link_to "#{game.name} - " + pluralize(game.players.length, 'player'), game %></h3>
         </div>
       </li>
     <% end %>

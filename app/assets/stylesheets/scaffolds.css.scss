@@ -1,6 +1,6 @@
 body {
   background-color: #1f4d1f;
-  color: #333;
+  color: #fff;
   font-family: verdana, arial, helvetica, sans-serif;
   font-size: 13px;
   line-height: 18px; 
@@ -8,6 +8,12 @@ body {
   padding-right: 20px;
   width: 940px;
   }
+  
+label {
+  display: block;
+  margin-bottom: 5px;
+  color: white;
+}
 
 p, ol, ul, td {
   font-family: verdana, arial, helvetica, sans-serif;

@@ -20,7 +20,10 @@
     </div>
   </div>
 
-  <div class="actions"><%= submit_tag "Log In", :class => "btn"  %></div>
+  
+  <div class="actions"><%= submit_tag "Log In", :class => "btn" %>
+  <%= link_to "Create Account", signup_path, :class => "btn" %>
+  </div>
   
   
 <% end %>

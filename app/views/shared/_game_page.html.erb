@@ -1,3 +1,13 @@
+<div class="present-players">
+  <% if !@game.is_full? %>
+    <h3>Players Present:
+      <% @game.reload.players.each do |player| %>
+        <%= player.username %>
+      <% end %>
+    </h3>
+  <% end %>
+</div>
+
 <div class="game-info">
   <%= render :partial => 'shared/game_info' %>
 </div>
