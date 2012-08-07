@@ -26,13 +26,13 @@ end
   end
 end
 
-Game.create(:name => "Hearts Baby1")
-Game.create(:name => "Hearts Baby2")
-Game.create(:name => "Hearts Baby3")
-Game.create(:name => "Hearts Baby4")
-Game.create(:name => "Hearts Baby5")
-Game.create(:name => "Hearts Baby6")
-Game.create(:name => "Hearts Baby7")
-Game.create(:name => "Hearts Baby8")
-Game.create(:name => "Hearts Baby9")
-Game.create(:name => "Hearts Baby10")
+# Game.create(:name => "Hearts Baby1")
+# Game.create(:name => "Hearts Baby2")
+# Game.create(:name => "Hearts Baby3")
+# Game.create(:name => "Hearts Baby4")
+# Game.create(:name => "Hearts Baby5")
+# Game.create(:name => "Hearts Baby6")
+# Game.create(:name => "Hearts Baby7")
+# Game.create(:name => "Hearts Baby8")
+# Game.create(:name => "Hearts Baby9")
+# Game.create(:name => "Hearts Baby10")
