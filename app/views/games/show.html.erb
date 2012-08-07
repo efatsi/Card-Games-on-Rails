@@ -11,7 +11,6 @@
     var session = TB.initSession(sessionId);      
     session.addEventListener('sessionConnected', sessionConnectedHandler);
     session.addEventListener('streamCreated', streamCreatedHandler);
-    session.addEventListener('streamDestroyed', streamDestroyedHandler);  
     session.connect(apiKey, token);
  
     var publisher;
@@ -27,10 +26,6 @@
     function streamCreatedHandler(event) {
       // Subscribe to any new streams that are created
       subscribeToStreams(event.streams);
-    }
-    
-    function streamDestroyedHandler(event) {
-      alert("destroyed!")
     }
      
     function subscribeToStreams(streams) {
