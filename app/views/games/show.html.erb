@@ -37,7 +37,7 @@
  
         // Create the div to put the subscriber element in to
         var div = document.createElement('div');
-        div.setAttribute('id', 'stream' + '<%= i.to_s %>');
+        div.setAttribute('id', 'stream' + i.toString());
         document.body.appendChild(div);
                            
         // Subscribe to the stream
