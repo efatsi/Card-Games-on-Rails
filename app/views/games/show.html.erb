@@ -11,7 +11,7 @@
     var session = TB.initSession(sessionId);      
     session.addEventListener('sessionConnected', sessionConnectedHandler);
     session.addEventListener('streamCreated', streamCreatedHandler);
-    session.addEventListener('streamDestroyed', function(){alert("destroyed!")});  
+    session.addEventListener('streamDestroyed', streamDestroyedHandler);  
     session.connect(apiKey, token);
  
     var publisher;
@@ -28,6 +28,10 @@
       // Subscribe to any new streams that are created
       subscribeToStreams(event.streams);
     }
+    
+    function streamDestroyedHandler(event) {
+      alert("destroyed!")
+    }
      
     function subscribeToStreams(streams) {
       for (var i = 0; i < streams.length; i++) {
@@ -35,11 +39,12 @@
         if (streams[i].connection.connectionId == session.connection.connectionId) {
           return;
         }
- 
+        
         // Create the div to put the subscriber element in to
         var div = document.createElement('div');
         div.setAttribute('id', 'stream-' + i.toString());
-        document.body.appendChild(div);
+        
+        $("#container-0").append(div)
                            
         // Subscribe to the stream
         var subscribeProps = {height:240, width:320};
@@ -51,11 +56,11 @@
 
 <div id="all-the-streams">
   <div id="myPublisherDiv"></div>
-  <div id="stream-0"></div>
-  <div id="stream-1"></div>
-  <div id="stream-2"></div>
-  <div id="stream-3"></div>
-</div>
+  <div id="container-0" />       
+  <div id="container-1" />       
+  <div id="container-2" />       
+  <div id="container-3" />       
+</div>                           
 
 <div class="game-title">
   <h1><%= @game.name.to_s %></h1>
