@@ -61,6 +61,10 @@
   <h1><%= @game.name.to_s %></h1>
 </div>
 
+  <% if current_player.try(:is_game_master?) %>
+    <%= link_to 'Delete', @game, method: :delete, data: { confirm: 'Are you sure?' } %>
+  <% end %>
+
 <div class="previous-trick">
   <%= render :partial => 'shared/previous_trick' %>
 </div>
