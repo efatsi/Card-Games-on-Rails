@@ -16,7 +16,7 @@
     var publisher;
  
     function sessionConnectedHandler(event) {
-      publisher = TB.initPublisher(apiKey, 'myPublisherDiv');
+      publisher = TB.initPublisher(apiKey, 'myPublisherDiv', {microphoneGain: 0});
       session.publish(publisher);
        
       // Subscribe to streams that were in the session when we connected
@@ -59,6 +59,10 @@
 
 <div class="game-title">
   <h1><%= @game.name.to_s %></h1>
+</div>
+
+<div class="footer">
+  Computer player images from <%= link_to "CageMe", "http://cageme.herokuapp.com" %> You should go check it out right now
 </div>
 
 <% if current_player.try(:is_game_master?) %>
