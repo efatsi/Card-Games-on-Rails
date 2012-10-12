@@ -13,7 +13,7 @@ class Player < ActiveRecord::Base
   validates_presence_of :seat
   validates_presence_of :total_score
   
-  delegate :round_score, :to => :last_player_round
+  
   delegate :hearts_broken, :to => :last_player_round
   delegate :leader, :to => :last_player_round
   delegate :card_passing_set, :to => :last_player_round
@@ -44,6 +44,10 @@ class Player < ActiveRecord::Base
       return false if card.suit != suit
     end
     true
+  end
+  
+  def round_score
+    last_player_round.try(:round_score) || 0
   end
   
   def last_player_round
