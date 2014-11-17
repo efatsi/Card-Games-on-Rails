@@ -1,14 +1,14 @@
 $(document).ready(function(){
-  
+
   setTimeout(CardGames.autoplay, 2000);
-  
+
   $('.choosable').live("click", function(){
     var $cardId = this.getAttribute('card-id');
     $.post(window.location.pathname + "/toggle_passing_status?card=" + $cardId, function(html){
       $(".my-hand").html(html);
     });
   });
-  
+
   $('.chosen').live("click", function(){
     // var $cardId = $(this).data('card-id');
     var $cardId = this.getAttribute('card-id');
@@ -16,7 +16,7 @@ $(document).ready(function(){
       $(".my-hand").html(html);
     });
   });
-  
+
   $('.playable').live("click", function(){
     var $cardId = this.getAttribute('card-id');
     $.post(window.location.pathname + "/play_one_card?card=" + $cardId, function(html){
@@ -24,11 +24,11 @@ $(document).ready(function(){
       CardGames.autoplay();
     });
   });
-  
+
   $('form.skip-reload').live("ajax:success", function(event, html){
     CardGames.autoplay();
   });
-   
+
   $('form.immediate-reload').live("ajax:success", function(event, html){
     $(".game-page").html(html);
     CardGames.autoplay();
@@ -38,14 +38,14 @@ $(document).ready(function(){
     $(".pass-button").remove();
     CardGames.autoplay();
   });
-  
+
   $("#toggle-last-trick").live("click", function(){
     $(".previous-trick-cards").slideToggle("fast");
   });
 });
 
 CardGames = {
-  
+
   autoplay: function(){
     $.getJSON(window.location.pathname, function(game){
       if (game.shouldReloadPreviousTrick){
@@ -87,51 +87,51 @@ CardGames = {
       }
     });
   },
-  
+
   reloadAndJustWait: function(){
     $.post(window.location.pathname + "/reload", function(html){
       $(".game-page").html(html);
     });
   },
-  
+
   reloadWaitAutoplay: function(){
     $.post(window.location.pathname + "/reload", function(html){
       $(".game-page").html(html);
       setTimeout(CardGames.autoplay, 1000);
-    });  
+    });
   },
 
   playAsComputer: function(){
     $.post(window.location.pathname + "/play_one_card", function(html){
       $(".game-page").html(html);
       CardGames.autoplay();
-    });  
+    });
   },
 
   startNewRound: function(){
     $.post(window.location.pathname + "/new_round", function(html){
       $(".game-page").html(html);
       CardGames.autoplay();
-    });  
+    });
   },
 
-  startNewTrick: function(){    
+  startNewTrick: function(){
     $.post(window.location.pathname + "/new_trick", function(html){
       $(".game-page").html(html);
       CardGames.autoplay();
-    });  
+    });
   },
 
   passCards: function(){
     $.post(window.location.pathname + "/pass_cards", function(html){
       CardGames.autoplay();
-    });  
+    });
   },
-  
+
   reloadPreviousTrick: function(){
     $.post(window.location.pathname + "/reload_trick", function(html){
-      $(".previous-trick").html(html);      
+      $(".previous-trick").html(html);
     });
   }
-  
+
 }
